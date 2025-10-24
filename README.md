@@ -81,11 +81,3 @@ Wtedy złożoność bruteforce to $O(n^k * |S| * k + n * |S| * m) = O(|S|(n^{k} 
 **tych funkcji w środku jest $n^n$**  
 **może nie warto zapisywać dla każdego stanu** - to coś daje?  
 
-
-
-## Kons
-- zmiejszyć S w sposób losowy
-- skupić się na alternatywnych podejściach (niedeterministycznie dobrych)
-  - zazwyczaj działa szybko (jest mało złośliwych case'ów)
-  - statystycznie rzecz biorąc powinno zadziałać (alg losowy)
-
