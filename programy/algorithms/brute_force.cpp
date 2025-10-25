@@ -55,6 +55,14 @@ namespace BruteForceAlgorithm {
 
         vector<pair<State, Alphabet>> missing_edges;
 
+        for (State state = 0; state < automaton.num_states; state++) {
+            for (Alphabet symbol = 0; symbol < automaton.num_alphabet; symbol++) {
+                if (automaton.transition_function.get_transition(state, symbol) == automaton.transition_function.invalid_edge) {
+                    missing_edges.push_back({state, symbol});
+                }
+            }
+        }
+
         const bool automaton_fixable = fix_automaton(
             automaton,
             missing_edges,
