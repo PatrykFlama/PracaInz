@@ -2,28 +2,18 @@
 CXX = g++
 CXXFLAGS = -Wall -g
 
-# Target executable
 TARGET = main
-
-# Source files
 SRCS = main.cpp
 
-# Object files
-OBJS = $(SRCS:.cpp=.o)
+.PHONY: all run clean
 
-# Default rule to build and run the executable
 all: $(TARGET) run
 
-# Rule to link object files into the target executable
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+$(TARGET): $(SRCS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-# Rule to compile .cpp files into .o files
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-run: $(TARGET)
+run:
 	./$(TARGET)
 
 clean:
-	rm $(TARGET) $(OBJS)
+	rm -f $(TARGET)
