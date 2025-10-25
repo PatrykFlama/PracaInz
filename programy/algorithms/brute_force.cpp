@@ -14,7 +14,7 @@ namespace BruteForceAlgorithm {
         const Samples &positive_samples,
         const Samples &negative_samples
     ) {
-        if (missing_edges_idx == missing_edges.size()) {
+        if (missing_edges_idx == (int)missing_edges.size()) {
             const bool valid = validate_automaton(
                 automaton,
                 positive_samples,
