@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 #include "../structures/structures.cpp"
-#include "./helpers/remove_random_edges.cpp"
+#include "./helpers/remove_edges_from_samples.cpp"
 using namespace std;
 
 pair<pair<Automaton, bool>, pair<Samples, Samples>> simple_generate(
@@ -54,7 +54,11 @@ pair<pair<Automaton, bool>, pair<Samples, Samples>> simple_generate(
     }
 
     // remove edges from automaton randomly
-    remove_random_edges(automaton, missing_edges);
+    remove_edges_from_samples(
+        automaton,
+        positive_samples,
+        missing_edges
+    );
 
     return {{automaton, true}, {positive_samples, negative_samples}};
 }
