@@ -10,4 +10,14 @@ public:
 
     Samples() {}
     Samples(int num_samples) : samples(num_samples) {}
+
+    friend ostream& operator<<(ostream &out_stream, const Samples &samples) {
+        for (int i = 0; i < (int)samples.samples.size(); i++) {
+            for (const auto &symbol : samples.samples[i]) {
+                out_stream << (int)symbol << " ";
+            }
+            out_stream << '\n';
+        }
+        return out_stream;
+    }
 };

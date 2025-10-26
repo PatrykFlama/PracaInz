@@ -24,4 +24,16 @@ public:
     State get_transition(State from_state, Alphabet symbol) const {
         return transitions[from_state][symbol];
     }
+
+    friend ostream& operator<<(ostream &out_stream, const TransitionFunction &tf) {
+        for (State state = 0; state < (State)tf.transitions.size(); state++) {
+            out_stream << state << ": { ";
+            for (Alphabet symbol = 0; symbol < (Alphabet)tf.transitions[state].size(); symbol++) {
+                State to_state = tf.transitions[state][symbol];
+                out_stream << (int)symbol << " -> " << to_state << ", ";
+            }
+            out_stream << "}\n";
+        }
+        return out_stream;
+    }
 };

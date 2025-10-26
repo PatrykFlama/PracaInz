@@ -4,6 +4,7 @@
 #include "algorithms/algorithms.cpp"
 #include "helpers/timer.cpp"
 #include "algorithms/helpers/validate_automaton.cpp"
+#include "helpers/save_input.cpp"
 using namespace std;
 
 /*
@@ -53,15 +54,25 @@ int main() {
     Timer timer;
     timer.reset();
 
-    auto [fixable, fixed_automaton] = BruteForceAlgorithm::run(automaton, positive_samples, negative_samples);
+    auto [fixable, fixed_automaton] = BruteForceAlgorithm::run_iter(automaton, positive_samples, negative_samples);
 
     cout << "Elapsed time: " << timer.elapsed() << " ms\n";
 
     if (automaton_fixable != fixable || 
         (automaton_fixable && !validate_automaton(fixed_automaton, positive_samples, negative_samples))) {
         cout << "Error in fixing automaton\n";
-    } 
-    else {
-        cout << "Automaton fixed successfully: " << (fixable ? "Yes" : "No") << "\n";
+
+        ofstream ofile("error_input.txt", ios::app);
+        save_input(
+            "Input that caused error:",
+            automaton,
+            positive_samples,
+            negative_samples,
+            ofile
+        );
+        ofile.close();
     }
+    // else {
+    //     cout << "Automaton fixed successfully: " << (fixable ? "Yes" : "No") << "\n";
+    // }
 }
