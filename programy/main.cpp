@@ -14,12 +14,13 @@ In program we will empirically measure efficiency of chosen algorithm, based on 
 /*
 TODO:
 
-repeat XXX times
-    1. generate inputs (separate lib)
-    2. run algorithm (separate lib) on generated inputs and measure time
-    3. validate the output results
-
-save results as time paired with generator parameters (for future analysis, such as plotting)
+now we want to have system for:
+1. running algorithms against generated input multiple times, saving time for each config (and informing us of any errors in some logs file)
+    - generate input, save it in DB and take its index (deterministic hash)
+    - run each of given algorithms and save stats for given input index
+    - have some reasonable timeouts option, to not stall long testing run
+2. create alternate system for measuring algorithm efficiency - calculate number of operations instead of hardware-biased time
+3. probably we should switch to using headers OR (to research) C++20 modules (current approach is not easy/clean to compile)
 */
 
 const int num_states = 20;
