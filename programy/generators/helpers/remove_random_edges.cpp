@@ -22,6 +22,10 @@ void remove_random_edges(Automaton &automaton, int num_edges) {
         }
     }
 
+    if (edges.size() == 0 || edges.size() < (int)num_edges) {
+        throw underflow_error("Invalid automata - there are too few edges in order to remove them");
+    }
+
     while (num_edges--) {
         int index = rand() % edges.size();
         auto it = edges.begin();

@@ -21,16 +21,16 @@ repeat XXX times
 save results as time paired with generator parameters (for future analysis, such as plotting)
 */
 
-const int num_states = 5;
-const int alphabet_size = 2;
-const int num_samples = 5;
-const int missing_edges = 3;
+const int num_states = 20;
+const int alphabet_size = 6;
+const int num_samples = 10;
+const int missing_edges = 5;
 const int sample_length = 10;
-const float length_variance = 0.2;
+const float length_variance = 0.2f;
 
 
 void init() {
-    srand(time(0));
+    srand((uint)time(0));
 }
 
 
@@ -60,7 +60,8 @@ int main() {
     if (automaton_fixable != fixable || 
         (automaton_fixable && !validate_automaton(fixed_automaton, positive_samples, negative_samples))) {
         cout << "Error in fixing automaton\n";
-    } else {
+    } 
+    else {
         cout << "Automaton fixed successfully: " << (fixable ? "Yes" : "No") << "\n";
     }
 }

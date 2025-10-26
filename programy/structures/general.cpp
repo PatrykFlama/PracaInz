@@ -6,7 +6,7 @@ using namespace std;
 
 typedef char Alphabet;
 
-typedef int State;
+typedef unsigned int State;
 const State INVALID_STATE = -1;
 
 class TransitionFunction {

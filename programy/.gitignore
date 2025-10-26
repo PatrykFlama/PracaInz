@@ -2,3 +2,4 @@ main
 *.out
 *.o
 *.exe
+*release*
