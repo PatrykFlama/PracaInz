@@ -39,7 +39,8 @@ void init() {
 int main() {
     init();
 
-    auto [automaton_data, samples] = simple_generate(
+    auto [automaton_data, samples] = generate(
+        "disjoint",
         num_states,
         alphabet_size,
         missing_edges,
