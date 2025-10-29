@@ -14,6 +14,18 @@ In program we will empirically measure efficiency of chosen algorithm, based on 
 /*
 TODO:
 
+- [ ] implement algorithms:
+    - [ ] precalc jumps over known edges
+    - [ ] cache furthest sample prefix position during fixing
+- [ ] implement algorithms tester:
+    - [ ] inputs parameters and array of functions to test
+    - [ ] outputs times of functions and generated parameters
+- [ ] implement main test runner
+    - [ ] runst test over parameters with given functions
+    - [ ] saves times to file after each iteration
+    - [ ] displays some progress bar in stdout
+
+
 now we want to have system for:
 1. running algorithms against generated input multiple times, saving time for each config (and informing us of any errors in some logs file)
     - generate input, save it in DB and take its index (deterministic hash)

@@ -9,3 +9,15 @@ Warianty problemu obejmują sytuację, gdy liczba brakujących stanów/krawędzi
 Zgaduję, że przypadku, gdy liczba brakujących krawędzi jest dowolna, trzeba będzie pokazać NP-zupełność, a gdy ograniczona, problem jest w P (być może tylko dla ustalonego alfabetu). W takim razie praca obejmowałaby dowód takiej NP-zupełności, a także analizę wariantu ograniczonego, wraz z implementacją (być może z kilkoma heurystykami) i analizą wydajności.
 
 Możliwe stopnie trudności obejmowałyby przeanalizowanie tego dla deterministycznych automatów skończonych, automatów z sumą (każda krawędź ma jakąś liczbę, a wartość słowa to suma wartości krawędzi) i ewentualnie automatów niedeterministycznych (ale to już chyba za trudne).
+
+### TODO
+- [ ] implement algorithms:
+    - [ ] precalc jumps over known edges
+    - [ ] cache furthest sample prefix position during fixing
+- [ ] implement algorithms tester:
+    - [ ] inputs parameters and array of functions to test
+    - [ ] outputs times of functions and generated parameters
+- [ ] implement main test runner
+    - [ ] runst test over parameters with given functions
+    - [ ] saves times to file after each iteration
+    - [ ] displays some progress bar in stdout
