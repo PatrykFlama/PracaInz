@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include "structures/structures.cpp"
-#include "generators/generators.cpp"
+#include "generators/wrapper.cpp"
 #include "algorithms/algorithms.cpp"
 #include "helpers/timer.cpp"
 #include "algorithms/helpers/validate_automaton.cpp"
@@ -39,8 +39,8 @@ void init() {
 int main() {
     init();
 
-    auto [automaton_data, samples] = generate(
-        "disjoint",
+    auto [automaton_data, samples] = generateAutomaton(
+        AUTOMATON_DISJOINT,
         num_states,
         alphabet_size,
         missing_edges,

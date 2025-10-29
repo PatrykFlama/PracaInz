@@ -6,8 +6,21 @@
 #include "./generators.cpp"
 using namespace std;
 
-pair<pair<Automaton, bool>, pair<Samples, Samples>> generate(
-    string type,
+enum AutomatonType {
+    AUTOMATON_SIMPLE = 0,
+    AUTOMATON_ACYCLIC,
+    AUTOMATON_DISJOINT,
+    // AUTOMATON_OVERLAPPING
+};
+
+static const function<Automaton(State, Alphabet)> AutomatonGenerateFunctions[] = {
+    simple_automaton_generate,
+    acyclic_automaton_generate,
+    disjoint_cycles_automaton_generate
+};
+
+pair<pair<Automaton, bool>, pair<Samples, Samples>> generateAutomaton(
+    AutomatonType type,
     State num_states,
     Alphabet alphabet_size,
     uint missing_edges,
@@ -19,18 +32,7 @@ pair<pair<Automaton, bool>, pair<Samples, Samples>> generate(
         throw invalid_argument("Invalid number of missing edges");
     }
 
-    // Automaton automaton(
-    //     num_states,
-    //     alphabet_size
-    // );
-
-    Automaton automaton = [&]() {
-        if (type == "simple") return simple_automaton_generate(num_states, alphabet_size);
-        if (type == "acyclic") return acyclic_automaton_generate(num_states, alphabet_size);
-        if (type == "disjoint") return disjoint_cycles_automaton_generate(num_states, alphabet_size);
-        // if (type == "overlapping") return overlapping_cycles_automaton_generate(num_states, alphabet_size);
-        throw invalid_argument("Unknown automaton type");
-    }();
+    Automaton automaton = AutomatonGenerateFunctions[type](num_states, alphabet_size);
 
     // generate samples from automaton at random
     bool generation_success = false;
@@ -66,7 +68,7 @@ pair<pair<Automaton, bool>, pair<Samples, Samples>> generate(
                 positive_samples, 
                 negative_samples, 
                 missing_edges);
-        } catch (underflow_error e) {
+        } catch (underflow_error) {
             generation_success = false;
         }
     }

@@ -43,7 +43,7 @@ Automaton overlapping_cycles_automaton_generate(
     // create cycles in automaton basend on previous division
 
     for (auto &cycle : cycles) {
-        for (int i = 0; i < cycle.size(); i++) {
+        for (int i = 0; i < (int)cycle.size(); i++) {
             State from_state = cycle[i];
             State to_state = cycle[(i + 1) % cycle.size()];
             for (Alphabet symbol = 0; symbol < alphabet_size; symbol++) {
