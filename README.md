@@ -21,3 +21,7 @@ Możliwe stopnie trudności obejmowałyby przeanalizowanie tego dla deterministy
     - [ ] runst test over parameters with given functions
     - [ ] saves times to file after each iteration
     - [ ] displays some progress bar in stdout
+
+
+# References
+- [TQDM file](https://gitlab.com/miguelraggi/tqdm-cpp)

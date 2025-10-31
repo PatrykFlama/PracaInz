@@ -11,8 +11,8 @@ using namespace std;
 
 
 struct AlgorithmRunResult {
-    const AlgorithmOutput output;
-    const int64_t runtime_ms;
+    AlgorithmOutput output;
+    int64_t runtime_ms;
     Error error;
 
     AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms)
