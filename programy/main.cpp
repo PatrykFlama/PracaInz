@@ -5,34 +5,11 @@
 #include "helpers/timer.cpp"
 #include "algorithms/helpers/validate_automaton.cpp"
 #include "helpers/save_input.cpp"
+#include "./tester.cpp"
 using namespace std;
 
 /*
-In program we will empirically measure efficiency of chosen algorithm, based on chosen input generation method.  
-*/
-
-/*
-TODO:
-
-- [ ] implement algorithms:
-    - [ ] precalc jumps over known edges
-    - [ ] cache furthest sample prefix position during fixing
-- [ ] implement algorithms tester:
-    - [ ] inputs parameters and array of functions to test
-    - [ ] outputs times of functions and generated parameters
-- [ ] implement main test runner
-    - [ ] runst test over parameters with given functions
-    - [ ] saves times to file after each iteration
-    - [ ] displays some progress bar in stdout
-
-
-now we want to have system for:
-1. running algorithms against generated input multiple times, saving time for each config (and informing us of any errors in some logs file)
-    - generate input, save it in DB and take its index (deterministic hash)
-    - run each of given algorithms and save stats for given input index
-    - have some reasonable timeouts option, to not stall long testing run
-2. create alternate system for measuring algorithm efficiency - calculate number of operations instead of hardware-biased time
-3. probably we should switch to using headers OR (to research) C++20 modules (current approach is not easy/clean to compile)
+In this program we will empirically measure efficiency of chosen algorithm, based on chosen input generation method.  
 */
 
 const int num_states = 20;
@@ -51,42 +28,24 @@ void init() {
 int main() {
     init();
 
-    auto [automaton_data, samples] = generateAutomaton(
-        AUTOMATON_DISJOINT,
-        num_states,
-        alphabet_size,
-        missing_edges,
-        num_samples,
-        sample_length,
-        length_variance
+    const auto &testing_results = testAlgorithms(
+        {BruteForceAlgorithm::run_iter},
+        {
+            AUTOMATON_SIMPLE,
+            num_states,
+            alphabet_size,
+            missing_edges,
+            num_samples,
+            sample_length,
+            length_variance
+        }
     );
 
-    auto [automaton, automaton_fixable] = automaton_data;
-    auto [positive_samples, negative_samples] = samples;
-
-
-    Timer timer;
-    timer.reset();
-
-    auto [fixable, fixed_automaton] = BruteForceAlgorithm::run_iter(automaton, positive_samples, negative_samples);
-
-    cout << "Elapsed time: " << timer.elapsed() << " ms\n";
-
-    if (automaton_fixable != fixable || 
-        (automaton_fixable && !validate_automaton(fixed_automaton, positive_samples, negative_samples))) {
-        cout << "Error in fixing automaton\n";
-
-        ofstream ofile("error_input.txt", ios::app);
-        save_input(
-            "Input that caused error:",
-            automaton,
-            positive_samples,
-            negative_samples,
-            ofile
-        );
-        ofile.close();
+    for (const auto &result : testing_results) {
+        if (result.error.has_error()) {
+            cout << "Error: " << result.error.message << '\n';
+        } else {
+            cout << "Algorithm ran in " << result.runtime_ms << " ms\n";
+        }
     }
-    // else {
-    //     cout << "Automaton fixed successfully: " << (fixable ? "Yes" : "No") << "\n";
-    // }
 }
