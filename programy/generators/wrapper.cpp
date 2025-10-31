@@ -1,5 +1,9 @@
 #pragma once
 
+#pragma GCC diagnostic push 
+#pragma GCC diagnostic ignored "-Wcatch-value="
+#pragma GCC diagnostic ignored "-Wconversion"
+
 #include <bits/stdc++.h>
 #include "../structures/structures.cpp"
 #include "./helpers/remove_edges_from_samples.cpp"
@@ -65,3 +69,5 @@ GenerateAutomatonOutput generateAutomaton(GenerateAutomatonInput input) {
 
     return {{automaton, true}, {positive_samples, negative_samples}};
 }
+
+#pragma GCC diagnostic pop 
