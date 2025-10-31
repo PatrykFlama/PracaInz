@@ -5,6 +5,7 @@
 #include "helpers/timer.cpp"
 #include "algorithms/helpers/validate_automaton.cpp"
 #include "helpers/save_input.cpp"
+#include "./tester.cpp"
 using namespace std;
 
 /*
@@ -27,39 +28,24 @@ void init() {
 int main() {
     init();
 
-    auto [automaton_data, samples] = generateAutomaton({
-        AUTOMATON_DISJOINT,
-        num_states,
-        alphabet_size,
-        missing_edges,
-        num_samples,
-        sample_length,
-        length_variance
-    });
+    const auto &testing_results = testAlgorithms(
+        {BruteForceAlgorithm::run_iter},
+        {
+            AUTOMATON_SIMPLE,
+            num_states,
+            alphabet_size,
+            missing_edges,
+            num_samples,
+            sample_length,
+            length_variance
+        }
+    );
 
-    auto [automaton, automaton_fixable] = automaton_data;
-    auto [positive_samples, negative_samples] = samples;
-
-
-    Timer timer;
-    timer.reset();
-
-    auto [fixable, fixed_automaton] = BruteForceAlgorithm::run_iter({automaton, positive_samples, negative_samples});
-
-    cout << "Elapsed time: " << timer.elapsed() << " ms\n";
-
-    if (automaton_fixable != fixable || 
-        (automaton_fixable && !validate_automaton(fixed_automaton, positive_samples, negative_samples))) {
-        cout << "Error in fixing automaton\n";
-
-        ofstream ofile("error_input.txt", ios::app);
-        save_input(
-            "Input that caused error:",
-            automaton,
-            positive_samples,
-            negative_samples,
-            ofile
-        );
-        ofile.close();
+    for (const auto &result : testing_results) {
+        if (result.error.has_error()) {
+            cout << "Error: " << result.error.message << '\n';
+        } else {
+            cout << "Algorithm ran in " << result.runtime_ms << " ms\n";
+        }
     }
 }
