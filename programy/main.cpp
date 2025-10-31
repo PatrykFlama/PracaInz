@@ -8,31 +8,7 @@
 using namespace std;
 
 /*
-In program we will empirically measure efficiency of chosen algorithm, based on chosen input generation method.  
-*/
-
-/*
-TODO:
-
-- [ ] implement algorithms:
-    - [ ] precalc jumps over known edges
-    - [ ] cache furthest sample prefix position during fixing
-- [ ] implement algorithms tester:
-    - [ ] inputs parameters and array of functions to test
-    - [ ] outputs times of functions and generated parameters
-- [ ] implement main test runner
-    - [ ] runst test over parameters with given functions
-    - [ ] saves times to file after each iteration
-    - [ ] displays some progress bar in stdout
-
-
-now we want to have system for:
-1. running algorithms against generated input multiple times, saving time for each config (and informing us of any errors in some logs file)
-    - generate input, save it in DB and take its index (deterministic hash)
-    - run each of given algorithms and save stats for given input index
-    - have some reasonable timeouts option, to not stall long testing run
-2. create alternate system for measuring algorithm efficiency - calculate number of operations instead of hardware-biased time
-3. probably we should switch to using headers OR (to research) C++20 modules (current approach is not easy/clean to compile)
+In this program we will empirically measure efficiency of chosen algorithm, based on chosen input generation method.  
 */
 
 const int num_states = 20;
@@ -51,7 +27,7 @@ void init() {
 int main() {
     init();
 
-    auto [automaton_data, samples] = generateAutomaton(
+    auto [automaton_data, samples] = generateAutomaton({
         AUTOMATON_DISJOINT,
         num_states,
         alphabet_size,
@@ -59,7 +35,7 @@ int main() {
         num_samples,
         sample_length,
         length_variance
-    );
+    });
 
     auto [automaton, automaton_fixable] = automaton_data;
     auto [positive_samples, negative_samples] = samples;
@@ -68,7 +44,7 @@ int main() {
     Timer timer;
     timer.reset();
 
-    auto [fixable, fixed_automaton] = BruteForceAlgorithm::run_iter(automaton, positive_samples, negative_samples);
+    auto [fixable, fixed_automaton] = BruteForceAlgorithm::run_iter({automaton, positive_samples, negative_samples});
 
     cout << "Elapsed time: " << timer.elapsed() << " ms\n";
 
@@ -86,7 +62,4 @@ int main() {
         );
         ofile.close();
     }
-    // else {
-    //     cout << "Automaton fixed successfully: " << (fixable ? "Yes" : "No") << "\n";
-    // }
 }

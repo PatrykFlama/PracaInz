@@ -4,6 +4,7 @@
 using namespace std;
 #include "../structures/structures.cpp"
 #include "./helpers/validate_automaton.cpp"
+#include "./types.cpp"
 
 
 namespace BruteForceAlgorithm {
@@ -59,11 +60,9 @@ namespace BruteForceAlgorithm {
         return false;
     }
 
-    pair<bool, Automaton> run_rec(
-        const Automaton &broken_automaton,
-        const Samples &positive_samples,
-        const Samples &negative_samples
-    ) {
+    AlgorithmOutput run_rec(const AlgorithmInput &input) {
+        const auto &[broken_automaton, positive_samples, negative_samples] = input;
+
         Automaton automaton = broken_automaton;
 
         vector<pair<State, Alphabet>> missing_edges;
@@ -81,11 +80,9 @@ namespace BruteForceAlgorithm {
     }
 
 
-    pair<bool, Automaton> run_iter(
-        const Automaton &broken_automaton,
-        const Samples &positive_samples,
-        const Samples &negative_samples
-    ) {
+    AlgorithmOutput run_iter(const AlgorithmInput &input) {
+        const auto &[broken_automaton, positive_samples, negative_samples] = input;
+
         Automaton automaton = broken_automaton;
 
         vector<pair<State, Alphabet>> missing_edges;

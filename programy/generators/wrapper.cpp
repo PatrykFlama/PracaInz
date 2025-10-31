@@ -4,14 +4,9 @@
 #include "../structures/structures.cpp"
 #include "./helpers/remove_edges_from_samples.cpp"
 #include "./generators.cpp"
+#include "./types.cpp"
 using namespace std;
 
-enum AutomatonType {
-    AUTOMATON_SIMPLE = 0,
-    AUTOMATON_ACYCLIC,
-    AUTOMATON_DISJOINT,
-    // AUTOMATON_OVERLAPPING
-};
 
 static const function<Automaton(State, Alphabet)> AutomatonGenerateFunctions[] = {
     simple_automaton_generate,
@@ -19,15 +14,10 @@ static const function<Automaton(State, Alphabet)> AutomatonGenerateFunctions[] =
     disjoint_cycles_automaton_generate
 };
 
-pair<pair<Automaton, bool>, pair<Samples, Samples>> generateAutomaton(
-    AutomatonType type,
-    State num_states,
-    Alphabet alphabet_size,
-    uint missing_edges,
-    uint num_samples,
-    uint sample_length,
-    float length_variance
-) {
+
+GenerateAutomatonOutput generateAutomaton(GenerateAutomatonInput input) {
+    auto [type, num_states, alphabet_size, missing_edges, num_samples, sample_length, length_variance] = input;
+
     if (num_states * alphabet_size < missing_edges) {
         throw invalid_argument("Invalid number of missing edges");
     }

@@ -14,6 +14,7 @@ all: $(TARGET) run
 $(TARGET): $(SRCS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
+remake: clean all
 
 release:
 	$(CXX) $(CXXFLAGS_STD) -o release $(SRCS)
