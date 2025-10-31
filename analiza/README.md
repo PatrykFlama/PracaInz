@@ -55,13 +55,14 @@ graph TD;
 - caching
 - drzewo prefiksowe dla S
 
-### Pomysły do rozważenia
-#### Preprocessing dla S
+### Pomysły optymalizacyjne do rozważenia
+#### Wykrywanie cykli (preprocessing)
 - Dla każdego słowa, dla każdej pozycji oraz długości podsłowa pamiętać gdzie najdalej możemy skoczyć - aby nie łazić po jego cyklu.  
 Da to nakład pamięciowy $O(|S| * m^2)$ (co może można też sprytnie poprawić).  
 *Wtedy przechodząc słowem $s$ po automacie, mamy gwarancję, że każdy stan odwiedzimy maksymalnie $O(1)$ razy - w pp musielibyśmy chodzić po jakimś cyklu w grafie, co moglibyśmy wykryć i korzystając z policzonych skoków ominąć.*  - **no nie wiem**  
 Wtedy złożoność bruteforce to $O(n^k * |S| * n + |S| * m^2) = O(|S|(n^{k} + m^2))$.  
 
+#### Przeskakiwanie znanych krawędzi (preprocessing)
 - Inny, oparty na tym pomysł: gdyby policzyć dla każdego sufiksu oraz stanu, gdzie najdalej możemy skoczyć?  
 Wtedy efektywnie chodzimy w automacie tylko między nieznanymi krawędziami.  
   - Co gdy się pętlimy ciągle między tymi krawędziami?
@@ -72,3 +73,10 @@ Wtedy złożoność bruteforce to $O(n^k * |S| * k + n * |S| * m) = O(|S|(n^{k} 
 **tych funkcji w środku jest $n^n$**  
 **może nie warto zapisywać dla każdego stanu** - to coś daje?  
 
+#### Cacheowanie prefiksów
+dla każdej wersji naprawionego automatu (dokładniej to dla każdej brakującej krawędzi) chcemy zapisać gdzie najdalej jeseśmy w stanie skoczyć prefiksem słowa  
+możemy to obliczać na podstawie tego gdzie byliśmy w stanie przejść poprzednim prefiksem + nowa krawędź    
+
+dodatkowo można połączyć ten algorytm z przeskakiwaniem znanych krawędzi, dzięki czemu będziemy płacić tylko za przejścia po nieznanych krawędziach
+
+jednak nawet dla tej wersji istnieje (analogiczny do niej) worst-case kontrprzykład, gdzie tworzymy któryki cykl składający się z jednej nieznanej krawędzi - wtedy jeżeli ten cykl będzie występować na końcu - to jego krawędź zostanie zmieniona $k^n$ razy - przejście po nim jest kosztowne, a cachowanie nic nie daje (bo ostatni backup jest przed cyklem)  
