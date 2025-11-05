@@ -5,22 +5,11 @@ using namespace std;
 #include "../structures/structures.cpp"
 #include "./helpers/validate_automaton.cpp"
 #include "./types.cpp"
+#include "./helpers/misc.cpp"
 
 
 namespace BruteForceAlgorithm {
-    void get_missing_edges(
-        Automaton &automaton,
-        vector<pair<State, Alphabet>> &missing_edges
-    ) {
-        for (State state = 0; state < automaton.num_states; state++) {
-            for (Alphabet symbol = 0; symbol < automaton.num_alphabet; symbol++) {
-                if (automaton.transition_function.get_transition(state, symbol) == automaton.transition_function.invalid_edge) {
-                    missing_edges.push_back({state, symbol});
-                }
-            }
-        }
-    }
-
+    template<auto validate_automaton_func = validate_automaton>
     bool fix_automaton_rec(
         Automaton &automaton,
         const vector<pair<State, Alphabet>> &missing_edges,
@@ -29,7 +18,7 @@ namespace BruteForceAlgorithm {
         const Samples &negative_samples
     ) {
         if (missing_edges_idx == (int)missing_edges.size()) {
-            const bool valid = validate_automaton(
+            const bool valid = validate_automaton_func(
                 automaton,
                 positive_samples,
                 negative_samples
@@ -60,7 +49,10 @@ namespace BruteForceAlgorithm {
         return false;
     }
 
-    AlgorithmOutput run_rec(const AlgorithmInput &input) {
+    template<auto validate_automaton_func = validate_automaton>
+    AlgorithmOutput run_rec(
+        const AlgorithmInput &input
+    ) {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
         Automaton automaton = broken_automaton;
@@ -80,7 +72,10 @@ namespace BruteForceAlgorithm {
     }
 
 
-    AlgorithmOutput run_iter(const AlgorithmInput &input) {
+    template<auto validate_automaton_func = validate_automaton>
+    AlgorithmOutput run_iter(
+        const AlgorithmInput &input
+    ) {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
         Automaton automaton = broken_automaton;
@@ -95,7 +90,7 @@ namespace BruteForceAlgorithm {
         while (!automata_fixed) {
             // we set all edges - validate and if not valid we have to update previous configuration
             if (missing_edges_idx == (int)missing_edges.size()) {
-                const bool valid = validate_automaton(
+                const bool valid = validate_automaton_func(
                     automaton,
                     positive_samples,
                     negative_samples
