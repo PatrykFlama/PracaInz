@@ -31,11 +31,15 @@ int main() {
     const float length_variance = 0.2f;
     const vector<string> algorithm_names = {
         "Brute Force Iterative",
-        "Brute Force Recursive"
+        "Brute Force Recursive",
+        "Brute Force With Jumps Iterative",
+        "Brute Force With Jumps Recursive"
     };
     const vector<function<AlgorithmOutput(AlgorithmInput)>> algorithms_to_test = {
         BruteForceAlgorithm::run_iter,
-        BruteForceAlgorithm::run_rec
+        BruteForceAlgorithm::run_rec,
+        PreprocessJumpsAlgorithm::run_iter,
+        PreprocessJumpsAlgorithm::run_rec
     };
     const AutomatonType automaton_type = AUTOMATON_SIMPLE;
 
