@@ -16,7 +16,7 @@ In this program we will empirically measure efficiency of chosen algorithm, base
 
 
 void init() {
-    srand((uint)time(0));
+    srand(static_cast<unsigned>(time(0)));
 }
 
 
@@ -29,6 +29,7 @@ int main() {
     const int missing_edges = 5;
     const int sample_length = 10;
     const float length_variance = 0.2f;
+    
     const vector<string> algorithm_names = {
         "Brute Force Iterative",
         "Brute Force Recursive",
@@ -36,11 +37,13 @@ int main() {
         "Brute Force With Jumps Recursive"
     };
     const vector<function<AlgorithmOutput(AlgorithmInput)>> algorithms_to_test = {
-        BruteForceAlgorithm::run_iter,
-        BruteForceAlgorithm::run_rec,
+        BruteForceAlgorithm::run_iter<>,
+        BruteForceAlgorithm::run_rec<>,
         PreprocessJumpsAlgorithm::run_iter,
         PreprocessJumpsAlgorithm::run_rec
     };
+    
+    
     const AutomatonType automaton_type = AUTOMATON_SIMPLE;
 
     const int TEST_RUNS = 10;
@@ -77,6 +80,6 @@ int main() {
 
     cout << '\n';
     for (size_t j = 0; j < testing_times_sum.size(); ++j) {
-        cout << "Algorithm " << j << ": " << (testing_times_sum[j] / TEST_RUNS) << " ms (avg over " << TEST_RUNS << " runs)\n";
+        cout << "Algorithm " << algorithm_names[j] << ": " << (testing_times_sum[j] / TEST_RUNS) << " ms (avg over " << TEST_RUNS << " runs)\n";
     }
 }
