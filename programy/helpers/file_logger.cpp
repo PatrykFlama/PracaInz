@@ -3,37 +3,72 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#include "../generators/types.cpp"
+
 class FileLogger {
     string filename_;
 public:
 
-    FileLogger(const string &filename, const vector<string> &headers) {
+    FileLogger(
+        const string &filename, 
+        const vector<string> &algorithm_names
+    ) {
         filename_ = filename;
         ofstream logfile_(filename);
-        for (size_t i = 0; i < headers.size(); ++i) {
-            logfile_ << headers[i];
-            if (i + 1 < headers.size()) {
+        logfile_ << "Num States, Alphabet Size, Missing Edges, Num Samples, Sample Length, Length Variance, Automaton Type, ";
+        
+        for (size_t i = 0; i < algorithm_names.size(); ++i) {
+            logfile_ << algorithm_names[i];
+            if (i + 1 < algorithm_names.size()) {
                 logfile_ << ", ";
             }
         }
+
+        logfile_ << ", ";
+        for (size_t i = 0; i < algorithm_names.size(); ++i) {
+            logfile_ << "ERROR_" + algorithm_names[i];
+            if (i + 1 < algorithm_names.size()) {
+                logfile_ << ", ";
+            }
+        }
+
         logfile_ << '\n';
         logfile_.close();
     }
 
-    template <typename T>
-    void log(const vector<T> &values) {
+    void log(
+        const vector<AlgorithmRunResult> &results,
+        const GenerateAutomatonInput &generate_input
+    ) {
         ofstream logfile_(filename_, ios::app);
 
         if (!logfile_.is_open()) {
             throw runtime_error("Could not open log file: " + filename_);
         }
 
-        for (size_t i = 0; i < values.size(); ++i) {
-            logfile_ << values[i];
-            if (i + 1 < values.size()) {
+        logfile_ << generate_input.num_states << ", "
+                 << (int)generate_input.alphabet_size << ", "
+                 << generate_input.missing_edges << ", "
+                 << generate_input.num_samples << ", "
+                 << generate_input.sample_length << ", "
+                 << generate_input.length_variance << ", "
+                 << generate_input.type << ", ";
+
+        for (size_t i = 0; i < results.size(); ++i) {
+            logfile_ << results[i].runtime_ms;
+            if (i + 1 < results.size()) {
                 logfile_ << ", ";
             }
         }
+
+        logfile_ << ", ";
+        for (size_t i = 0; i < results.size(); ++i) {
+            logfile_ << results[i].error.message;
+            if (i + 1 < results.size()) {
+                logfile_ << ", ";
+            }
+        }
+
         logfile_ << '\n';
         logfile_.close();
     }
