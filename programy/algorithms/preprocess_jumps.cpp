@@ -8,14 +8,7 @@ using namespace std;
 #include "./types.cpp"
 
 namespace PreprocessJumpsAlgorithm {
-    // JumpEntry: (state_reached, pos_reached_in_sample)
-    using JumpEntry = pair<State, int>;
-    // jump_table_sample[pos][state] = JumpEntry
-    using JumpTableForSample = vector<vector<JumpEntry>>;
-    // jump_table[sample_idx] -> JumpTableForSample
-    using JumpTable = vector<JumpTableForSample>;
-
-    JumpTable table_samples_negative, table_samples_positive;       //TODO! this should be fixed - feg class members
+    JumpTables jump_tables;
 
     JumpTable &build_jump_table(JumpTable &table, const Automaton& automaton, const Samples& samples) {
         table.clear();
@@ -28,7 +21,7 @@ namespace PreprocessJumpsAlgorithm {
 
             // before the jump: state and position remains the same,
             for (State s = 0; s < automaton.num_states; s++) {
-                dp[L][s] = {s, L};
+                dp[L][s] = JumpEntry(s, L);
             }
 
             for (int pos = L - 1; pos >= 0; pos--) {
@@ -38,7 +31,7 @@ namespace PreprocessJumpsAlgorithm {
                     State trans = automaton.transition_function.get_transition(st, symbol);
                     if (trans == automaton.transition_function.invalid_edge) {
                         // the unknown edge
-                        dp[pos][st] = {st, pos};
+                        dp[pos][st] = JumpEntry(st, pos);
                     } else {
                         // jump
                         dp[pos][st] = dp[pos + 1][trans];
@@ -62,17 +55,20 @@ namespace PreprocessJumpsAlgorithm {
 
         for (size_t i = 0; i < samples.samples.size(); i++) {
             const auto& dp = table[i];
-            const int L = (int)samples.samples[i].size();
-            const auto res = dp[0][start];
-            const State final_state = res.first;
-            const int pos_reached = res.second;
+            const int L = samples.samples[i].size();
+
+            const JumpEntry& res = dp[0][start];
+            const State final_state = res.state_reached;
+            const int pos_reached = res.pos_reached_in_sample;
 
             // sample is rejected if we couldnt jump through all samples
             if (pos_reached < L) {
-                if (expected_accepting)
+                if (expected_accepting) {
                     return false;
-                else
+                }
+                else {
                     continue;
+                }
             }
 
             const bool is_accepting = automaton.accepting[final_state];
@@ -93,7 +89,7 @@ namespace PreprocessJumpsAlgorithm {
             automaton,
             positive_samples,
             true,
-            table_samples_positive
+            jump_tables.positive
         );
 
         if (!positive_valid) return false;
@@ -102,7 +98,7 @@ namespace PreprocessJumpsAlgorithm {
             automaton,
             negative_samples,
             false,
-            table_samples_negative
+            jump_tables.negative
         );
 
         return negative_valid;
@@ -111,8 +107,8 @@ namespace PreprocessJumpsAlgorithm {
 
     void build_jump_tables(const AlgorithmInput& input) {
         const auto& [broken_automaton, positive_samples, negative_samples] = input;
-        build_jump_table(table_samples_negative, broken_automaton, negative_samples);
-        build_jump_table(table_samples_positive, broken_automaton, positive_samples);
+        build_jump_table(jump_tables.negative, broken_automaton, negative_samples);
+        build_jump_table(jump_tables.positive, broken_automaton, positive_samples);
     }
 
     AlgorithmOutput run_rec(const AlgorithmInput& input) {

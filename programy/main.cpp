@@ -30,7 +30,7 @@ int main() {
     generate_input.alphabet_size = 6;
     generate_input.num_samples = 10;
     generate_input.missing_edges = 5;
-    generate_input.sample_length = 10;
+    generate_input.sample_length = 20;
     generate_input.length_variance = 0.2f;
     generate_input.type = AUTOMATON_SIMPLE;
     
