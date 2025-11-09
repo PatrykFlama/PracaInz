@@ -52,31 +52,49 @@ namespace PreprocessJumpsAlgorithm {
         const JumpTable& table
     ) {
         const State start = automaton.start_state;
-
+    
         for (size_t i = 0; i < samples.samples.size(); i++) {
+            const auto& sample = samples.samples[i];
+            const int L = sample.size();
             const auto& dp = table[i];
-            const int L = samples.samples[i].size();
-
-            const JumpEntry& res = dp[0][start];
-            const State final_state = res.state_reached;
-            const int pos_reached = res.pos_reached_in_sample;
-
-            // sample is rejected if we couldnt jump through all samples
-            if (pos_reached < L) {
-                if (expected_accepting) {
-                    return false;
+    
+            State st = start;
+            int pos = 0;
+            bool valid_sample = true; 
+    
+            // jump
+            const JumpEntry jump = dp[pos][st];
+            st = jump.state_reached;
+            pos = jump.pos_reached_in_sample;
+    
+            // if there is trouble with jumping (we are at the new added edge)
+            while (pos < L) {
+                const Alphabet sym = sample[pos];
+                const State next = automaton.transition_function.get_transition(st, sym);
+    
+                if (next == automaton.transition_function.invalid_edge) {
+                    if (expected_accepting)
+                        return false;   
+                    else {
+                        valid_sample = false; 
+                        break;                
+                    }
                 }
-                else {
-                    continue;
-                }
+    
+                st = next;
+                pos++;
+            }
+    
+            if (!valid_sample){
+                continue; // go to another sample
             }
 
-            const bool is_accepting = automaton.accepting[final_state];
+            const bool is_accepting = automaton.accepting[st];
             if (is_accepting != expected_accepting) {
                 return false;
             }
         }
-
+    
         return true;
     }
 
