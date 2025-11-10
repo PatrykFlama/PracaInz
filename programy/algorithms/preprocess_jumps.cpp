@@ -60,35 +60,36 @@ namespace PreprocessJumpsAlgorithm {
     
             State st = start;
             int pos = 0;
-            bool valid_sample = true; 
+            bool valid_sample = true;
     
-            // jump
-            const JumpEntry jump = dp[pos][st];
-            st = jump.state_reached;
-            pos = jump.pos_reached_in_sample;
-    
-            // if there is trouble with jumping (we are at the new added edge)
             while (pos < L) {
-                const Alphabet sym = sample[pos];
-                const State next = automaton.transition_function.get_transition(st, sym);
+                // jump
+                const JumpEntry jump = dp[pos][st];
+                State new_st = jump.state_reached;
+                int new_pos = jump.pos_reached_in_sample;
     
-                if (next == automaton.transition_function.invalid_edge) {
-                    if (expected_accepting)
-                        return false;   
-                    else {
-                        valid_sample = false; 
-                        break;                
+                // if we are on invalid edge, use get_transition and try to jump once again
+                if (new_pos == pos && new_st == st) {
+                    const Alphabet sym = sample[pos];
+                    const State next = automaton.transition_function.get_transition(st, sym);
+    
+                    if (next == automaton.transition_function.invalid_edge) {
+                        valid_sample = false;
+                        break;
                     }
+    
+                    st = next;
+                    pos++;
+                    continue;
                 }
     
-                st = next;
-                pos++;
+                st = new_st;
+                pos = new_pos;
             }
     
-            if (!valid_sample){
-                continue; // go to another sample
-            }
-
+            if (!valid_sample)
+                continue;
+    
             const bool is_accepting = automaton.accepting[st];
             if (is_accepting != expected_accepting) {
                 return false;
@@ -96,7 +97,7 @@ namespace PreprocessJumpsAlgorithm {
         }
     
         return true;
-    }
+    }  
 
     bool validate_automaton_using_jumps(
         const Automaton& automaton,
@@ -139,4 +140,4 @@ namespace PreprocessJumpsAlgorithm {
         return BruteForceAlgorithm::run_iter<validate_automaton_using_jumps>(input);
     }
 
-};  // namespace PreprocessJumpsAlgorithm
+};
