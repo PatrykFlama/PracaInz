@@ -1,10 +1,10 @@
 #pragma once
 
-#include <bits/stdc++.h>
-#include "general.cpp"          
+#include <bits/stdc++.h>         
 using namespace std;
 
-struct JumpEntry {
+class JumpEntry {
+public:
     State state_reached;
     int pos_reached_in_sample;
 
@@ -18,7 +18,8 @@ using JumpTableForSample = vector<vector<JumpEntry>>;
 // jump_table[sample_index] = JumpTableForSample
 using JumpTable = vector<JumpTableForSample>;
 
-struct JumpTables {
+class JumpTables {
+public:
     JumpTable negative;
     JumpTable positive;
 

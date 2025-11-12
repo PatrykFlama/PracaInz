@@ -2,10 +2,10 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-#include "../structures/structures.cpp"
-#include "./brute_force.cpp"
-#include "./helpers/misc.cpp"
-#include "./types.cpp"
+#include "./jump_tables.cpp"
+#include "../brute_force.cpp"
+#include "../helpers/misc.cpp"
+#include "../types.cpp"
 
 namespace PreprocessJumpsAlgorithm {
     JumpTables jump_tables;
