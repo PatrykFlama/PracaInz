@@ -33,7 +33,7 @@ namespace BruteForceAlgorithm {
         for (State to_state = 0; to_state < automaton.num_states; to_state++) {
             automaton.transition_function.set_transition(from_state, symbol, to_state);
 
-            const bool fixed = fix_automaton_rec(
+            const bool fixed = fix_automaton_rec<validate_automaton_func>(
                 automaton,
                 missing_edges,
                 missing_edges_idx + 1,
@@ -60,7 +60,7 @@ namespace BruteForceAlgorithm {
         vector<pair<State, Alphabet>> missing_edges;
         get_missing_edges(automaton, missing_edges);
 
-        const bool automaton_fixable = fix_automaton_rec(
+        const bool automaton_fixable = fix_automaton_rec<validate_automaton_func>(
             automaton,
             missing_edges,
             0,
