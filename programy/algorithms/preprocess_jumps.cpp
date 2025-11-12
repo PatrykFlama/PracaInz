@@ -55,7 +55,7 @@ namespace PreprocessJumpsAlgorithm {
     
         for (size_t i = 0; i < samples.samples.size(); i++) {
             const auto& sample = samples.samples[i];
-            const int L = sample.size();
+            const int L = (int)sample.size();
             const auto& dp = table[i];
     
             State st = start;
