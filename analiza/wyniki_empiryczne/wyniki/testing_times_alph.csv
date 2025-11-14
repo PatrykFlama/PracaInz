@@ -1,0 +1,2 @@
+Num States, Alphabet Size, Missing Edges, Num Samples, Sample Length, Length Variance, Automaton Type, Brute Force With Jumps Iterative, Save Prefix State Iterative, ERROR_Brute Force With Jumps Iterative, ERROR_Save Prefix State Iterative
+20, 1, 5, 10, 20, 0.2, 0, 0, 250, , 
