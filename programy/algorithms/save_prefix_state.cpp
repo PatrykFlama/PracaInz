@@ -19,8 +19,7 @@ static bool validate_automaton_func(
     const Automaton &automaton,
     const Samples &pos_samples,
     const Samples &neg_samples,
-    const vector<State> &final_states,
-    const vector<size_t> &final_pos
+    const vector<State> &final_states
 ) {
     for (size_t i = 0; i < pos_samples.samples.size(); ++i) {
         // if (final_pos[i] != pos_samples.samples[i].size()) return false;    // probably not needed
@@ -106,7 +105,7 @@ AlgorithmOutput run(const AlgorithmInput &input) {
     int missing_edges_idx = 0;
     while (missing_edges_idx >= 0) {
         if (missing_edges_idx == m) {
-            if (validate_automaton_func(automaton, positive_samples, negative_samples, prefix_state[m], prefix_pos[m])) {
+            if (validate_automaton_func(automaton, positive_samples, negative_samples, prefix_state[m])) {
                 return {true, automaton};
             }
 
@@ -116,7 +115,7 @@ AlgorithmOutput run(const AlgorithmInput &input) {
 
         assigned[missing_edges_idx]++;
 
-        if (assigned[missing_edges_idx] >= (int)automaton.num_states) {
+        if (assigned[missing_edges_idx] >= automaton.num_states) {
             // exhausted options -> reset transition to invalid and backtrack
             const auto [from, edge] = missing_edges[missing_edges_idx];
             automaton.transition_function.set_transition(from, edge, automaton.transition_function.invalid_edge);
