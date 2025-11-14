@@ -53,6 +53,7 @@ int main() {
 
     vector<vector<int64_t>> testing_times(TEST_RUNS, vector<int64_t>(algorithms_to_test.size(), 0));
     vector<int64_t> testing_times_sum(algorithms_to_test.size(), 0);
+    vector<int> testing_errors_count(algorithms_to_test.size(), 0);
 
     FileLogger logger(
         "testing_times.csv",
@@ -68,6 +69,10 @@ int main() {
         for (size_t j = 0; j < testing_results.size(); ++j) {
             testing_times_sum[j] += testing_results[j].runtime_ms;
             testing_times[i][j] = testing_results[j].runtime_ms;
+
+            if (testing_results[j].error.has_error()) {
+                testing_errors_count[j]++;
+            }
         }
 
         logger.log(
@@ -78,6 +83,12 @@ int main() {
 
     cout << '\n';
     for (size_t j = 0; j < testing_times_sum.size(); ++j) {
-        cout << "Algorithm " << algorithm_names[j] << ": " << (testing_times_sum[j] / TEST_RUNS) << " ms (avg over " << TEST_RUNS << " runs)\n";
+        cout << "Algorithm " << algorithm_names[j] << ": " << (testing_times_sum[j] / TEST_RUNS) << " ms (avg over " << TEST_RUNS << " runs). ";
+
+        if (testing_errors_count[j] > 0) {
+            cout << "Errors: " << testing_errors_count[j] << "/" << TEST_RUNS;
+        }
+        
+        cout << '\n';
     }
 }
