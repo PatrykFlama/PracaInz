@@ -34,19 +34,22 @@ int main() {
     generate_input.length_variance = 0.2f;
     generate_input.type = AUTOMATON_SIMPLE;
     
-    const vector<string> algorithm_names = {
-        "Brute Force Iterative",
-        "Brute Force Recursive",
-        "Brute Force With Jumps Iterative",
-        "Brute Force With Jumps Recursive"
+
+    const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
+        {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
+        {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
+        {"Brute Force With Jumps Iterative", {PreprocessJumpsAlgorithm::run_iter}},
+        {"Brute Force With Jumps Recursive", {PreprocessJumpsAlgorithm::run_rec}},
+        {"Save Prefix State Iterative", {SavePrefixState::run}},
     };
-    const vector<function<AlgorithmOutput(AlgorithmInput)>> algorithms_to_test = {
-        BruteForceAlgorithm::run_iter<>,
-        BruteForceAlgorithm::run_rec<>,
-        PreprocessJumpsAlgorithm::run_iter,
-        PreprocessJumpsAlgorithm::run_rec
-    };
-    
+
+
+    vector<string> algorithm_names;
+    vector<function<AlgorithmOutput(AlgorithmInput)>> algorithms_to_test;
+    for (const auto &[name, func] : algorithms) {
+        algorithm_names.push_back(name);
+        algorithms_to_test.push_back(func);
+    }
 
     vector<vector<int64_t>> testing_times(TEST_RUNS, vector<int64_t>(algorithms_to_test.size(), 0));
     vector<int64_t> testing_times_sum(algorithms_to_test.size(), 0);
