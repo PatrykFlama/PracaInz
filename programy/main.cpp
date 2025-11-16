@@ -8,6 +8,7 @@
 #include "./tester.cpp"
 #include "helpers/tqdm.hpp"
 #include "helpers/file_logger.cpp"
+#include "helpers/draw_automaton.cpp"
 using namespace std;
 
 /*
@@ -65,6 +66,33 @@ int main() {
             algorithms_to_test,
             generate_input
         );
+
+        // checking similarity of executing times for different algorithms
+        bool similar = true;
+        double ref = testing_results[0].runtime_ms;
+
+        for (size_t j = 1; j < testing_results.size(); ++j) {
+            double diff = fabs(testing_results[j].runtime_ms - ref);
+            if (diff / ref > 0.10) {
+                similar = false;
+                break;
+            }
+        }
+
+        if (similar) {
+            cout << "drawing automaton that have similar executing time...\n";
+
+            const Automaton &A = testing_results[0].input_automaton;
+
+            string dot = "automata/dot_files/automaton_run_" + to_string(i) + ".dot";
+            string png = "automata/png_files/automaton_run_" + to_string(i) + ".png";
+
+            saveAutomatonAsDot(A, dot);
+            renderDotToPng(dot, png);
+
+            cout << "saved " << png << "\n";
+        }
+
 
         for (size_t j = 0; j < testing_results.size(); ++j) {
             testing_times_sum[j] += testing_results[j].runtime_ms;
