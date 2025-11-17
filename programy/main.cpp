@@ -9,6 +9,9 @@
 #include "helpers/tqdm.hpp"
 #include "helpers/file_logger.cpp"
 #include "helpers/draw_automaton.cpp"
+#include "helpers/fs_utils.cpp"
+#include "helpers/check_similarity.cpp"
+#include "helpers/check_timeout.cpp"
 using namespace std;
 
 /*
@@ -20,9 +23,18 @@ void init() {
     srand(static_cast<unsigned>(time(0)));
 }
 
+void initFilesystem() {
+    ensureDirectory("automata");
+    ensureDirectory("automata/dot_files");
+    ensureDirectory("automata/png_files");
+
+    clearDirectory("automata/dot_files");
+    clearDirectory("automata/png_files");
+}
 
 int main() {
     init();
+    initFilesystem();
 
     const int TEST_RUNS = 10;
 
@@ -67,20 +79,10 @@ int main() {
             generate_input
         );
 
-        // checking similarity of executing times for different algorithms
-        bool similar = true;
-        double ref = testing_results[0].runtime_ms;
+        bool similar = check_similarity(testing_results);
+        bool long_runtime_detected = check_timeout(i, testing_results, testing_times, algorithms_to_test.size());
 
-        for (size_t j = 1; j < testing_results.size(); ++j) {
-            double diff = fabs(testing_results[j].runtime_ms - ref);
-            if (diff / ref > 0.10) {
-                similar = false;
-                break;
-            }
-        }
-
-        if (similar) {
-            cout << "drawing automaton that have similar executing time...\n";
+        if (similar || long_runtime_detected) {
 
             const Automaton &A = testing_results[0].input_automaton;
 
@@ -89,10 +91,7 @@ int main() {
 
             saveAutomatonAsDot(A, dot);
             renderDotToPng(dot, png);
-
-            cout << "saved " << png << "\n";
         }
-
 
         for (size_t j = 0; j < testing_results.size(); ++j) {
             testing_times_sum[j] += testing_results[j].runtime_ms;
