@@ -8,7 +8,7 @@ bool check_similarity(
 ) {
     double ref = testing_results[0].runtime_ms;
 
-    for (size_t j = 1; j < testing_results.size(); j++) {
+    for (size_t j = 2; j < testing_results.size(); j++) {
         double diff = fabs(testing_results[j].runtime_ms - ref);
         if (diff / ref > 0.05) {
             return false;

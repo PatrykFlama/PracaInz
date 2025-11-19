@@ -12,13 +12,14 @@
 #include "helpers/fs_utils.cpp"
 #include "helpers/check_similarity.cpp"
 #include "helpers/check_timeout.cpp"
+#include "helpers/edge_calc.cpp"
 using namespace std;
 
 /*
 In this program we will empirically measure efficiency of chosen algorithm, based on chosen input generation method.  
 */
 
-
+//TODO: figure out how what the tolerance should be in the check_similarity and check_timeout
 void init() {
     srand(static_cast<unsigned>(time(0)));
 }
@@ -40,10 +41,10 @@ int main() {
 
     GenerateAutomatonInput generate_input;
     generate_input.num_states = 20;
-    generate_input.alphabet_size = 6;
+    generate_input.alphabet_size = 4;
     generate_input.num_samples = 10;
     generate_input.missing_edges = 5;
-    generate_input.sample_length = 20;
+    generate_input.sample_length = 50;
     generate_input.length_variance = 0.2f;
     generate_input.type = AUTOMATON_SIMPLE;
     
@@ -80,16 +81,27 @@ int main() {
         );
 
         bool similar = check_similarity(testing_results);
-        bool long_runtime_detected = check_timeout(i, testing_results, testing_times, algorithms_to_test.size());
+        bool long_runtime_detected = check_timeout(testing_results);
 
         if (similar || long_runtime_detected) {
 
-            const Automaton &A = testing_results[0].input_automaton;
+            const Automaton &A = testing_results[0].input.broken_automaton;
+            const Automaton &B = testing_results[0].output.fixed_automaton;
+
+            if(similar){
+                cout<<"similar executing time automata \n";
+            }
+            else{
+                cout<<"timeout \n";
+            }
+            Samples p = testing_results[0].input.positive_samples;
+            Samples n = testing_results[0].input.negative_samples;
+            EdgeStats stats = computeEdgeStats(B, p, n);
 
             string dot = "automata/dot_files/automaton_run_" + to_string(i) + ".dot";
             string png = "automata/png_files/automaton_run_" + to_string(i) + ".png";
 
-            saveAutomatonAsDot(A, dot);
+            saveAutomatonAsDot(A, B, stats, dot);
             renderDotToPng(dot, png);
         }
 

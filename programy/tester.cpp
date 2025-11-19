@@ -14,12 +14,12 @@ struct AlgorithmRunResult {
     AlgorithmOutput output;
     int64_t runtime_ms;
     Error error;
-    Automaton input_automaton;
+    AlgorithmInput input;
 
-    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const Automaton &input_automaton)
-        : output(output), runtime_ms(runtime_ms), input_automaton(input_automaton) {}
-    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const Error &error, const Automaton &input_automaton)
-        : output(output), runtime_ms(runtime_ms), error(error), input_automaton(input_automaton) {}
+    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const AlgorithmInput &algorithm_input)
+        : output(output), runtime_ms(runtime_ms), input(algorithm_input) {}
+    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const Error &error, const AlgorithmInput &algorithm_input)
+        : output(output), runtime_ms(runtime_ms), error(error), input(algorithm_input) {}
 };
 
 
@@ -39,7 +39,8 @@ vector<AlgorithmRunResult> testAlgorithms(
         Timer timer;
         timer.reset();
 
-        const auto output = algorithm({automaton, positive_samples, negative_samples});
+        const AlgorithmInput input = {automaton, positive_samples, negative_samples};
+        const auto output = algorithm(input);
         const auto elapsed_time = timer.elapsed();
 
         // results.push_back({
@@ -49,7 +50,7 @@ vector<AlgorithmRunResult> testAlgorithms(
         results.emplace_back(
             output,
             elapsed_time,
-            automaton
+            input
         );
 
         if (output.fixable != automaton_fixable) {
