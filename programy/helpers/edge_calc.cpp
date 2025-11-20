@@ -1,4 +1,5 @@
 #pragma once
+using namespace std;
 
 EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Samples &negative) {
     EdgeStats stats;
@@ -9,8 +10,8 @@ EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Sa
     auto process = [&](const Samples &S) {
         for (const auto &word : S) {
 
-            unordered_set<long long> visited_once;
-            unordered_map<long long, int> local_count;   
+            unordered_set<string> visited_once;
+            unordered_map<string, int> local_count;   
 
             int state = B.start_state;
 
@@ -20,7 +21,7 @@ EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Sa
                 if (next == B.transition_function.invalid_edge)
                     break;
 
-                long long id = ((long long)state << 32) | c;
+                string id = to_string(state) + "_" + to_string(c);
 
                 if (!visited_once.count(id)) {
                     stats.sample_count[state][c]++;
@@ -33,8 +34,10 @@ EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Sa
             }
 
             for (auto &[id, cnt] : local_count) {
-                int s = id >> 32;
-                int c = id & 0xFFFFFFFF;
+                auto pos = id.find('_');
+                int s = stoi(id.substr(0, pos));
+                int c = stoi(id.substr(pos + 1));
+
                 stats.max_per_word[s][c] = max(stats.max_per_word[s][c], cnt);
             }
         }

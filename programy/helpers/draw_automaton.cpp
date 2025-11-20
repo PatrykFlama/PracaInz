@@ -39,7 +39,7 @@ void saveAutomatonAsDot(const Automaton &A, const Automaton &B, const EdgeStats 
             if (tB == B.transition_function.invalid_edge) continue;
 
             int tA = A.transition_function.get_transition(s, c);
-            if (tA != A.transition_function.invalid_edge) continue; // A już ma tę krawędź
+            if (tA != A.transition_function.invalid_edge) continue;
 
             int S = stats.sample_count[s][c];
             int T = stats.total_count[s][c];
