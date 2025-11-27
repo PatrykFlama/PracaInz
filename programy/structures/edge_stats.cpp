@@ -11,3 +11,12 @@ public:
     vector<vector<int>> max_per_word;   
 
 };
+
+class MissingEdgeStat {
+public:
+    int from;
+    int symbol;
+    int S;  // sample_count
+    int M;  // max_per_word
+    int T;  // total_count
+};

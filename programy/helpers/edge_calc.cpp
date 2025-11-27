@@ -48,3 +48,31 @@ EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Sa
 
     return stats;
 }
+
+vector<MissingEdgeStat> extractMissingEdgeStats(
+    const Automaton &A,
+    const Automaton &B,
+    const EdgeStats &stats
+) {
+    vector<MissingEdgeStat> result;
+
+    int n = stats.sample_count.size();
+    int k = stats.sample_count[0].size();
+
+    for (int u = 0; u < n; u++) {
+        for (int c = 0; c < k; c++) {
+
+            if (A.transition_function.get_transition(u, c) == A.transition_function.invalid_edge
+                && B.transition_function.get_transition(u, c) != B.transition_function.invalid_edge) {
+                result.push_back({
+                    u,
+                    c,
+                    stats.sample_count[u][c],
+                    stats.max_per_word[u][c],
+                    stats.total_count[u][c]
+                });
+            }
+        }
+    }
+    return result;
+}
