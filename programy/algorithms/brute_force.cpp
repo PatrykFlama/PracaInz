@@ -71,6 +71,50 @@ namespace BruteForceAlgorithm {
         return {automaton_fixable, automaton};
     }
 
+    template<auto validate_automaton_func = validate_automaton>
+    bool fix_automaton_it(
+        Automaton &automaton,
+        const vector<pair<State, Alphabet>> &missing_edges,
+        const Samples &positive_samples,
+        const Samples &negative_samples
+    ) {
+        const int K = (int)missing_edges.size();
+        const int N = automaton.num_states;
+
+        if (K == 0) {
+            return validate_automaton_func(automaton, positive_samples, negative_samples);
+        }
+
+        vector<int> index(K, 0);
+
+        while (true) {
+            for (int i = 0; i < K; i++) {
+                const auto &[from_state, symbol] = missing_edges[i];
+                automaton.transition_function.set_transition(from_state, symbol, index[i]);
+            }
+
+            if (validate_automaton_func(automaton, positive_samples, negative_samples)) {
+                return true;
+            }
+
+            int pos = K - 1;
+            while (pos >= 0) {
+                index[pos]++;
+                if (index[pos] < N) {
+                    break; 
+                }
+                index[pos] = 0; 
+                pos--;
+            }
+
+            if (pos < 0) {
+                break;
+            }
+        }
+
+        return false;
+    }
+
 
     template<auto validate_automaton_func = validate_automaton>
     AlgorithmOutput run_iter(
@@ -82,46 +126,14 @@ namespace BruteForceAlgorithm {
 
         vector<pair<State, Alphabet>> missing_edges;
         get_missing_edges(automaton, missing_edges);
-        
-        vector<State> missing_edges_to_state(missing_edges.size(), 0);
-        int missing_edges_idx = 0;
-        bool automata_fixed = false;
 
-        while (!automata_fixed) {
-            // we set all edges - validate and if not valid we have to update previous configuration
-            if (missing_edges_idx == (int)missing_edges.size()) {
-                const bool valid = validate_automaton_func(
-                    automaton,
-                    positive_samples,
-                    negative_samples
-                );
+        const bool fixable = fix_automaton_it<validate_automaton_func>(
+            automaton,
+            missing_edges,
+            positive_samples,
+            negative_samples
+        );
 
-                if (valid) {
-                    automata_fixed = true;
-                    break;
-                }
-
-                missing_edges_idx--;
-            }
-
-            // we checked all states for this edge - we have to update previous confiugration
-            if (missing_edges_to_state[missing_edges_idx] == automaton.num_states) {
-                missing_edges_to_state[missing_edges_idx] = 0;
-                missing_edges_idx--;
-                if (missing_edges_idx < 0) break;
-            }
-
-            // set current edge to next state and move forward
-            missing_edges_to_state[missing_edges_idx]++;
-            if (missing_edges_to_state[missing_edges_idx] == automaton.num_states) continue;
-
-            const auto [from_state, symbol] = missing_edges[missing_edges_idx];
-            const State to_state = missing_edges_to_state[missing_edges_idx];
-            automaton.transition_function.set_transition(from_state, symbol, to_state);
-
-            missing_edges_idx++;
-        }
-
-        return {automata_fixed, automaton};
+        return {fixable, automaton};
     }
 };
