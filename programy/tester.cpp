@@ -14,11 +14,12 @@ struct AlgorithmRunResult {
     AlgorithmOutput output;
     int64_t runtime_ms;
     Error error;
+    AlgorithmInput input;
 
-    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms)
-        : output(output), runtime_ms(runtime_ms) {}
-    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const Error &error)
-        : output(output), runtime_ms(runtime_ms), error(error) {}
+    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const AlgorithmInput &algorithm_input)
+        : output(output), runtime_ms(runtime_ms), input(algorithm_input) {}
+    AlgorithmRunResult(const AlgorithmOutput &output, int64_t runtime_ms, const Error &error, const AlgorithmInput &algorithm_input)
+        : output(output), runtime_ms(runtime_ms), error(error), input(algorithm_input) {}
 };
 
 
@@ -38,13 +39,19 @@ vector<AlgorithmRunResult> testAlgorithms(
         Timer timer;
         timer.reset();
 
-        const auto output = algorithm({automaton, positive_samples, negative_samples});
+        const AlgorithmInput input = {automaton, positive_samples, negative_samples};
+        const auto output = algorithm(input);
         const auto elapsed_time = timer.elapsed();
 
-        results.push_back({
+        // results.push_back({
+        //     output,
+        //     elapsed_time
+        // });
+        results.emplace_back(
             output,
-            elapsed_time
-        });
+            elapsed_time,
+            input
+        );
 
         if (output.fixable != automaton_fixable) {
             results.back().error.setError("Fixability mismatch");

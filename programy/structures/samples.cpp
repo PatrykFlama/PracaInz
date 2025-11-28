@@ -8,6 +8,11 @@ class Samples {
 public:
     vector<vector<Alphabet>> samples;  //? samples[sample_index][position_in_sample] = Alphabet letter
 
+    auto begin() { return samples.begin(); }
+    auto end() { return samples.end(); }
+    auto begin() const { return samples.begin(); }
+    auto end() const { return samples.end(); }
+    
     Samples() {}
     Samples(int num_samples) : samples(num_samples) {}
 
