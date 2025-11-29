@@ -86,34 +86,31 @@ namespace OrderingSamplesAlgorithm {
         }
     }
 
-    AlgorithmOutput run_rec(const AlgorithmInput& input) {
-        AlgorithmInput input_copy = input;
+    AlgorithmInput reorder_input_samples(const AlgorithmInput &input) {
+        AlgorithmInput output = input;
 
         vector<pair<State, Alphabet>> missing_edges;
-        get_missing_edges(input_copy.broken_automaton, missing_edges);
+        get_missing_edges(output.broken_automaton, missing_edges);
 
         reorder_samples(
-            input_copy.broken_automaton,
+            output.broken_automaton,
             missing_edges,
-            input_copy.positive_samples,
-            input_copy.negative_samples
+            output.positive_samples,
+            output.negative_samples
         );
-        return BruteForceAlgorithm::run_rec<>(input_copy);
+
+        return output;
+    }
+
+
+    AlgorithmOutput run_rec(const AlgorithmInput& input) {
+        AlgorithmInput reordered = reorder_input_samples(input);
+        return BruteForceAlgorithm::run_rec<>(reordered);
     }
 
     AlgorithmOutput run_iter(const AlgorithmInput& input) {
-        AlgorithmInput input_copy = input;
-
-        vector<pair<State, Alphabet>> missing_edges;
-        get_missing_edges(input_copy.broken_automaton, missing_edges);
-
-        reorder_samples(
-            input_copy.broken_automaton,
-            missing_edges,
-            input_copy.positive_samples,
-            input_copy.negative_samples
-        );
-        return BruteForceAlgorithm::run_iter<>(input_copy);
+        AlgorithmInput reordered = reorder_input_samples(input);
+        return BruteForceAlgorithm::run_iter<>(reordered);
     }
 }
 
