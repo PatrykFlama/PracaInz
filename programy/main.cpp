@@ -54,6 +54,8 @@ int main() {
         {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
         {"Brute Force With Jumps Iterative", {PreprocessJumpsAlgorithm::run_iter}},
         {"Brute Force With Jumps Recursive", {PreprocessJumpsAlgorithm::run_rec}},
+        {"Brute Force With Sample Heursitic Iterative", {OrderingSamplesAlgorithm::run_iter}},
+        {"Brute Force With Sample Heursitic Recursive", {OrderingSamplesAlgorithm::run_rec}},
         {"Save Prefix State Iterative", {SavePrefixState::run}},
     };
 
