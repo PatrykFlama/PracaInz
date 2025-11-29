@@ -50,7 +50,7 @@ vector<pair<State, Alphabet>> order_missing_edges_by_frequency(
             [&](auto &e1, auto &e2) {
                 long long k1 = encode(e1.first, e1.second);
                 long long k2 = encode(e2.first, e2.second);
-                return usage[k1] > usage[k2];   
+                return usage[k1] < usage[k2];   
             });
 
         return ordered;
