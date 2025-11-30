@@ -6,7 +6,6 @@ using namespace std;
 #include "./helpers/validate_automaton.cpp"
 #include "./types.cpp"
 #include "./helpers/misc.cpp"
-#include "./edge_ordering.cpp"
 
 
 namespace BruteForceAlgorithm {
@@ -52,28 +51,14 @@ namespace BruteForceAlgorithm {
 
     template<auto validate_automaton_func = validate_automaton>
     AlgorithmOutput run_rec(
-        const AlgorithmInput &input,
-        bool edge_ordering = false
+        const AlgorithmInput &input
     ) {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
         Automaton automaton = broken_automaton;
         vector<pair<State, Alphabet>> missing_edges;
 
-        if (edge_ordering) {
-            vector<pair<State, Alphabet>> missing_edges_raw;
-            get_missing_edges(automaton, missing_edges_raw);
-
-            missing_edges = order_missing_edges_by_frequency(
-                input.broken_automaton,
-                input.positive_samples,
-                input.negative_samples,
-                missing_edges_raw
-            );
-        }
-        else {
-            get_missing_edges(automaton, missing_edges);
-        }
+        get_missing_edges(automaton, missing_edges);
 
         const bool automaton_fixable = fix_automaton_rec<validate_automaton_func>(
             automaton,
@@ -133,28 +118,14 @@ namespace BruteForceAlgorithm {
 
     template<auto validate_automaton_func = validate_automaton>
     AlgorithmOutput run_iter(
-        const AlgorithmInput &input,
-        bool edge_ordering = false
+        const AlgorithmInput &input
     ) {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
         Automaton automaton = broken_automaton;
         vector<pair<State, Alphabet>> missing_edges;
 
-        if (edge_ordering) {
-            vector<pair<State, Alphabet>> missing_edges_raw;
-            get_missing_edges(automaton, missing_edges_raw);
-
-            missing_edges = order_missing_edges_by_frequency(
-                input.broken_automaton,
-                input.positive_samples,
-                input.negative_samples,
-                missing_edges_raw
-            );
-        }
-        else {
-            get_missing_edges(automaton, missing_edges);
-        }
+        get_missing_edges(automaton, missing_edges);
 
         const bool fixable = fix_automaton_it<validate_automaton_func>(
             automaton,

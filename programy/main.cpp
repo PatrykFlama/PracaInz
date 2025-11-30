@@ -50,18 +50,15 @@ int main() {
     
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
-        {"Brute Force Iterative", [](AlgorithmInput input){ return BruteForceAlgorithm::run_iter(input, false); }},
-        {"Brute Force Iterative + Edge Heuristic", [](AlgorithmInput input){ return BruteForceAlgorithm::run_iter(input, true); }},
-        {"Brute Force Recursive", [](AlgorithmInput input){ return BruteForceAlgorithm::run_rec(input, false); }},
-        {"Brute Force Recursive + Edge Heuristic", [](AlgorithmInput input){ return BruteForceAlgorithm::run_rec(input, true); }},
+        {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
+        {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
         {"Brute Force With Jumps Iterative", PreprocessJumpsAlgorithm::run_iter},
         {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
+        {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
         {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
         {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
         {"Save Prefix State Iterative", SavePrefixState::run},
     };
-
-
 
 
     vector<string> algorithm_names;
@@ -76,7 +73,7 @@ int main() {
     vector<int> testing_errors_count(algorithms_to_test.size(), 0);
 
     FileLogger logger(
-        "testing_times.csv",
+        "testing_edge_heuristic.csv",
         algorithm_names
     );
 
