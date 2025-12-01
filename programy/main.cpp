@@ -57,6 +57,7 @@ int main() {
         {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
         {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
         {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
+        {"Brute Force With Locally Repair", HeuristicIterativeRepairAlgorithm::run<>},
         {"Save Prefix State Iterative", SavePrefixState::run},
     };
 
@@ -73,7 +74,7 @@ int main() {
     vector<int> testing_errors_count(algorithms_to_test.size(), 0);
 
     FileLogger logger(
-        "testing_edge_heuristic.csv",
+        "testing_times.csv",
         algorithm_names
     );
 
