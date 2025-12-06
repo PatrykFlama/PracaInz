@@ -11,7 +11,6 @@
 #include "helpers/draw_automaton.cpp"
 #include "helpers/fs_utils.cpp"
 #include "helpers/check_similarity.cpp"
-#include "helpers/check_timeout.cpp"
 #include "helpers/edge_calc.cpp"
 using namespace std;
 
@@ -84,20 +83,19 @@ int main() {
             generate_input
         );
 
-        bool similar = check_similarity(testing_results);
-        bool long_runtime_detected = check_timeout(testing_results);
+        bool similar = check_similarity(
+            testing_results,
+            algorithm_names,
+            "Brute Force Iterative",
+            {"Brute Force With Jumps Iterative", "Save Prefix State Iterative"},
+            0.05
+        );
 
-        if (similar || long_runtime_detected) {
 
+        if (similar) {
             const Automaton &A = testing_results[0].input.broken_automaton;
             const Automaton &B = testing_results[0].output.fixed_automaton;
-
-            if(similar){
-                cout<<"similar executing time automata \n";
-            }
-            else{
-                cout<<"timeout \n";
-            }
+   
             Samples p = testing_results[0].input.positive_samples;
             Samples n = testing_results[0].input.negative_samples;
             EdgeStats stats = computeEdgeStats(B, p, n);
