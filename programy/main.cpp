@@ -45,7 +45,8 @@ int main() {
     generate_input.missing_edges = 5;
     generate_input.sample_length = 50;
     generate_input.length_variance = 0.2f;
-    generate_input.type = AUTOMATON_SIMPLE;
+    generate_input.type = AUTOMATON_SCC;
+    generate_input.k_scc = 3;
     
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
@@ -87,7 +88,7 @@ int main() {
             testing_results,
             algorithm_names,
             "Brute Force Iterative",
-            {"Brute Force With Jumps Iterative", "Save Prefix State Iterative"},
+            {"Brute Force Iterative"},
             0.05
         );
 

@@ -36,4 +36,10 @@ public:
         }
         return out_stream;
     }
+
+    TransitionFunction& operator=(const TransitionFunction& other) {
+        if (this == &other) return *this;
+        transitions = other.transitions;
+        return *this;
+    }
 };

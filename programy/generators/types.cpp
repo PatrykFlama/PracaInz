@@ -8,9 +8,7 @@ using namespace std;
 
 enum AutomatonType {
     AUTOMATON_SIMPLE = 0,
-    AUTOMATON_ACYCLIC,
-    AUTOMATON_DISJOINT,
-    // AUTOMATON_OVERLAPPING
+    AUTOMATON_SCC,
 };
 
 
@@ -22,6 +20,7 @@ struct GenerateAutomatonInput {
     uint num_samples;
     uint sample_length;
     float length_variance;
+    uint k_scc = 0;
 };
 
 struct GenerateAutomatonOutput {

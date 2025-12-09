@@ -41,4 +41,14 @@ public:
 
         return out_stream;
     }
+
+    Automaton& operator=(const Automaton& other) {
+        if (this == &other) return *this;
+        num_states = other.num_states;
+        num_alphabet = other.num_alphabet;
+        start_state = other.start_state;
+        transition_function = other.transition_function;
+        accepting = other.accepting;
+        return *this;
+    }
 };

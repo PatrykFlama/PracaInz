@@ -10,18 +10,21 @@
 #include "./generators.cpp"
 #include "./types.cpp"
 using namespace std;
+uint GLOBAL_K_SCC;
 
+Automaton k_scc_automaton_generate_wrapper(State n, Alphabet a) {
+    return k_scc_automaton_generate(n, a, GLOBAL_K_SCC);
+}
 
 static const function<Automaton(State, Alphabet)> AutomatonGenerateFunctions[] = {
     simple_automaton_generate,
-    acyclic_automaton_generate,
-    disjoint_cycles_automaton_generate
+    k_scc_automaton_generate_wrapper,
 };
 
 
 GenerateAutomatonOutput generateAutomaton(GenerateAutomatonInput input) {
-    auto [type, num_states, alphabet_size, missing_edges, num_samples, sample_length, length_variance] = input;
-
+    auto [type, num_states, alphabet_size, missing_edges, num_samples, sample_length, length_variance, k_scc] = input;
+    GLOBAL_K_SCC = k_scc;
     if (num_states * alphabet_size < missing_edges) {
         throw invalid_argument("Invalid number of missing edges");
     }
