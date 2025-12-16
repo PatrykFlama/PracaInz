@@ -14,38 +14,31 @@ Automaton k_scc_automaton_generate(
         throw invalid_argument("Invalid number of SCCs requested");
     }
 
-    mt19937 rng(std::random_device{}());
+    mt19937 rng(random_device{}());
 
     Automaton automaton(num_states, alphabet_size);
     automaton.start_state = 0;
 
     vector<vector<State>> components(k_scc);
 
-    vector<State> states;
-    states.reserve(num_states);
-
-    states.push_back(0);
-    for (State s = 1; s < num_states; s++) {
-        states.push_back(s);
-    }
+    vector<State> states(num_states);
+    iota(states.begin(), states.end(), 0);
 
     shuffle(states.begin() + 1, states.end(), rng);
-    vector<uint> cuts;
-    cuts.reserve(k_scc + 1);
 
-    cuts.push_back(0);
-    cuts.push_back(num_states);
-
-    for (uint i = 0; i < k_scc - 1; i++) {
-        cuts.push_back(1 + (rng() % (num_states - 1)));
+    set<uint> cut_set;
+    while (cut_set.size() < k_scc - 1) {
+        cut_set.insert(1 + rng() % (num_states - 1));
     }
 
+    vector<uint> cuts(cut_set.begin(), cut_set.end());
+    cuts.push_back(0);
+    cuts.push_back(num_states);
     sort(cuts.begin(), cuts.end());
 
     vector<uint> comp_sizes(k_scc);
-
     for (uint c = 0; c < k_scc; c++) {
-        comp_sizes[c] = cuts[c+1] - cuts[c];
+        comp_sizes[c] = cuts[c + 1] - cuts[c];
     }
 
     uint idx = 0;
@@ -76,15 +69,14 @@ Automaton k_scc_automaton_generate(
         }
     }
 
-    for (uint c = 0; c + 1 < k_scc; c++) {
-
-        uint max_edges = components[c].size();     
-        uint num_edges = 1 + (rng() % max_edges);   
+    for (uint c = 0; c < k_scc - 1; c++) {
+        uint max_edges = components[c].size();
+        uint num_edges = 1 + (rng() % max_edges);
 
         for (uint e = 0; e < num_edges; e++) {
             State from_state = components[c][rng() % components[c].size()];
-            State to_state   = components[c + 1][rng() % components[c + 1].size()];
-            Alphabet symbol = rand() % alphabet_size;
+            State to_state = components[c + 1][rng() % components[c + 1].size()];
+            Alphabet symbol = rng() % alphabet_size;
             automaton.transition_function.set_transition(from_state, symbol, to_state);
         }
     }

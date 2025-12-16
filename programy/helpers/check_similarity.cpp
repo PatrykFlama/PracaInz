@@ -11,9 +11,9 @@ bool check_similarity(
 ) {
     if (testing_results.empty()) return true;
 
-    unordered_map<string, int> index_of;
+    unordered_map<string, size_t> index_of;
 
-    for (int i = 0; i < (int)algorithm_names.size(); i++) {
+    for (size_t i = 0; i < algorithm_names.size(); i++) {
         index_of[algorithm_names[i]] = i;
     }
 
@@ -23,7 +23,7 @@ bool check_similarity(
         return false;
     }
 
-    int ref_idx = index_of[reference_algorithm];
+    size_t ref_idx = index_of[reference_algorithm];
     double ref = testing_results[ref_idx].runtime_ms;
 
     for (auto &name : algorithms_to_compare) {
@@ -33,7 +33,7 @@ bool check_similarity(
             continue;
         }
 
-        int idx = index_of[name];
+        size_t idx = index_of[name];
         double diff = fabs(testing_results[idx].runtime_ms - ref);
 
         if (diff / ref > tolerance) {

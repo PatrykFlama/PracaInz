@@ -90,7 +90,7 @@ AlgorithmOutput run(const AlgorithmInput &input) {
 
     vector<pair<State, Alphabet>> missing_edges;
     get_missing_edges(automaton, missing_edges);
-    const int m = (int)missing_edges.size();
+    const size_t m = missing_edges.size();
 
     const size_t samples_size = positive_samples.samples.size() + negative_samples.samples.size();
 
@@ -100,9 +100,9 @@ AlgorithmOutput run(const AlgorithmInput &input) {
     vector<vector<size_t>> prefix_pos(missing_edges.size() + 1, vector<size_t>(samples_size, 0));
     walk_samples_combined(automaton, positive_samples, negative_samples, prefix_state[0], prefix_pos[0], prefix_state[0], prefix_pos[0]);
 
-    vector<State> assigned(m, -1);
+    vector<State> assigned(m, SIZE_MAX);
 
-    int missing_edges_idx = 0;
+    size_t missing_edges_idx = 0;
     while (missing_edges_idx >= 0) {
         if (missing_edges_idx == m) {
             if (validate_automaton_func(automaton, positive_samples, negative_samples, prefix_state[m])) {
@@ -119,7 +119,7 @@ AlgorithmOutput run(const AlgorithmInput &input) {
             // exhausted options -> reset transition to invalid and backtrack
             const auto [from, edge] = missing_edges[missing_edges_idx];
             automaton.transition_function.set_transition(from, edge, automaton.transition_function.invalid_edge);
-            assigned[missing_edges_idx] = -1;
+            assigned[missing_edges_idx] = SIZE_MAX;
             missing_edges_idx--;
             continue;
         }

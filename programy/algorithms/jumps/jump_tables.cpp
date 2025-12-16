@@ -6,10 +6,10 @@ using namespace std;
 class JumpEntry {
 public:
     State state_reached;
-    int pos_reached_in_sample;
+    size_t pos_reached_in_sample;
 
     JumpEntry() : state_reached(0), pos_reached_in_sample(0) {}
-    JumpEntry(State s, int p) : state_reached(s), pos_reached_in_sample(p) {}
+    JumpEntry(State s, size_t p) : state_reached(s), pos_reached_in_sample(p) {}
 };
 
 // jump_table_sample[pos][state] = JumpEntry

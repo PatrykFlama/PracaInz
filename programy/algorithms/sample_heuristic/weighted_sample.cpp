@@ -8,7 +8,7 @@ public:
     vector<Alphabet> sample;
     bool is_positive;
     int missing_count;
-    int length;
+    size_t length;
 
     bool operator<(const WeightedSample &other) const {
         //negative sample before positive

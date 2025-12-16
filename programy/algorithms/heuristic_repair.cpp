@@ -22,9 +22,14 @@ namespace HeuristicIterativeRepairAlgorithm {
 
     void random_perturbation(Automaton &automaton, int perturb_strength = 3) {
         for (int i = 0; i < perturb_strength; i++) {
-            State from = rand() % automaton.num_states;
-            Alphabet symbol = rand() % automaton.num_alphabet;
-            State to = rand() % automaton.num_states;
+            State from = static_cast<State>(rand()) % automaton.num_states;
+
+            mt19937_64 rng(random_device{}());  
+            uniform_int_distribution<size_t> dist(0, automaton.num_alphabet - 1);
+            Alphabet symbol = dist(rng);
+
+            // Alphabet symbol = rand() % automaton.num_alphabet;
+            State to = static_cast<State>(rand()) % automaton.num_states;
             automaton.transition_function.set_transition(from, symbol, to);
         }
     }
@@ -46,13 +51,13 @@ namespace HeuristicIterativeRepairAlgorithm {
         Automaton &automaton,
         const Samples &positive_samples,
         const Samples &negative_samples,
-        int max_iterations
+        size_t max_iterations
     ) {
         vector<pair<State, Alphabet>> missing_edges;
         get_missing_edges(automaton, missing_edges);
 
         for (auto &[from, symbol] : missing_edges) {
-            automaton.transition_function.set_transition(from, symbol, rand() % automaton.num_states);
+            automaton.transition_function.set_transition(from, symbol, (State)rand() % automaton.num_states);
         }
 
         unordered_set<size_t> visited_hashes;
@@ -65,7 +70,7 @@ namespace HeuristicIterativeRepairAlgorithm {
 
         visited_hashes.clear();
 
-        for (int iter = 0; iter < max_iterations; iter++) {
+        for (size_t iter = 0; iter < max_iterations; iter++) {
 
             size_t h = hash_automaton(automaton);
             if (visited_hashes.count(h)) {
@@ -97,14 +102,14 @@ namespace HeuristicIterativeRepairAlgorithm {
 
                     State old_to = automaton.transition_function.get_transition(current, symbol);
                     State best_to = old_to;
-                    int best_score = invalid_samples.size();
+                    size_t best_score = invalid_samples.size();
 
                     for (State candidate = 0; candidate < automaton.num_states; candidate++) {
                         if (candidate == old_to) continue;
 
                         automaton.transition_function.set_transition(current, symbol, candidate);
 
-                        int errors = 0;
+                        size_t errors = 0;
                         for (const auto &s2 : positive_samples)
                             if (!simulate_sample(automaton, s2, true)) errors++;
                         for (const auto &s2 : negative_samples)
@@ -142,11 +147,11 @@ namespace HeuristicIterativeRepairAlgorithm {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
         Automaton automaton = broken_automaton;
 
-        int num_samples =
-            positive_samples.samples.size() +
-            negative_samples.samples.size();
+        // auto num_samples =
+        //     positive_samples.samples.size() +
+        //     negative_samples.samples.size();
 
-        int max_iterations = 10 * automaton.num_states * automaton.num_alphabet;
+        auto max_iterations = 10 * automaton.num_states * automaton.num_alphabet;
 
         const bool fixable =
             run_heuristic_repair<validate_automaton_func>(

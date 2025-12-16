@@ -36,7 +36,7 @@ int main() {
     init();
     initFilesystem();
 
-    const int TEST_RUNS = 10;
+    const size_t TEST_RUNS = 10;
 
     GenerateAutomatonInput generate_input;
     generate_input.num_states = 20;
@@ -78,7 +78,7 @@ int main() {
         algorithm_names
     );
 
-    for (int i : tq::trange(TEST_RUNS)) {
+    for (size_t i : tq::trange(TEST_RUNS)) {
         const auto &testing_results = testAlgorithms(
             algorithms_to_test,
             generate_input
@@ -125,7 +125,8 @@ int main() {
 
     cout << '\n';
     for (size_t j = 0; j < testing_times_sum.size(); ++j) {
-        cout << "Algorithm " << algorithm_names[j] << ": " << (testing_times_sum[j] / TEST_RUNS) << " ms (avg over " << TEST_RUNS << " runs). ";
+        long long avg_time = testing_times_sum[j] / static_cast<long long>(TEST_RUNS);
+        cout << "Algorithm " << algorithm_names[j] << ": " << avg_time << " ms (avg over " << TEST_RUNS << " runs). ";
 
         if (testing_errors_count[j] > 0) {
             cout << "Errors: " << testing_errors_count[j] << "/" << TEST_RUNS;

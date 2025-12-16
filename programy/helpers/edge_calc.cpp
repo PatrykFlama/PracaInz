@@ -13,10 +13,10 @@ EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Sa
             unordered_set<string> visited_once;
             unordered_map<string, int> local_count;   
 
-            int state = B.start_state;
+            State state = B.start_state;
 
             for (auto c : word) {
-                int next = B.transition_function.get_transition(state, c);
+                State next = B.transition_function.get_transition(state, c);
 
                 if (next == B.transition_function.invalid_edge)
                     break;
@@ -35,8 +35,8 @@ EdgeStats computeEdgeStats(const Automaton &B, const Samples &positive, const Sa
 
             for (auto &[id, cnt] : local_count) {
                 auto pos = id.find('_');
-                int s = stoi(id.substr(0, pos));
-                int c = stoi(id.substr(pos + 1));
+                size_t s = stoul(id.substr(0, pos));
+                size_t c = stoul(id.substr(pos + 1));
 
                 stats.max_per_word[s][c] = max(stats.max_per_word[s][c], cnt);
             }
@@ -56,17 +56,17 @@ vector<MissingEdgeStat> extractMissingEdgeStats(
 ) {
     vector<MissingEdgeStat> result;
 
-    int n = stats.sample_count.size();
-    int k = stats.sample_count[0].size();
+    size_t n = stats.sample_count.size();
+    Alphabet k = stats.sample_count[0].size();
 
-    for (int u = 0; u < n; u++) {
-        for (int c = 0; c < k; c++) {
+    for (State u = 0; u < n; u++) {
+        for (Alphabet c = 0; c < k; c++) {
 
             if (A.transition_function.get_transition(u, c) == A.transition_function.invalid_edge
                 && B.transition_function.get_transition(u, c) != B.transition_function.invalid_edge) {
                 result.push_back({
-                    u,
-                    c,
+                    static_cast<int>(u),
+                    static_cast<int>(c),
                     stats.sample_count[u][c],
                     stats.max_per_word[u][c],
                     stats.total_count[u][c]
