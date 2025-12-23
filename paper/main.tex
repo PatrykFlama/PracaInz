@@ -6,9 +6,21 @@
 
 \import{./}{title_page}
 \import{./}{claims_page}
+\import{./chapters}{abstract}
 
 \tableofcontents
 
-\printbibliography[title={Bibliography}]
+
+\chapter{Theory}
+\import{./chapters}{theory}
+
+
+\addcontentsline{toc}{chapter}{References}
+\printbibliography[title={References}]
+
+
+\appendix
+\chapter{Appendix}
+\import{./chapters}{appendix}
 
 \end{document}
