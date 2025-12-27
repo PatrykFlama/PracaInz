@@ -36,6 +36,7 @@ int main() {
     init();
     initFilesystem();
 
+    const bool SAVE_AUTOMATA_TO_FILES = false;
     const size_t TEST_RUNS = 10;
 
     GenerateAutomatonInput generate_input;
@@ -104,8 +105,10 @@ int main() {
             string dot = "automata/dot_files/automaton_run_" + to_string(i) + ".dot";
             string png = "automata/png_files/automaton_run_" + to_string(i) + ".png";
 
-            saveAutomatonAsDot(A, B, stats, dot);
-            renderDotToPng(dot, png);
+            if (SAVE_AUTOMATA_TO_FILES) {
+                saveAutomatonAsDot(A, B, stats, dot);
+                renderDotToPng(dot, png);
+            }
         }
 
         for (size_t j = 0; j < testing_results.size(); ++j) {
