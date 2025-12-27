@@ -1,6 +1,30 @@
 \chapter*{Abstract}
 
-Abstract goes here
+\noindent 
+Niniejsza praca dotyczy zagadnienia naprawy uszkodzonego deterministycznego automatu skończonego na podstawie próbek pozytywnych i negatywnych. Rozważany automat może zawierać brakujące krawędzie lub stany, co uniemożliwia jego poprawne działanie. 
+W pracy analizowana jest złożoność obliczeniowa problemu, w tym jego przynależność do klasy NP oraz własności parametryzowane w kontekście algorytmów FPT i hierarchii W. 
+Zaproponowano algorytm rozwiązujący rozważany problem, przeprowadzono jego analizę teoretyczną oraz przedstawiono implementację wraz z omówieniem optymalizacji i heurystyk wpływających na czas działania.
+
+\vspace{1cm}
+\noindent\hrulefill 
+\vspace{1cm}
+
+\noindent 
+This thesis addresses the problem of repairing a damaged deterministic finite automaton using positive and negative samples. The considered automaton may contain missing transitions or states, which prevents it from functioning correctly.
+The work analyzes the computational complexity of the problem, including its membership in the class NP and its parameterized properties in the context of FPT algorithms and the W-hierarchy.
+An algorithm for solving the problem is proposed, followed by its theoretical analysis, as well as an implementation accompanied by a discussion of optimizations and heuristics affecting the running time.
+
+
+\iffalse
+Opis pracy dyplomowej
+Mamy dane dwa zbiory próbek: próbki pozytywne S+ i negatywne S- (to są bardzo duże zbiory słów), a dodatkowo deterministyczny automat, w którym usunięto/uszkodzono niektóre stany (lub niektóre przejścia). Naszym celem jest odbudowanie całego automatu tak, aby akceptował wszystkie słowa ze zbioru S+ i odrzucał wszystkie słowa ze zbioru S-.
+
+Warianty problemu obejmują sytuację, gdy liczba brakujących stanów/krawędzi jest dowolna (dana na wejściu) oraz taką, gdy liczba ta jest ograniczona (np. w definicji problemu zakładamy, że rozważamy tylko automaty, którym brakuje co najwyżej 10 stanów).
+
+Zgaduję, że przypadku, gdy liczba brakujących krawędzi jest dowolna, trzeba będzie pokazać NP-zupełność, a gdy ograniczona, problem jest w P (być może tylko dla ustalonego alfabetu). W takim razie praca obejmowałaby dowód takiej NP-zupełności, a także analizę wariantu ograniczonego, wraz z implementacją (być może z kilkoma heurystykami) i analizą wydajności.
+
+Możliwe stopnie trudności obejmowałyby przeanalizowanie tego dla deterministycznych automatów skończonych, automatów z sumą (każda krawędź ma jakąś liczbę, a wartość słowa to suma wartości krawędzi) i ewentualnie automatów niedeterministycznych (ale to już chyba za trudne).
+\fi
 
 \thispagestyle{empty}
 \pagebreak
