@@ -4,10 +4,10 @@
 using namespace std;
 
 
-typedef char Alphabet;
+typedef size_t Alphabet;
 
-typedef unsigned int State;
-const State INVALID_STATE = -1;
+typedef size_t State;
+const State INVALID_STATE = SIZE_MAX;
 
 class TransitionFunction {
 public:
@@ -35,5 +35,13 @@ public:
             out_stream << "}\n";
         }
         return out_stream;
+    }
+
+    TransitionFunction(const TransitionFunction&) = default;
+
+    TransitionFunction& operator=(const TransitionFunction& other) {
+        if (this == &other) return *this;
+        transitions = other.transitions;
+        return *this;
     }
 };

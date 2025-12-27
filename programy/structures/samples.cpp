@@ -14,10 +14,10 @@ public:
     auto end() const { return samples.end(); }
     
     Samples() {}
-    Samples(int num_samples) : samples(num_samples) {}
+    Samples(size_t num_samples) : samples(num_samples) {}
 
     friend ostream& operator<<(ostream &out_stream, const Samples &samples) {
-        for (int i = 0; i < (int)samples.samples.size(); i++) {
+        for (size_t i = 0; i < samples.samples.size(); i++) {
             for (const auto &symbol : samples.samples[i]) {
                 out_stream << (int)symbol << " ";
             }

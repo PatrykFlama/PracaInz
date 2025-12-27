@@ -18,7 +18,7 @@ public:
     State start_state;
     vector<bool> accepting;
 
-    Automaton(State num_states, Alphabet num_alphabet) : 
+    Automaton(size_t num_states, size_t num_alphabet) : 
         num_states(num_states), 
         num_alphabet(num_alphabet), 
         transition_function(num_states, num_alphabet), 
@@ -40,5 +40,17 @@ public:
         out_stream << '\n' << automaton.transition_function << '\n';
 
         return out_stream;
+    }
+
+    Automaton(const Automaton&) = default;
+
+    Automaton& operator=(const Automaton& other) {
+        if (this == &other) return *this;
+        num_states = other.num_states;
+        num_alphabet = other.num_alphabet;
+        start_state = other.start_state;
+        transition_function = other.transition_function;
+        accepting = other.accepting;
+        return *this;
     }
 };

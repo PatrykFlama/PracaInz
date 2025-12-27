@@ -11,22 +11,49 @@
 #include "./types.cpp"
 using namespace std;
 
-
-static const function<Automaton(State, Alphabet)> AutomatonGenerateFunctions[] = {
-    simple_automaton_generate,
-    acyclic_automaton_generate,
-    disjoint_cycles_automaton_generate
+struct AutomatonGenerator {
+    virtual Automaton operator()(State n, Alphabet a) const = 0;
+    virtual ~AutomatonGenerator() = default;
 };
+
+struct SimpleGenerator : AutomatonGenerator {
+    Automaton operator()(State n, Alphabet a) const override {
+        return simple_automaton_generate(n, a);
+    }
+};
+
+struct KSCCGenerator : AutomatonGenerator {
+    uint k;
+
+    KSCCGenerator(uint k) : k(k) {}
+
+    Automaton operator()(State n, Alphabet a) const override {
+        return k_scc_automaton_generate(n, a, k);
+    }
+};
+
+vector<unique_ptr<AutomatonGenerator>> init_generators(uint k_scc) {
+    vector<unique_ptr<AutomatonGenerator>> G;
+    G.emplace_back(make_unique<SimpleGenerator>());
+    G.emplace_back(make_unique<KSCCGenerator>(k_scc));
+    return G;
+}
 
 
 GenerateAutomatonOutput generateAutomaton(GenerateAutomatonInput input) {
-    auto [type, num_states, alphabet_size, missing_edges, num_samples, sample_length, length_variance] = input;
+    auto [type, num_states, alphabet_size, missing_edges, num_samples, sample_length, length_variance, k_scc] = input;
+
+    auto Generators = init_generators(k_scc);
 
     if (num_states * alphabet_size < missing_edges) {
         throw invalid_argument("Invalid number of missing edges");
     }
 
-    Automaton automaton = AutomatonGenerateFunctions[type](num_states, alphabet_size);
+    if (type >= Generators.size()) {
+        throw out_of_range("Unknown automaton generator type");
+    }
+
+    Automaton automaton = (*Generators[type])(num_states, alphabet_size);
 
     // generate samples from automaton at random
     bool generation_success = false;

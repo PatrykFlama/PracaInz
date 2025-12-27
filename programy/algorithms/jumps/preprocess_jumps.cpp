@@ -15,7 +15,7 @@ namespace PreprocessJumpsAlgorithm {
         table.reserve(samples.samples.size());
 
         for (const auto& sample : samples.samples) {
-            const int L = (int)sample.size();
+            const size_t L = sample.size();
             // table for this word: (L+1) positions, each pos has num_states entries
             JumpTableForSample dp(L + 1, vector<JumpEntry>(automaton.num_states));
 
@@ -24,7 +24,7 @@ namespace PreprocessJumpsAlgorithm {
                 dp[L][s] = JumpEntry(s, L);
             }
 
-            for (int pos = L - 1; pos >= 0; pos--) {
+            for (size_t pos = L; pos-- > 0;) {
                 const Alphabet symbol = sample[pos];
 
                 for (State st = 0; st < automaton.num_states; st++) {
@@ -39,7 +39,7 @@ namespace PreprocessJumpsAlgorithm {
                 }
             }
 
-            table.push_back(move(dp));
+            table.push_back(std::move(dp));
         }
 
         return table;
@@ -55,18 +55,18 @@ namespace PreprocessJumpsAlgorithm {
     
         for (size_t i = 0; i < samples.samples.size(); i++) {
             const auto& sample = samples.samples[i];
-            const int L = (int)sample.size();
+            const size_t L = sample.size();
             const auto& dp = table[i];
     
             State st = start;
-            int pos = 0;
+            size_t pos = 0;
             bool valid_sample = true;
     
             while (pos < L) {
                 // jump
                 const JumpEntry jump = dp[pos][st];
                 State new_st = jump.state_reached;
-                int new_pos = jump.pos_reached_in_sample;
+                size_t new_pos = jump.pos_reached_in_sample;
     
                 // if we are on invalid edge, use get_transition and try to jump once again
                 if (new_pos == pos && new_st == st) {

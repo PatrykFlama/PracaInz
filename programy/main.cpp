@@ -11,7 +11,6 @@
 #include "helpers/draw_automaton.cpp"
 #include "helpers/fs_utils.cpp"
 #include "helpers/check_similarity.cpp"
-#include "helpers/check_timeout.cpp"
 #include "helpers/edge_calc.cpp"
 using namespace std;
 
@@ -37,7 +36,7 @@ int main() {
     init();
     initFilesystem();
 
-    const int TEST_RUNS = 10;
+    const size_t TEST_RUNS = 10;
 
     GenerateAutomatonInput generate_input;
     generate_input.num_states = 20;
@@ -46,15 +45,20 @@ int main() {
     generate_input.missing_edges = 5;
     generate_input.sample_length = 50;
     generate_input.length_variance = 0.2f;
-    generate_input.type = AUTOMATON_SIMPLE;
+    generate_input.type = AUTOMATON_SCC;
+    generate_input.k_scc = 3;
     
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
         {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
         {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
-        {"Brute Force With Jumps Iterative", {PreprocessJumpsAlgorithm::run_iter}},
-        {"Brute Force With Jumps Recursive", {PreprocessJumpsAlgorithm::run_rec}},
-        {"Save Prefix State Iterative", {SavePrefixState::run}},
+        {"Brute Force With Jumps Iterative", PreprocessJumpsAlgorithm::run_iter},
+        {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
+        {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
+        {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
+        {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
+        {"Brute Force With Locally Repair", HeuristicIterativeRepairAlgorithm::run<>},
+        {"Save Prefix State Iterative", SavePrefixState::run},
     };
 
 
@@ -74,26 +78,25 @@ int main() {
         algorithm_names
     );
 
-    for (int i : tq::trange(TEST_RUNS)) {
+    for (size_t i : tq::trange(TEST_RUNS)) {
         const auto &testing_results = testAlgorithms(
             algorithms_to_test,
             generate_input
         );
 
-        bool similar = check_similarity(testing_results);
-        bool long_runtime_detected = check_timeout(testing_results);
+        bool similar = check_similarity(
+            testing_results,
+            algorithm_names,
+            "Brute Force Iterative",
+            {"Brute Force Iterative"},
+            0.05
+        );
 
-        if (similar || long_runtime_detected) {
 
+        if (similar) {
             const Automaton &A = testing_results[0].input.broken_automaton;
             const Automaton &B = testing_results[0].output.fixed_automaton;
-
-            if(similar){
-                cout<<"similar executing time automata \n";
-            }
-            else{
-                cout<<"timeout \n";
-            }
+   
             Samples p = testing_results[0].input.positive_samples;
             Samples n = testing_results[0].input.negative_samples;
             EdgeStats stats = computeEdgeStats(B, p, n);
@@ -122,7 +125,8 @@ int main() {
 
     cout << '\n';
     for (size_t j = 0; j < testing_times_sum.size(); ++j) {
-        cout << "Algorithm " << algorithm_names[j] << ": " << (testing_times_sum[j] / TEST_RUNS) << " ms (avg over " << TEST_RUNS << " runs). ";
+        long long avg_time = testing_times_sum[j] / static_cast<long long>(TEST_RUNS);
+        cout << "Algorithm " << algorithm_names[j] << ": " << avg_time << " ms (avg over " << TEST_RUNS << " runs). ";
 
         if (testing_errors_count[j] > 0) {
             cout << "Errors: " << testing_errors_count[j] << "/" << TEST_RUNS;

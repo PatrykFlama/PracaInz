@@ -15,7 +15,7 @@ void saveAutomatonAsDot(const Automaton &A, const Automaton &B, const EdgeStats 
     out << "    start -> " << A.start_state << ";\n";
 
     // accepting states
-    for (int i = 0; i < A.num_states; i++) {
+    for (State i = 0; i < A.num_states; i++) {
         if (A.accepting[i]) {
             out << "    " << i << " [shape=doublecircle];\n";
         }
@@ -23,22 +23,22 @@ void saveAutomatonAsDot(const Automaton &A, const Automaton &B, const EdgeStats 
 
     // transitions
     // transitions[from_state][letter] = to_state
-    for (int s = 0; s < A.num_states; s++) {
-        for (int c = 0; c < A.num_alphabet; c++) {
-            int t = A.transition_function.get_transition(s,c);
+    for (State s = 0; s < A.num_states; s++) {
+        for (size_t c = 0; c < A.num_alphabet; c++) {
+            State t = A.transition_function.get_transition(s,c);
             if (t == A.transition_function.invalid_edge) continue;
             out << "    " << s << " -> " << t 
                 << " [label=\"" << c << "\"];\n";
         }
     }
 
-    for (int s = 0; s < B.num_states; s++) {
-        for (int c = 0; c < B.num_alphabet; c++) {
+    for (State s = 0; s < B.num_states; s++) {
+        for (size_t c = 0; c < B.num_alphabet; c++) {
 
-            int tB = B.transition_function.get_transition(s, c);
+            State tB = B.transition_function.get_transition(s, c);
             if (tB == B.transition_function.invalid_edge) continue;
 
-            int tA = A.transition_function.get_transition(s, c);
+            State tA = A.transition_function.get_transition(s, c);
             if (tA != A.transition_function.invalid_edge) continue;
 
             int S = stats.sample_count[s][c];

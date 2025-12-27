@@ -13,11 +13,11 @@ namespace BruteForceAlgorithm {
     bool fix_automaton_rec(
         Automaton &automaton,
         const vector<pair<State, Alphabet>> &missing_edges,
-        const int missing_edges_idx,
+        const size_t missing_edges_idx,
         const Samples &positive_samples,
         const Samples &negative_samples
     ) {
-        if (missing_edges_idx == (int)missing_edges.size()) {
+        if (missing_edges_idx == missing_edges.size()) {
             const bool valid = validate_automaton_func(
                 automaton,
                 positive_samples,
@@ -56,8 +56,8 @@ namespace BruteForceAlgorithm {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
         Automaton automaton = broken_automaton;
-
         vector<pair<State, Alphabet>> missing_edges;
+
         get_missing_edges(automaton, missing_edges);
 
         const bool automaton_fixable = fix_automaton_rec<validate_automaton_func>(
@@ -78,17 +78,17 @@ namespace BruteForceAlgorithm {
         const Samples &positive_samples,
         const Samples &negative_samples
     ) {
-        const int K = (int)missing_edges.size();
-        const int N = automaton.num_states;
+        const size_t K = missing_edges.size();
+        const size_t N = automaton.num_states;
 
         if (K == 0) {
             return validate_automaton_func(automaton, positive_samples, negative_samples);
         }
 
-        vector<int> index(K, 0);
+        vector<State> index(K, 0);
 
         while (true) {
-            for (int i = 0; i < K; i++) {
+            for (State i = 0; i < K; i++) {
                 const auto &[from_state, symbol] = missing_edges[i];
                 automaton.transition_function.set_transition(from_state, symbol, index[i]);
             }
@@ -97,7 +97,7 @@ namespace BruteForceAlgorithm {
                 return true;
             }
 
-            int pos = K - 1;
+            size_t pos = K - 1;
             while (pos >= 0) {
                 index[pos]++;
                 if (index[pos] < N) {
@@ -123,8 +123,8 @@ namespace BruteForceAlgorithm {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
         Automaton automaton = broken_automaton;
-
         vector<pair<State, Alphabet>> missing_edges;
+
         get_missing_edges(automaton, missing_edges);
 
         const bool fixable = fix_automaton_it<validate_automaton_func>(
