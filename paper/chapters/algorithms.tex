@@ -1,0 +1,82 @@
+\chapter{Algorithms}
+
+\section{Algorytm ze skokami (Jump Tables)}
+
+Algorytm ze skokami stanowi optymalizację algorytmu pełnego przeszukiwania przestrzeni możliwych uzupełnień brakujących przejść deterministycznego automatu skończonego. Jego głównym celem jest zmniejszenie przestrzeni przeszukiwań poprzez eliminację powtarzalnych fragmentów symulacji próbek wejściowych.
+
+Podstawową obserwacją wykorzystywaną przez algorytm jest fakt, że w trakcie przeszukiwania przestrzeni rozwiązań zmieniają się jedynie brakujące przejścia automatu, a brakujący automat dany na wejściu pozostaje niezmienny. W klasycznym podejściu brute force każda próba weryfikacji wymaga pełnej symulacji wszystkich próbek symbol po symbolu, co prowadzi do znacznej redundancji obliczeń.
+
+W celu ograniczenia tego zjawiska algorytm wprowadza etap wstępnego przetwarzania w postaci tablic skoków. Dla każdej próbki oraz każdego stanu automatu obliczana jest informacja opisująca najdalszy fragment słowa, który może zostać przetworzony bez przechodzenia przez nieokreślone przejścia. Pozwala to na szybkie pomijanie fragmentów wejścia, które nie zależą od aktualnie testowanego uzupełnienia automatu.
+
+\subsubsection{Budowa tablic skoków}
+
+Tablice skoków budowane są niezależnie dla zbioru przykładów pozytywnych oraz negatywnych. Dla każdej próbki $w$ o długości maksymalnie $L$ konstruowana jest tablica $DP$, w której wpis $DP[i][q]$ opisuje efekt przetworzenia najdłuższego możliwego fragmentu 
+próbki $w$, zaczynając od pozycji $i$ w stanie $q$, bez użycia brakujących przejść.
+
+
+\begin{algorithm}[H]
+\caption{Budowa tablic skoków}
+\KwIn{Automat $A = (Q, \Sigma, \delta, q_0, F)$, zbiór próbek $S$}
+\KwOut{Tablica skoków $JT$}
+
+\ForEach{próbka $w \in S$}{
+    $L \leftarrow |w|$\;
+    Utwórz tablicę $DP[0 \ldots L][0 \ldots |Q|-1]$\;
+
+    \ForEach{stan $q \in Q$}{
+        $DP[L][q] \leftarrow (q, L)$\;
+    }
+
+    \For{$i \leftarrow L-1$ \KwTo $0$}{
+        \ForEach{stan $q \in Q$}{
+            \If{$\delta(q, w[i])$ jest nieokreślone}{
+                $DP[i][q] \leftarrow (q, i)$\;
+            }
+            \Else{
+                $q' \leftarrow \delta(q, w[i])$\;
+                $DP[i][q] \leftarrow DP[i+1][q']$\;
+            }
+        }
+    }
+    Dodaj $DP$ do $JT$\;
+}
+\Return{$JT$}
+\end{algorithm}
+
+\subsubsection{Walidacja automatu z użyciem tablic skoków}
+
+Po skonstruowaniu tablic skoków algorytm wykorzystuje je podczas walidacji każdego kandydata. Zamiast symulować próbki krok po kroku, algorytm wykonuje skoki pomiędzy pozycjami, aż napotka fragment zależny od brakującego przejścia.
+
+\begin{algorithm}[H]
+\caption{Walidacja automatu z wykorzystaniem tablic skoków}
+\KwIn{Automat $A$, próbki $S$, tablica skoków $JT$, oczekiwany wynik $b$}
+\KwOut{true jeśli automat jest zgodny z próbkami, false w przeciwnym razie}
+
+\ForEach{próbka $w_i \in S$}{
+    $q \leftarrow q_0$, $pos \leftarrow 0$\;
+    \While{$pos < |w_i|$}{
+        $(q', pos') \leftarrow JT[i][pos][q]$\;
+        \If{$(q', pos') = (q, pos)$}{
+            \If{$\delta(q, w_i[pos])$ jest nieokreślone}{
+                Przerwij symulację tej próbki\;
+            }
+            $q \leftarrow \delta(q, w_i[pos])$\;
+            $pos \leftarrow pos + 1$\;
+        }
+        \Else{
+            $q \leftarrow q'$, $pos \leftarrow pos'$\;
+        }
+    }
+    \If{$(q \in F) \neq b$}{
+        \Return{false}\;
+    }
+}
+\Return{true}
+\end{algorithm}
+
+\subsubsection{Integracja z algorytmem pełnego przeszukiwania}
+
+Algorytm ze skokami nie modyfikuje samej strategii przeszukiwania przestrzeni możliwych uzupełnień brakujących przejść. Zastępuje on jedynie klasyczną procedurę walidacji automatu zoptymalizowaną wersją wykorzystującą tablice skoków. Dzięki temu zachowana zostaje pełna poprawność algorytmu brute force, przy jednoczesnym istotnym zmniejszeniu czasu weryfikacji pojedynczego kandydata w praktyce.
+
+\thispagestyle{empty}
+\pagebreak
