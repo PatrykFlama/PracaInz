@@ -108,7 +108,7 @@ namespace HeuristicIterativeRepairAlgorithm {
 
     template<auto validate_automaton_func = validate_automaton>
     bool run_with_random_restarts(
-        Automaton &best_automaton,
+        Automaton &result,
         const Automaton &broken_automaton,
         const Samples &positive_samples,
         const Samples &negative_samples,
@@ -133,7 +133,7 @@ namespace HeuristicIterativeRepairAlgorithm {
             );
 
             if (success) {
-                best_automaton = automaton;
+                result = automaton;
                 return true;
             }
         }
@@ -147,13 +147,13 @@ namespace HeuristicIterativeRepairAlgorithm {
     ) {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
 
-        Automaton best_automaton = broken_automaton;
+        Automaton result = broken_automaton;
         int max_iterations = 300;
         int max_restarts   = 50;
 
         bool fixable = run_with_random_restarts<validate_automaton_func>
         (
-            best_automaton,
+            result,
             broken_automaton,
             positive_samples,
             negative_samples,
@@ -161,6 +161,6 @@ namespace HeuristicIterativeRepairAlgorithm {
             max_restarts
         );
 
-        return {fixable, best_automaton};
+        return {fixable, result};
     }
 } 
