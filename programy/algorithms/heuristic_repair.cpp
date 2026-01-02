@@ -61,14 +61,14 @@ namespace HeuristicIterativeRepairAlgorithm {
                     State old_to = automaton.transition_function.get_transition(current, symbol);
 
                     State best_to = old_to;
-                    int best_score = invalid_samples.size();
+                    size_t best_score = invalid_samples.size();
 
                     for (State candidate = 0;candidate < automaton.num_states;candidate++) {
                         if (candidate == old_to) continue;
 
                         automaton.transition_function.set_transition(current, symbol, candidate);
 
-                        int errors = 0;
+                        size_t errors = 0;
                         for (const auto &s2 : positive_samples) {
                             errors += !simulate_sample(automaton, s2, true);
                         }
@@ -96,18 +96,14 @@ namespace HeuristicIterativeRepairAlgorithm {
             }
         }
 
-        for (const auto &s : positive_samples) {
-            if (!simulate_sample(automaton, s, true)) {
-                return false;
-            }
-        }
+        const bool valid = validate_automaton_func(
+                automaton,
+                positive_samples,
+                negative_samples
+            );
 
-        for (const auto &s : negative_samples) {
-            if (!simulate_sample(automaton, s, false)) {
-                return false;
-            }
-        }
-        return true;
+        if (valid) return true;
+        return false;
     }
 
     template<auto validate_automaton_func = validate_automaton>
@@ -119,8 +115,6 @@ namespace HeuristicIterativeRepairAlgorithm {
         int max_iterations,
         int max_restarts
     ) {
-        int best_error = INT_MAX;
-
         for (int restart = 0; restart < max_restarts; restart++) {
             Automaton automaton = broken_automaton;
 
@@ -141,19 +135,6 @@ namespace HeuristicIterativeRepairAlgorithm {
             if (success) {
                 best_automaton = automaton;
                 return true;
-            }
-
-            int errors = 0;
-            for (const auto &s : positive_samples) {
-                errors += !simulate_sample(automaton, s, true);
-            }
-            for (const auto &s : negative_samples) {
-                errors += !simulate_sample(automaton, s, false);
-            }
-
-            if (errors < best_error) {
-                best_error = errors;
-                best_automaton = automaton;
             }
         }
 
