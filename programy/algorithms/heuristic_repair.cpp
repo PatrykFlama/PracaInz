@@ -1,119 +1,80 @@
 #pragma once
 
 #include <bits/stdc++.h>
+using namespace std;
 #include "../structures/structures.cpp"
 #include "./helpers/validate_automaton.cpp"
 #include "./types.cpp"
 #include "./helpers/misc.cpp"
-using namespace std;
 
 namespace HeuristicIterativeRepairAlgorithm {
-    size_t hash_automaton(const Automaton &automaton) {
-        size_t h = 0;
-        for (State s = 0; s < automaton.num_states; s++) {
-            for (Alphabet a = 0; a < automaton.num_alphabet; a++) {
-                State to = automaton.transition_function.get_transition(s, a);
-                h ^= hash<size_t>()(((size_t)s << 32) ^ ((size_t)a << 16) ^ (size_t)to)
-                     + 0x9e3779b97f4a7c15ULL + (h << 6) + (h >> 2);
-            }
-        }
-        return h;
-    }
-
-    void random_perturbation(Automaton &automaton, int perturb_strength = 3) {
-        for (int i = 0; i < perturb_strength; i++) {
-            State from = static_cast<State>(rand()) % automaton.num_states;
-
-            mt19937_64 rng(random_device{}());  
-            uniform_int_distribution<size_t> dist(0, automaton.num_alphabet - 1);
-            Alphabet symbol = dist(rng);
-
-            // Alphabet symbol = rand() % automaton.num_alphabet;
-            State to = static_cast<State>(rand()) % automaton.num_states;
-            automaton.transition_function.set_transition(from, symbol, to);
-        }
-    }
-
-
-    bool simulate_sample(const Automaton &automaton, const vector<Alphabet> &sample, bool positive) {
+    bool simulate_sample(
+        const Automaton &automaton,
+        const vector<Alphabet> &sample,
+        bool positive
+    ) {
         State current = automaton.start_state;
+
         for (Alphabet symbol : sample) {
-            State next = automaton.transition_function.get_transition(current, symbol);
-            if (next == automaton.transition_function.invalid_edge) return false;
+            State next =
+                automaton.transition_function.get_transition(current, symbol);
+            if (next == automaton.transition_function.invalid_edge)
+                return false;
             current = next;
         }
+
         bool accepted = automaton.accepting[current];
         return positive ? accepted : !accepted;
     }
 
     template<auto validate_automaton_func = validate_automaton>
-    bool run_heuristic_repair(
+    bool hill_climb(
         Automaton &automaton,
         const Samples &positive_samples,
         const Samples &negative_samples,
-        size_t max_iterations
+        int max_iterations
     ) {
-        vector<pair<State, Alphabet>> missing_edges;
-        get_missing_edges(automaton, missing_edges);
-
-        for (auto &[from, symbol] : missing_edges) {
-            automaton.transition_function.set_transition(from, symbol, (State)rand() % automaton.num_states);
-        }
-
-        unordered_set<size_t> visited_hashes;
-        visited_hashes.reserve(max_iterations * 2);
-
-        const int max_restarts = 5;  
-        int restarts = 0;
-
-        RestartSearch:
-
-        visited_hashes.clear();
-
-        for (size_t iter = 0; iter < max_iterations; iter++) {
-
-            size_t h = hash_automaton(automaton);
-            if (visited_hashes.count(h)) {
-                if (restarts >= max_restarts) {
-                    cerr << "Local minimum (cycle) even after restarts.\n";
-                    return false;
-                }
-
-                cerr << "Cycle detected — performing random perturbation.\n";
-                random_perturbation(automaton, 3);
-                restarts++;
-                goto RestartSearch;
-            }
-            visited_hashes.insert(h);
-
+        for (int iter = 0; iter < max_iterations; iter++) {
             bool any_change = false;
-
             vector<vector<Alphabet>> invalid_samples;
-            for (const auto &s : positive_samples)
-                if (!simulate_sample(automaton, s, true)) invalid_samples.push_back(s);
-            for (const auto &s : negative_samples)
-                if (!simulate_sample(automaton, s, false)) invalid_samples.push_back(s);
 
-            if (invalid_samples.empty()) return true;
+            for (const auto &s : positive_samples) {
+                if (!simulate_sample(automaton, s, true)) {
+                    invalid_samples.push_back(s);
+                }
+            }
+
+            for (const auto &s : negative_samples) {
+                if (!simulate_sample(automaton, s, false)) {
+                    invalid_samples.push_back(s);
+                }
+            }
+
+            if (invalid_samples.empty()) {
+                return true;
+            }
 
             for (const auto &sample : invalid_samples) {
                 State current = automaton.start_state;
+
                 for (Alphabet symbol : sample) {
-
                     State old_to = automaton.transition_function.get_transition(current, symbol);
-                    State best_to = old_to;
-                    size_t best_score = invalid_samples.size();
 
-                    for (State candidate = 0; candidate < automaton.num_states; candidate++) {
+                    State best_to = old_to;
+                    int best_score = invalid_samples.size();
+
+                    for (State candidate = 0;candidate < automaton.num_states;candidate++) {
                         if (candidate == old_to) continue;
 
                         automaton.transition_function.set_transition(current, symbol, candidate);
 
-                        size_t errors = 0;
-                        for (const auto &s2 : positive_samples)
-                            if (!simulate_sample(automaton, s2, true)) errors++;
-                        for (const auto &s2 : negative_samples)
-                            if (!simulate_sample(automaton, s2, false)) errors++;
+                        int errors = 0;
+                        for (const auto &s2 : positive_samples) {
+                            errors += !simulate_sample(automaton, s2, true);
+                        }
+                        for (const auto &s2 : negative_samples) {
+                            errors += !simulate_sample(automaton, s2, false);
+                        }
 
                         if (errors < best_score) {
                             best_score = errors;
@@ -122,20 +83,77 @@ namespace HeuristicIterativeRepairAlgorithm {
                     }
 
                     automaton.transition_function.set_transition(current, symbol, best_to);
-                    if (best_to != old_to) any_change = true;
+
+                    if (best_to != old_to) {
+                        any_change = true;
+                    }
                     current = best_to;
                 }
             }
 
             if (!any_change) {
-                if (restarts >= max_restarts) {
-                    cerr << "Local minimum (plateau) even after restarts.\n";
-                    return false;
-                }
-                cerr << "No improvement detected — performing random perturbation.\n";
-                random_perturbation(automaton, 3);
-                restarts++;
-                goto RestartSearch;
+                break;
+            }
+        }
+
+        for (const auto &s : positive_samples) {
+            if (!simulate_sample(automaton, s, true)) {
+                return false;
+            }
+        }
+
+        for (const auto &s : negative_samples) {
+            if (!simulate_sample(automaton, s, false)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    template<auto validate_automaton_func = validate_automaton>
+    bool run_with_random_restarts(
+        Automaton &best_automaton,
+        const Automaton &broken_automaton,
+        const Samples &positive_samples,
+        const Samples &negative_samples,
+        int max_iterations,
+        int max_restarts
+    ) {
+        int best_error = INT_MAX;
+
+        for (int restart = 0; restart < max_restarts; restart++) {
+            Automaton automaton = broken_automaton;
+
+            vector<pair<State, Alphabet>> missing_edges;
+            get_missing_edges(automaton, missing_edges);
+
+            for (auto &[from, symbol] : missing_edges) {
+                automaton.transition_function.set_transition(from, symbol, rand() % automaton.num_states);
+            }
+
+            bool success = hill_climb<validate_automaton_func>(
+                automaton,
+                positive_samples,
+                negative_samples,
+                max_iterations
+            );
+
+            if (success) {
+                best_automaton = automaton;
+                return true;
+            }
+
+            int errors = 0;
+            for (const auto &s : positive_samples) {
+                errors += !simulate_sample(automaton, s, true);
+            }
+            for (const auto &s : negative_samples) {
+                errors += !simulate_sample(automaton, s, false);
+            }
+
+            if (errors < best_error) {
+                best_error = errors;
+                best_automaton = automaton;
             }
         }
 
@@ -143,24 +161,25 @@ namespace HeuristicIterativeRepairAlgorithm {
     }
 
     template<auto validate_automaton_func = validate_automaton>
-    AlgorithmOutput run(const AlgorithmInput &input) {
+    AlgorithmOutput run(
+        const AlgorithmInput &input
+    ) {
         const auto &[broken_automaton, positive_samples, negative_samples] = input;
-        Automaton automaton = broken_automaton;
 
-        // auto num_samples =
-        //     positive_samples.samples.size() +
-        //     negative_samples.samples.size();
+        Automaton best_automaton = broken_automaton;
+        int max_iterations = 300;
+        int max_restarts   = 50;
 
-        auto max_iterations = 10 * automaton.num_states * automaton.num_alphabet;
+        bool fixable = run_with_random_restarts<validate_automaton_func>
+        (
+            best_automaton,
+            broken_automaton,
+            positive_samples,
+            negative_samples,
+            max_iterations,
+            max_restarts
+        );
 
-        const bool fixable =
-            run_heuristic_repair<validate_automaton_func>(
-                automaton,
-                positive_samples,
-                negative_samples,
-                max_iterations
-            );
-
-        return {fixable, automaton};
+        return {fixable, best_automaton};
     }
-};
+} 

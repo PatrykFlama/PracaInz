@@ -52,14 +52,14 @@ int main() {
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
         {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
-        {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
+        // {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
         {"Brute Force With Jumps Iterative", PreprocessJumpsAlgorithm::run_iter},
-        {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
-        {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
-        {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
-        {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
-        {"Brute Force With Locally Repair", HeuristicIterativeRepairAlgorithm::run<>},
-        {"Save Prefix State Iterative", SavePrefixState::run},
+        // {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
+        // {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
+        // {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
+        // {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
+        {"Heuristic Repair", HeuristicIterativeRepairAlgorithm::run<>},
+        // {"Save Prefix State Iterative", SavePrefixState::run},
     };
 
 
