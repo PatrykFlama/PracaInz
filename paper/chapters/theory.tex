@@ -1,2 +1,72 @@
+\section{Definicja problemu}
+% TODO
+% definicje wstępne:
+% - z jakich nazw zmiennych będziemy korzystać
+% - czym jest DFA
+% - czym są próbki
 
-in theory
+\subsection{Definicja problemu 1}
+% TODO
+% - wejście:
+%     - DFA, w którym:
+%         - niektóre przejścia są nieokreślone - zwane później 'brakującymi przejściami'
+%         - niektóre stany są nieokreślone (akceptujące/odrzucające)
+%         - niektóre stany nie są podane (brakujące)
+%     - zbiór próbek pozytywnych $S^+$ (słowa akceptowane)
+%     - zbiór próbek negatywnych $S^-$ (słowa odrzucane)
+% - wyjście:
+%     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$ - jeżeli tak, to zwróć takie przykładowe uzupełnienie
+
+% > możemy myśleć o wersji w której chcemy minimalizować liczbę dodanych stanów - jak się okaze nie ma to znaczenia
+
+
+\subsection{Trywialność przypadku brakujących stanów}
+% TODO
+% Wiemy ile może być max stanów (liczba próbek * długość max próbki) więc możemy albo to brutalnie przejść, co nie wpłynie znacznie na czas (mając wykładniczy składnik), albo nawet zbinsearchować (bo od pewnej liczby stanów zacznie istniej rozwiązanie/naprawialność).
+
+
+\subsection{Definicja problemu 2}
+% TODO
+% - wejście:
+%     - DFA, w którym:
+%         - niektóre przejścia są nieokreślone
+%     - zbiór próbek pozytywnych $S^+$ (słowa akceptowane)
+%     - zbiór próbek negatywnych $S^-$ (słowa odrzucane)
+% - wyjście:
+%     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$
+
+% tą wersję problemu tak na prawdę będziemy analizować 
+
+\section{NP-zupełność}
+% TODO
+% Definicja NP zupełności
+
+
+\subsection{Przynależność do NP}
+% TODO
+
+
+\subsection{NP-trudność}
+% TODO
+% Problem pasywnego uczenia to najogólniejszy przypadek naszego problemu (kiedy nie znamy żadnych przejść)
+
+
+
+\section{FPT}
+% TODO
+\subsection{W[1]-trudność}
+% TODO
+% Redukcja k-klik do naszego problemu
+
+
+\subsection{W[2]-trudność}
+% TODO
+% Redukcja z k-set cover (bierzemy k setów do pokrycia) do naszego problemu
+
+
+\subsection{Przynależność do W[P]}
+% TODO
+
+% Póki co tylko nan bazie luźnej definicji z wikipedii - nasz prolem jest w klacie problemów gdzie mamy zbiór S n elementów (wszystkie możliwe naprawienia przejść), a my chcemy wybrać podzbiór z k - tak aby jakaś własność została utrzymana (być zgodnym z próbkami). Chcemy móc zapisać nasz wybór jako k intów zapisanych binarnie. \\
+% Wg tej lużniej definicji, możemy mieć podejrzenia że nasz problem przynależy do W[P].
+
