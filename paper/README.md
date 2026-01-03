@@ -30,7 +30,7 @@
       - jumps over known edges
       - backtrack
     - compare performance on different automata types
-    - stats, charts, comparisons etc
+    - testing methods, stats, charts, comparisons etc
 5. summary
 
 
