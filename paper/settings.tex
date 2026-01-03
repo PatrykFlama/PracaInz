@@ -2,6 +2,7 @@
 
 % misc packages
 \usepackage{import} % Import function, instead of input
+\usepackage{amssymb} % Additional math symbols
 % Packages for formatting and functionality
 \usepackage{csvsimple}
 \usepackage{graphicx} % For including images
@@ -25,6 +26,7 @@
 \usepackage{csquotes}
 \usepackage{afterpage}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{hyperref}
 \usepackage[ruled,vlined]{algorithm2e}
 \hypersetup{colorlinks,%
@@ -34,6 +36,15 @@ linkcolor=black,%
 urlcolor=black,%
 }
 
+% Theorem environments
+\newtheoremstyle{definition-break}%
+    {3pt}{3pt}% Space above/below
+    {\normalfont}{}% Body font / indent
+    {\bfseries}{}{\newline}% Head font / punctuation / space
+    {\thmname{#1}\thmnumber{ #2}\thmnote{ - #3}}% Head spec
+
+\theoremstyle{definition-break}
+\newtheorem{definition}{Definicja}
 
 % Path to images
 \graphicspath{ {./images/} }

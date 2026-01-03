@@ -1,23 +1,41 @@
-\section{Definicja problemu}
+\section{Definicja problemu, framework}
 % TODO
 % definicje wstępne:
 % - z jakich nazw zmiennych będziemy korzystać
 % - czym jest DFA
 % - czym są próbki
 
-\subsection{Definicja problemu 1}
-% TODO
-% - wejście:
-%     - DFA, w którym:
-%         - niektóre przejścia są nieokreślone - zwane później 'brakującymi przejściami'
-%         - niektóre stany są nieokreślone (akceptujące/odrzucające)
-%         - niektóre stany nie są podane (brakujące)
-%     - zbiór próbek pozytywnych $S^+$ (słowa akceptowane)
-%     - zbiór próbek negatywnych $S^-$ (słowa odrzucane)
-% - wyjście:
-%     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$ - jeżeli tak, to zwróć takie przykładowe uzupełnienie
+\begin{definition}[Deterministyczny automat skończony (DFA)]
+Deterministyczny automat skończony (DFA) to szóstka uporządkowana $(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
+\begin{itemize}
+    \item $Q$ to skończony zbiór stanów,
+    \item $\Sigma$ to skończony alfabet wejściowy,
+    \item $\delta: Q \times \Sigma \to Q$ to funkcja przejścia,
+    \item $q_\lambda \in Q$ to stan początkowy,
+    \item $\mathbb{F_A} \subseteq Q$ to zbiór stanów akceptujących,
+    \item $\mathbb{F_R} \subseteq Q$ to zbiór stanów odrzucających.
+\end{itemize}
+\end{definition}
 
-% > możemy myśleć o wersji w której chcemy minimalizować liczbę dodanych stanów - jak się okaze nie ma to znaczenia
+
+\subsection{Definicja problemu}
+
+\begin{definition}[Problem naprawienia częściowego DFA]
+    
+    \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym:
+\begin{itemize}
+    \item dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
+    \item dla niektórych stanów $q \in Q$ nie jest określone, czy $q \in \mathbb{F_A}$ bądź $q \in \mathbb{F_R}$,
+    \item niektóre stany mogą być całkowicie nieobecne (brakujące) i mogą zostać dodane,
+\end{itemize}
+oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \subseteq \Sigma^{*}$ (słowa odrzucane).
+
+\vspace{0.5cm}
+
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść, klasyfikacji stanów i ewentualne dodanie stanów tak, aby otrzymany automat był deterministyczny oraz akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia, należy podać jedno takie uzupełnienie.
+% TODO możemy myśleć o wersji w której chcemy minimalizować liczbę dodanych stanów - jak się okaze nie ma to znaczenia
+
+\end{definition}
 
 
 \subsection{Trywialność przypadku brakujących stanów}
@@ -25,7 +43,7 @@
 % Wiemy ile może być max stanów (liczba próbek * długość max próbki) więc możemy albo to brutalnie przejść, co nie wpłynie znacznie na czas (mając wykładniczy składnik), albo nawet zbinsearchować (bo od pewnej liczby stanów zacznie istniej rozwiązanie/naprawialność).
 
 
-\subsection{Definicja problemu 2}
+\subsection{Definicja problemu (uproszczona)}
 % TODO
 % - wejście:
 %     - DFA, w którym:
