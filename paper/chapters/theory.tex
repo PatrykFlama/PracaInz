@@ -24,24 +24,22 @@ Deterministyczny automat skończony (DFA) to szóstka uporządkowana $(Q, \Sigma
     
     \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym:
 \begin{itemize}
-    \item dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
-    \item dla niektórych stanów $q \in Q$ nie jest określone, czy $q \in \mathbb{F_A}$ bądź $q \in \mathbb{F_R}$,
-    \item niektóre stany mogą być całkowicie nieobecne (brakujące) i mogą zostać dodane,
+    \item niektóre krawędzie w automacie mogły zostać usunięte, więc dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
+    \item niektóre stany $q \in Q$ mogły zostać usunięte z automatu (brakujące stany), więc nie należą one ani do $\mathbb{F_A}$, ani do $\mathbb{F_R}$,
 \end{itemize}
 oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \subseteq \Sigma^{*}$ (słowa odrzucane).
 
 \vspace{0.5cm}
 
-\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść, klasyfikacji stanów i ewentualne dodanie stanów tak, aby otrzymany automat był deterministyczny oraz akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia, należy podać jedno takie uzupełnienie.
-% TODO możemy myśleć o wersji w której chcemy minimalizować liczbę dodanych stanów - jak się okaze nie ma to znaczenia
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść, klasyfikacji stanów i ewentualne dodanie stanów tak, aby otrzymany automat był deterministyczny, posiadał najmniejszą możliwą liczbę stanów oraz akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia, należy podać takie uzupełnienie.
 
 \end{definition}
 
 
 \subsection{Trywialność przypadku brakujących stanów}
-% TODO
-% Wiemy ile może być max stanów (liczba próbek * długość max próbki) więc możemy albo to brutalnie przejść, co nie wpłynie znacznie na czas (mając wykładniczy składnik), albo nawet zbinsearchować (bo od pewnej liczby stanów zacznie istniej rozwiązanie/naprawialność).
+W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Jest to jednak przypadek trywialny, bo możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w drzewie prefiksowym zbudowanym z próbek - jeżeli automat jest naprawialny, to będzie to automat rozwiązujący problem. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany (i tak wykładniczej) złożoności. 
 
+Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
 
 \subsection{Definicja problemu (uproszczona)}
 % TODO
@@ -54,6 +52,13 @@ oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \su
 %     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$
 
 % tą wersję problemu tak na prawdę będziemy analizować 
+
+\begin{definition}[Problem naprawienia częściowego DFA (uproszczony)]
+\textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i $S^{-} \subseteq \Sigma^{*}$. Liczba stanów $|Q|$ jest ustalona.
+\vspace{0.3cm}
+
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść i klasyfikacji stanów tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia należy podać takie uzupełnienie.
+\end{definition}
 
 \section{NP-zupełność}
 % TODO
