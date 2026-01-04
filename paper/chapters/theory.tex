@@ -1,0 +1,114 @@
+\section{Definicja problemu, framework}
+% TODO
+% definicje wstępne:
+% - z jakich nazw zmiennych będziemy korzystać
+% - czym jest DFA
+% - czym są próbki
+
+\begin{definition}[Deterministyczny automat skończony (DFA)]
+Deterministyczny automat skończony (DFA) to szóstka uporządkowana $(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
+\begin{itemize}
+    \item $Q$ to skończony zbiór stanów,
+    \item $\Sigma$ to skończony alfabet wejściowy,
+    \item $\delta: Q \times \Sigma \to Q$ to funkcja przejścia,
+    \item $q_\lambda \in Q$ to stan początkowy,
+    \item $\mathbb{F_A} \subseteq Q$ to zbiór stanów akceptujących,
+    \item $\mathbb{F_R} \subseteq Q$ to zbiór stanów odrzucających.
+\end{itemize}
+\end{definition}
+
+
+\subsection{Definicja problemu}
+
+\begin{definition}[Problem naprawienia częściowego DFA]
+    
+    \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym:
+\begin{itemize}
+    \item niektóre krawędzie w automacie mogły zostać usunięte, więc dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
+    \item niektóre stany $q \in Q$ mogły zostać usunięte z automatu (brakujące stany), więc nie należą one ani do $\mathbb{F_A}$, ani do $\mathbb{F_R}$,
+\end{itemize}
+oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \subseteq \Sigma^{*}$ (słowa odrzucane).
+
+\vspace{0.5cm}
+
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść, klasyfikacji stanów i ewentualne dodanie stanów tak, aby otrzymany automat był deterministyczny, posiadał najmniejszą możliwą liczbę stanów oraz akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia, należy podać takie uzupełnienie.
+
+\end{definition}
+
+
+\subsection{Trywialność przypadku brakujących stanów}
+W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Jest to jednak przypadek trywialny, bo możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w drzewie prefiksowym zbudowanym z próbek - jeżeli automat jest naprawialny, to będzie to automat rozwiązujący problem. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany (i tak wykładniczej) złożoności. 
+
+Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
+
+\subsection{Definicja problemu (uproszczona)}
+% TODO
+% - wejście:
+%     - DFA, w którym:
+%         - niektóre przejścia są nieokreślone
+%     - zbiór próbek pozytywnych $S^+$ (słowa akceptowane)
+%     - zbiór próbek negatywnych $S^-$ (słowa odrzucane)
+% - wyjście:
+%     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$
+
+% tą wersję problemu tak na prawdę będziemy analizować 
+
+\begin{definition}[Problem naprawienia częściowego DFA (uproszczony)]
+\textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i $S^{-} \subseteq \Sigma^{*}$. Liczba stanów $|Q|$ jest ustalona.
+\vspace{0.3cm}
+
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść i klasyfikacji stanów tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia należy podać takie uzupełnienie.
+\end{definition}
+
+\section{NP-zupełność}
+% TODO
+% Definicja NP zupełności
+
+
+\subsection{Przynależność do NP}
+% TODO
+
+
+\subsection{NP-trudność}
+% TODO
+% Problem pasywnego uczenia to najogólniejszy przypadek naszego problemu (kiedy nie znamy żadnych przejść)
+
+
+
+\section{FPT}
+% TODO
+\subsection{W[1]-trudność}
+% TODO
+% Redukcja k-klik do naszego problemu
+
+\subsubsection{Dla $|\Sigma|=O(n)$}
+
+% TODO explain figure
+\import{theory}{reduction_kclique_n}
+
+
+
+
+\subsubsection{Dla $|\Sigma|=3$}
+
+% TODO explain figure
+\import{theory}{reduction_kclique_3}
+
+
+\subsubsection{Dla $|\Sigma|=2$}
+
+% TODO explain figure
+\import{theory}{reduction_kclique_2}
+
+
+\subsection{W[2]-trudność}
+% TODO
+% Redukcja z k-set cover (bierzemy k setów do pokrycia) do naszego problemu
+
+
+\subsection{Przynależność do W[P]}
+% TODO
+
+% Póki co tylko nan bazie luźnej definicji z wikipedii - nasz prolem jest w klacie problemów gdzie mamy zbiór S n elementów (wszystkie możliwe naprawienia przejść), a my chcemy wybrać podzbiór z k - tak aby jakaś własność została utrzymana (być zgodnym z próbkami). Chcemy móc zapisać nasz wybór jako k intów zapisanych binarnie. \\
+% Wg tej lużnej definicji, możemy mieć podejrzenia że nasz problem przynależy do W[P].
+

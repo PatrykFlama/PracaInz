@@ -1,0 +1,206 @@
+\section{Podejście Brute Force}
+
+\section{Algorytm ze skokami (Jump Tables)}
+
+Algorytm ze skokami stanowi optymalizację symulacji przechodzenia próbką po automacie, z algorytmu Brute Force. Jego głównym celem jest zredukowanie liczby krawędzi, które muszą być przetworzone podczas weryfikacji próbki z automatem. \\
+Możemy zaobserwować, że przechodzenie po \textit{znanych} krawędziach - czyli takich przejściach które dostaliśmy na wejściu - może często prowadzić do redundantnych obliczeń, ponieważ występują one często w automacie, a utworzone z nich ścieżki są jednoznacznie określone dla dowolnej wersji naprawionego automatu.
+
+Dlatego też konstrukcja algorytmu opiera się na stworzeniu struktury, która dla każdego możliwego sufiksu próbek oraz każdego stanu automatu, pozwala na natychmiastowe wyznaczenie stanu docelowego - osiągalnego przy użyciu wyłącznie znanych krawędzi, przeskakując przy tym możliwie najdłuższy fragment podanego sufiksu. \\
+Do algorytmu wprowadzany jest etap wstępnego przetwarzania, gdzieopisana struktura jest wyliczana w postaci tablic skoków. Następnie, podczas walidacji automatu, przechodząc próbką po automacie korzystamy z tablicy skoków, aby przeskoczyć fragmenty składające się ze \textit{znanych} krawędzi. 
+
+W efekcie wykonamy jedynie tyle kroków, ile jest \textit{brakujących} krawędzi na ścieżce odpowiadającej danej próbce w automacie.
+
+\subsubsection{Budowa tablic skoków}
+
+Tablice skoków budowane są niezależnie dla zbioru przykładów pozytywnych oraz negatywnych. Dla każdej próbki $w$ o długości maksymalnie $L$ konstruowana jest tablica $DP$, w której wpis $DP[i][q]$ opisuje efekt przetworzenia najdłuższego możliwego fragmentu 
+próbki $w$, zaczynając od pozycji $i$ w stanie $q$, bez użycia brakujących przejść.
+
+
+\begin{algorithm}[H]
+\caption{Budowa tablic skoków}
+\KwIn{Automat $A = (Q, \Sigma, \delta, q_0, F)$, zbiór próbek $S$}
+\KwOut{Tablica skoków $JT$}
+
+\ForEach{próbka $w \in S$}{
+    $L \leftarrow |w|$\;
+    Utwórz tablicę $DP[0 \ldots L][0 \ldots |Q|-1]$\;
+
+    \ForEach{stan $q \in Q$}{
+        $DP[L][q] \leftarrow (q, L)$\;
+    }
+
+    \For{$i \leftarrow L-1$ \KwTo $0$}{
+        \ForEach{stan $q \in Q$}{
+            \If{$\delta(q, w[i])$ jest nieokreślone}{
+                $DP[i][q] \leftarrow (q, i)$\;
+            }
+            \Else{
+                $q' \leftarrow \delta(q, w[i])$\;
+                $DP[i][q] \leftarrow DP[i+1][q']$\;
+            }
+        }
+    }
+    Dodaj $DP$ do $JT$\;
+}
+\Return{$JT$}
+\end{algorithm}
+
+\subsubsection{Walidacja automatu z użyciem tablic skoków}
+
+Po skonstruowaniu tablic skoków algorytm wykorzystuje je podczas walidacji każdego kandydata. Zamiast symulować próbki krok po kroku, algorytm wykonuje skoki pomiędzy pozycjami, aż napotka fragment zależny od brakującego przejścia.
+
+\begin{algorithm}[H]
+\caption{Walidacja automatu z wykorzystaniem tablic skoków}
+\KwIn{Automat $A$, próbki $S$, tablica skoków $JT$, oczekiwany wynik $b$}
+\KwOut{true jeśli automat jest zgodny z próbkami, false w przeciwnym razie}
+
+\ForEach{próbka $w_i \in S$}{
+    $q \leftarrow q_0$, $pos \leftarrow 0$\;
+    \While{$pos < |w_i|$}{
+        $(q', pos') \leftarrow JT[i][pos][q]$\;
+        \If{$(q', pos') = (q, pos)$}{
+            \If{$\delta(q, w_i[pos])$ jest nieokreślone}{
+                Przerwij symulację tej próbki\;
+            }
+            $q \leftarrow \delta(q, w_i[pos])$\;
+            $pos \leftarrow pos + 1$\;
+        }
+        \Else{
+            $q \leftarrow q'$, $pos \leftarrow pos'$\;
+        }
+    }
+    \If{$(q \in F) \neq b$}{
+        \Return{false}\;
+    }
+}
+\Return{true}
+\end{algorithm}
+
+\subsubsection{Integracja z algorytmem pełnego przeszukiwania}
+% TODO integracja z (prawie) dowolnym algorytmem
+% tą optymalizację możemy potraktować jako przekształcenie automatu w taki, który nadal jest w stanie chodzić po wszystkich próbkach zadanych na wejściu, ale teraz dodatkowo posiada krawędzie etykietowane podsłowami, którymi moze przejść w O(1)
+
+Algorytm ze skokami nie modyfikuje samej strategii przeszukiwania przestrzeni możliwych uzupełnień brakujących przejść. Zastępuje on jedynie klasyczną procedurę walidacji automatu zoptymalizowaną wersją wykorzystującą tablice skoków. Dzięki temu zachowana zostaje pełna poprawność algorytmu brute force, przy jednoczesnym istotnym zmniejszeniu czasu weryfikacji pojedynczego kandydata w praktyce.
+
+
+\subsubsection{Analiza wydajności}
+Czas budowy tablic skoków wynosi $\mathcal{O}(N \cdot M \cdot |Q|)$, gdzie $N$ to liczba próbek, $M$ to maksymalna długość próbki, a $|Q|$ to liczba stanów automatu.
+
+% TODO - elaborate; maybe drawing of example problematic case?
+Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w automacie. W najgorszym przypadku, gdy wszystkie przejścia są brakujące, czas walidacji pozostaje $\mathcal{O}(M)$, jednak w praktyce, dla automatu z niewielką liczbą brakujących przejść, czas ten może być znacznie mniejszy.
+
+
+\subsection{Heurystyka naprawy automatu z losowymi restartami}
+
+W celu praktycznego rozwiązania problemu naprawy brakujących przejść w deterministycznym automacie skończonym zastosowano heurystykę opartą na lokalnym przeszukiwaniu przestrzeni rozwiązań, uzupełnioną o mechanizm losowych restartów. Metoda ta ma na celu znalezienie automatu zgodnego ze wszystkimi przykładami pozytywnymi i negatywnymi, przy istotnie mniejszym koszcie obliczeniowym niż pełne przeszukiwanie metodą brutalną.
+
+\subsubsection{Ocena poprawności próbek}
+
+Podstawową operacją wykorzystywaną w algorytmie jest symulacja działania automatu na danej próbce wejściowej. Próbka uznawana jest za poprawnie sklasyfikowaną, jeżeli:
+\begin{itemize}
+    \item w trakcie symulacji nie zostanie napotkane brakujące przejście,
+    \item automat zakończy działanie w stanie akceptującym dla próbki pozytywnej,
+    \item automat zakończy działanie w stanie nieakceptującym dla próbki negatywnej.
+\end{itemize}
+
+\subsubsection{Hill Climbing}
+
+Główna część heurystyki opiera się na algorytmie hill climbing, który iteracyjnie modyfikuje przejścia automatu w celu minimalizacji liczby błędnie sklasyfikowanych próbek.
+
+W każdej iteracji algorytm:
+\begin{enumerate}
+    \item identyfikuje zbiór próbek błędnie sklasyfikowanych przez aktualny automat,
+    \item dla każdej takiej próbki przechodzi przez kolejne symbole słowa,
+    \item dla każdego przejścia testuje wszystkie możliwe stany docelowe,
+    \item wybiera przejście minimalizujące całkowitą liczbę błędnych klasyfikacji.
+\end{enumerate}
+
+Jeżeli w danej iteracji nie nastąpi żadna poprawa, algorytm kończy działanie, uznając, że osiągnięto minimum lokalne.
+
+\subsubsection{Losowe restarty}
+
+Ponieważ algorytm hill climbing może zatrzymać się w minimum lokalnym, zastosowano mechanizm losowych restartów. Każdy restart polega na:
+\begin{itemize}
+    \item przywróceniu wybrakowanego automatu do stanu początkowego,
+    \item losowej inicjalizacji wszystkich brakujących przejść,
+    \item ponownym uruchomieniu procedury hill climbing.
+\end{itemize}
+
+Jeżeli w trakcie któregoś restartu zostanie znaleziony automat zgodny ze wszystkimi próbkami, algorytm kończy działanie sukcesem.
+
+\subsubsection{Złożoność obliczeniowa}
+
+Niech:
+\begin{itemize}
+    \item $n$ oznacza liczbę stanów automatu,
+    \item $m$ maksymalną długość próbki,
+    \item $|S|$ łączną liczbę próbek,
+    \item $I$ maksymalną liczbę iteracji hill climbing,
+    \item $R$ liczbę losowych restartów.
+\end{itemize}
+
+Złożoność heurystyki z losowymi restartami wynosi:
+\[
+\mathcal{O}(R \cdot I \cdot |S| \cdot m \cdot n),
+\]
+co w praktyce pozwala na znaczące przyspieszenie względem algorytmu brutalnego kosztem braku gwarancji znalezienia rozwiązania optymalnego.
+
+\subsubsection{Pseudokod algorytmu}
+
+\begin{algorithm}[H]
+\caption{Heurystyczna naprawa automatu z losowymi restartami}
+\KwIn{Wybrakowany automat $A = (Q,\Sigma,\delta,q_0,F)$, próbki pozytywne $S^+$, próbki negatywne $S^-$}
+\KwOut{Naprawiony automat $A'$ lub informacja o niepowodzeniu}
+
+\For{$r \leftarrow 1$ \KwTo $R$}{
+    $A_r \leftarrow A$\;
+    Losowo uzupełnij wszystkie brakujące przejścia w $A_r$\;
+
+    \For{$i \leftarrow 1$ \KwTo $I$}{
+        $invalid \leftarrow \{w \in S^+ \cup S^- \mid A_r \text{ błędnie klasyfikuje } w\}$\;
+
+        \If{$invalid = \emptyset$}{
+            \Return{$A_r$}
+        }
+
+        $any\_change \leftarrow false$\;
+
+        \ForEach{$w \in invalid$}{
+            $q \leftarrow q_0$\;
+
+            \For{$j \leftarrow 0$ \KwTo $|w|-1$}{
+                $a \leftarrow w[j]$\;
+                $q_{\text{old}} \leftarrow \delta(q,a)$\;
+                $best \leftarrow q_{\text{old}}$\;
+                $best\_errors \leftarrow |invalid|$\;
+
+                \ForEach{$p \in Q$}{
+                    \If{$p \neq q_{\text{old}}$}{
+                        tymczasowo ustaw $\delta(q,a) \leftarrow p$\;
+                        $errors \leftarrow$ liczba błędnie sklasyfikowanych próbek z $S^+ \cup S^-$\;
+
+                        \If{$errors < best\_errors$}{
+                            $best \leftarrow p$\;
+                            $best\_errors \leftarrow errors$\;
+                        }
+                    }
+                }
+
+                ustaw $\delta(q,a) \leftarrow best$\;
+
+                \If{$best \neq q_{\text{old}}$}{
+                    $any\_change \leftarrow true$\;
+                }
+
+                $q \leftarrow best$\;
+            }
+        }
+
+        \If{$any\_change = false$}{
+            \textbf{przerwij}
+        }
+    }
+}
+
+\Return{\textbf{niepowodzenie}}
+\end{algorithm}

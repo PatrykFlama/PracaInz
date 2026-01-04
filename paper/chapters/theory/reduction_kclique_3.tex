@@ -1,0 +1,78 @@
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+        ->,
+    >=Stealth,
+    node distance=14mm,
+    state/.style={circle, draw, minimum size=8mm},
+    small/.style={circle, draw, minimum size=5mm},
+    accept/.style={circle, draw, double, minimum size=8mm},
+    reject/.style={circle, draw, minimum size=8mm},
+    every label/.style={font=\small}
+]
+    % wierzchołek startowy
+    \node[draw,state,inner sep=2pt] (s) at (0,-2) {$S$};
+
+    % wierzchołek sink
+    \node[draw,accept,inner sep=2pt] (sink) at (0,-4) {$ $};
+    \draw[->,thick] (s) -- (sink) node[midway,above] {choice};
+
+    % wierzchołki v
+    \node[draw,state,inner sep=1.5pt] (v1) at (4,0) {$v_{1}$};
+    \node (vdots1) at (4,-0.7) {$\vdots$};
+    \node[draw,state,inner sep=1.5pt] (vi) at (4,-1.6) {$v_{i}$};
+    \node[draw,state,inner sep=1.5pt] (vj) at (4,-2.6) {$v_{j}$};
+    \node (vdots2) at (4,-3.2) {$\vdots$};
+    \node[draw,state,inner sep=1.5pt] (vn) at (4,-4.0) {$v_{n}$};
+
+    % punkty docelowe dla krawędzi
+    \coordinate (t1) at (3,-0.8);
+    \coordinate (tx) at (3,-1.6);
+    \coordinate (ty) at (3,-2.4);
+    \coordinate (tlast) at (3,-3.2);
+
+    % krawędzie p
+    \draw[->,dashed,thick] (s) -- (t1) node[midway,above] {$bin(1)$};
+    \node at (2.8,-1.2) {$\vdots$};
+    \draw[->,dashed,thick] (s) -- (tx) node[midway,above] {$bin(x)$};
+    \draw[->,dashed,thick] (s) -- (ty) node[midway,above] {$bin(y)$};
+    \node at (2.8,-2.6) {$\vdots$};
+    \draw[->,dashed,thick] (s) -- (tlast) node[midway,above] {$bin(k)$};
+
+    % sekcja weryfikacji wierzchołka
+    \node[draw,state,inner sep=2pt] (vv1) at (6.5,-0.2) {$S$};
+    \node (vdots1) at (6.5,-0.8) {$\vdots$};
+    \node[draw,state,inner sep=2pt] (vvi) at (6.5,-1.6) {$u_{i}$};
+    \node (vdots1) at (6.5,-2.2) {$\vdots$};
+    \node[draw,state,inner sep=2pt] (vvn) at (6.5,-3) {$S$};
+    \draw[->,thick] (vi) -- (vv1) node[midway,above] {$bin(1)$};
+    \draw[->,thick] (vi) -- (vvi) node[midway,above] {$bin(i)$};
+    \draw[->,thick] (vi) -- (vvn) node[midway,above] {$bin(n)$};
+
+    % sekcja wyboru
+    \node[draw,state,inner sep=2pt] (choicenode) at (9,-1.6) {$ $};
+    \draw[->,thick] (vvi) -- (choicenode) node[midway,above] {$\text{choice}$};
+    \node[draw,state,inner sep=2pt] (choice1) at (10.5,-0.8) {$S$};
+    \node[draw,state,inner sep=2pt] (choice2) at (10.5,-2.4) {$c_2$};
+    \draw[->,thick] (choicenode) -- (choice1) node[midway,above] {$0$};
+    \draw[->,thick] (choicenode) -- (choice2) node[midway,above] {$1$};
+
+    % sekcja testu sąsiedztwa
+    \node[accept, inner sep=1.5pt] (accept) at (13.5,-1.4) {};
+    \node[reject, inner sep=1.5pt] (reject) at (13.5,-3) {};
+    \draw[->,thick] (choice2) -- (accept) node[midway,above] {$v_j \in N(v_i)$};
+    \draw[->,thick] (choice2) -- (reject) node[midway,above] {$v_j \notin N(v_i)$};
+
+    % zielona ramka
+    \node[
+        draw=green!60!black,
+        thick,
+        rounded corners,
+        fit=(vv1)(vvi)(vvn)(choice1)(choice2)(accept)(reject),
+        label={[green!60!black]above:dla każdego $v_i$}
+    ] {};
+
+\end{tikzpicture}
+\caption{Konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze 3}
+\label{fig:s-to-vi}
+\end{figure}
