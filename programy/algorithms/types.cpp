@@ -8,6 +8,10 @@ using namespace std;
 struct AlgorithmOutput {
     bool fixable;
     Automaton fixed_automaton;
+
+    AlgorithmOutput() : fixable(false), fixed_automaton(0, 0) {}
+    AlgorithmOutput(bool fixable, const Automaton &fixed_automaton)
+        : fixable(fixable), fixed_automaton(fixed_automaton) {}
 };
 
 struct AlgorithmInput {

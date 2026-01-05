@@ -59,14 +59,30 @@ vector<AlgorithmRunResult> testAlgorithms(
             continue;
         }
 
-        const auto output = future_output.get();
+        AlgorithmOutput output;
+        bool had_exception = false;
+        string exception_message;
+
+        try {
+            output = future_output.get();
+        } catch (const std::exception &e) {
+            had_exception = true;
+            exception_message = string("Exception: ") + e.what();
+        } catch (...) {
+            had_exception = true;
+            exception_message = "Unknown exception";
+        }
+
         const auto elapsed_time = timer.elapsed();
 
-        results.emplace_back(
-            output,
-            elapsed_time,
-            input
-        );
+        if (had_exception) {
+            Error error(exception_message);
+            AlgorithmOutput failed_output{false, input.broken_automaton};
+            results.emplace_back(failed_output, elapsed_time, error, input);
+            continue;
+        }
+
+        results.emplace_back(output, elapsed_time, input);
 
         if (output.fixable != automaton_fixable) {
             results.back().error.setError("Fixability mismatch");
