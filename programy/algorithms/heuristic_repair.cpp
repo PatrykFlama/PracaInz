@@ -36,6 +36,7 @@ namespace HeuristicIterativeRepairAlgorithm {
         std::atomic<bool>* stop_flag
     ) {
         for (int iter = 0; iter < max_iterations; iter++) {
+            if (should_stop(stop_flag)) return false;
             bool any_change = false;
             vector<vector<Alphabet>> invalid_samples;
 
@@ -62,21 +63,25 @@ namespace HeuristicIterativeRepairAlgorithm {
                 State current = automaton.start_state;
 
                 for (Alphabet symbol : sample) {
+                    if (should_stop(stop_flag)) return false;
                     State old_to = automaton.transition_function.get_transition(current, symbol);
 
                     State best_to = old_to;
                     size_t best_score = invalid_samples.size();
 
                     for (State candidate = 0;candidate < automaton.num_states;candidate++) {
+                        if (should_stop(stop_flag)) return false;
                         if (candidate == old_to) continue;
 
                         automaton.transition_function.set_transition(current, symbol, candidate);
 
                         size_t errors = 0;
                         for (const auto &s2 : positive_samples) {
+                            if (should_stop(stop_flag)) return false;
                             errors += !simulate_sample(automaton, s2, true);
                         }
                         for (const auto &s2 : negative_samples) {
+                            if (should_stop(stop_flag)) return false;
                             errors += !simulate_sample(automaton, s2, false);
                         }
 
