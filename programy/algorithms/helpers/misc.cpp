@@ -18,3 +18,7 @@ void get_missing_edges(
         }
     }
 }
+
+inline bool should_stop(const std::atomic<bool>* stop_flag) {
+    return stop_flag && stop_flag->load(std::memory_order_relaxed);
+}

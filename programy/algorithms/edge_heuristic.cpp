@@ -91,7 +91,7 @@ namespace EdgeOrderingAlgorithm {
     AlgorithmOutput run_backtracking_dynamic(
         const AlgorithmInput &input
     ) {
-        const auto &[broken_automaton, positive_samples, negative_samples] = input;
+        const auto &[broken_automaton, positive_samples, negative_samples, stop_flag] = input;
 
         Automaton automaton = broken_automaton;
 

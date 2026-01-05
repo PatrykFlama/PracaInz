@@ -125,7 +125,7 @@ namespace PreprocessJumpsAlgorithm {
         
 
     void build_jump_tables(const AlgorithmInput& input) {
-        const auto& [broken_automaton, positive_samples, negative_samples] = input;
+        const auto& [broken_automaton, positive_samples, negative_samples, stop_flag] = input;
         build_jump_table(jump_tables.negative, broken_automaton, negative_samples);
         build_jump_table(jump_tables.positive, broken_automaton, positive_samples);
     }

@@ -25,7 +25,8 @@ struct AlgorithmRunResult {
 
 vector<AlgorithmRunResult> testAlgorithms(
     const vector<function<AlgorithmOutput(AlgorithmInput)>> algorithms,
-    const GenerateAutomatonInput generate_input
+    const GenerateAutomatonInput generate_input,
+    int64_t timeout_ms = -1
 ) {
     auto [automaton_data, samples] = generateAutomaton(generate_input);
 
@@ -39,14 +40,28 @@ vector<AlgorithmRunResult> testAlgorithms(
         Timer timer;
         timer.reset();
 
-        const AlgorithmInput input = {automaton, positive_samples, negative_samples};
-        const auto output = algorithm(input);
+        std::atomic<bool> stop_flag{false};
+        AlgorithmInput input = {automaton, positive_samples, negative_samples};
+        input.stop_flag = &stop_flag;
+
+        auto future_output = async(launch::async, algorithm, input);
+
+        const auto wait_limit = timeout_ms >= 0 ? chrono::milliseconds(timeout_ms) : chrono::milliseconds::max();
+        const auto status = future_output.wait_for(wait_limit);
+
+        if (status == future_status::timeout) {
+            stop_flag.store(true, std::memory_order_relaxed);
+            future_output.wait();
+
+            AlgorithmRunResult timeout_result({false, input.broken_automaton}, timer.elapsed(), input);
+            timeout_result.error.setError("Timeout after " + to_string(timeout_ms) + " ms");
+            results.push_back(timeout_result);
+            continue;
+        }
+
+        const auto output = future_output.get();
         const auto elapsed_time = timer.elapsed();
 
-        // results.push_back({
-        //     output,
-        //     elapsed_time
-        // });
         results.emplace_back(
             output,
             elapsed_time,

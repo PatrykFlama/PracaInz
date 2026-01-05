@@ -84,7 +84,7 @@ static void walk_samples_combined(
 }
 
 AlgorithmOutput run(const AlgorithmInput &input) {
-    const auto &[broken_automaton, positive_samples, negative_samples] = input;
+    const auto &[broken_automaton, positive_samples, negative_samples, stop_flag] = input;
 
     Automaton automaton = broken_automaton;
 

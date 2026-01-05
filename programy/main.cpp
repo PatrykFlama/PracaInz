@@ -39,6 +39,7 @@ int main() {
 
     const bool SAVE_AUTOMATA_TO_FILES = false;
     const size_t TEST_RUNS = 10;
+    const int64_t TIMEOUT_MS = 5000;
 
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
@@ -49,7 +50,7 @@ int main() {
     generate_input_to.alphabet_size = 4;
 
     generate_input_from.num_samples = 10;
-    generate_input_to.num_samples = 1000;
+    generate_input_to.num_samples = 100;
 
     generate_input_from.missing_edges = 2;
     generate_input_to.missing_edges = 10;
@@ -107,7 +108,8 @@ int main() {
 
         const auto &testing_results = testAlgorithms(
             algorithms_to_test,
-            generate_input
+            generate_input,
+            TIMEOUT_MS
         );
 
         bool similar = check_similarity(

@@ -14,5 +14,6 @@ struct AlgorithmInput {
     Automaton broken_automaton;
     Samples positive_samples;
     Samples negative_samples;
+    std::atomic<bool>* stop_flag = nullptr;
 };
 
