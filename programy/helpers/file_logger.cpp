@@ -9,6 +9,22 @@ class FileLogger {
     string filename_;
 public:
 
+    FileLogger(const vector<string> &algorithm_names)
+        : FileLogger([&]() {
+            // create timestamped filename
+            std::time_t now = std::time(nullptr);
+            std::tm tm{};
+            #ifdef _WIN32
+                localtime_s(&tm, &now);
+            #else
+                localtime_r(&now, &tm);
+            #endif
+            std::ostringstream ts;
+            ts << std::put_time(&tm, "%Y%m%d_%H%M%S");
+            return string("testing_times_") + ts.str() + ".csv";
+        }(), algorithm_names)
+    {}
+
     FileLogger(
         const string &filename, 
         const vector<string> &algorithm_names

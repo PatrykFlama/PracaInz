@@ -65,7 +65,7 @@ int main() {
     generate_input_to.alphabet_size = 4;
 
     generate_input_from.num_samples = 10;
-    generate_input_to.num_samples = 100;
+    generate_input_to.num_samples = 1000;
 
     generate_input_from.missing_edges = 2;
     generate_input_to.missing_edges = 10;
@@ -104,10 +104,7 @@ int main() {
     vector<int64_t> testing_times_sum(algorithms_to_test.size(), 0);
     vector<int> testing_errors_count(algorithms_to_test.size(), 0);
 
-    FileLogger logger(
-        "testing_times.csv",
-        algorithm_names
-    );
+    FileLogger logger(algorithm_names);
 
     for (size_t i : tq::trange(TEST_RUNS)) {
         GenerateAutomatonInput generate_input;
