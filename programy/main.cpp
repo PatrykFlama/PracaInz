@@ -12,6 +12,7 @@
 #include "helpers/fs_utils.cpp"
 #include "helpers/check_similarity.cpp"
 #include "helpers/edge_calc.cpp"
+#include "helpers/random.cpp"
 using namespace std;
 
 /*
@@ -39,16 +40,29 @@ int main() {
     const bool SAVE_AUTOMATA_TO_FILES = false;
     const size_t TEST_RUNS = 10;
 
-    GenerateAutomatonInput generate_input;
-    generate_input.num_states = 20;
-    generate_input.alphabet_size = 4;
-    generate_input.num_samples = 10;
-    generate_input.missing_edges = 5;
-    generate_input.sample_length = 50;
-    generate_input.length_variance = 0.2f;
-    generate_input.type = AUTOMATON_SCC;
-    generate_input.k_scc = 3;
-    
+    GenerateAutomatonInput generate_input_from, generate_input_to;
+
+    generate_input_from.num_states = 10;
+    generate_input_to.num_states = 150;
+
+    generate_input_from.alphabet_size = 4;
+    generate_input_to.alphabet_size = 4;
+
+    generate_input_from.num_samples = 10;
+    generate_input_to.num_samples = 1000;
+
+    generate_input_from.missing_edges = 2;
+    generate_input_to.missing_edges = 10;
+
+    generate_input_from.sample_length = 10;
+    generate_input_to.sample_length = 200;
+
+    generate_input_from.length_variance = 0.2f;
+    generate_input_from.type = AUTOMATON_SIMPLE;
+
+    generate_input_from.k_scc = 3;
+    generate_input_to.k_scc = 3;
+
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
         {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
@@ -80,6 +94,17 @@ int main() {
     );
 
     for (size_t i : tq::trange(TEST_RUNS)) {
+        GenerateAutomatonInput generate_input;
+
+        generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
+        generate_input.alphabet_size = randomInt(generate_input_from.alphabet_size, generate_input_to.alphabet_size);
+        generate_input.num_samples = randomInt(generate_input_from.num_samples, generate_input_to.num_samples);
+        generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
+        generate_input.sample_length = randomInt(generate_input_from.sample_length, generate_input_to.sample_length);
+        generate_input.length_variance = generate_input_from.length_variance; // keep constant
+        generate_input.type = generate_input_from.type; // keep constant
+        generate_input.k_scc = randomInt(generate_input_from.k_scc, generate_input_to.k_scc);
+
         const auto &testing_results = testAlgorithms(
             algorithms_to_test,
             generate_input
