@@ -33,13 +33,28 @@ void initFilesystem() {
     clearDirectory("automata/png_files");
 }
 
+int64_t computeTimeoutMs(const GenerateAutomatonInput &input) {
+    const int64_t base_timeout = 500;
+    const int64_t max_timeout = 60000;
+    const double scale_factor = 1.0;
+
+    const double sample_len = static_cast<double>(input.sample_length) * (1.0 + input.length_variance);
+
+    // complexity hint: O(states^missing * samples * sample_len)
+    const double state_pow = pow(input.num_states, input.missing_edges);
+    const double total_ops = state_pow * input.num_states * sample_len;
+
+    const double scaled_timeout = base_timeout + total_ops * (scale_factor * 0.0001); // 0.1ms per 1k ops (heuristic)
+
+    return static_cast<int64_t>(min(scaled_timeout, static_cast<double>(max_timeout)));
+}
+
 int main() {
     init();
     initFilesystem();
 
     const bool SAVE_AUTOMATA_TO_FILES = false;
     const size_t TEST_RUNS = 10;
-    const int64_t TIMEOUT_MS = 5000;
 
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
@@ -113,10 +128,12 @@ int main() {
         generate_input.type = generate_input_from.type; // keep constant
         generate_input.k_scc = randomInt(generate_input_from.k_scc, generate_input_to.k_scc);
 
+        const auto timeout_ms = computeTimeoutMs(generate_input);
+
         const auto &testing_results = testAlgorithms(
             algorithms_to_test,
             generate_input,
-            TIMEOUT_MS
+            timeout_ms
         );
 
         bool similar = check_similarity(
