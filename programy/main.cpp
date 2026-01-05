@@ -59,7 +59,7 @@ int main() {
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
     generate_input_from.num_states = 10;
-    generate_input_to.num_states = 150;
+    generate_input_to.num_states = 50;
 
     generate_input_from.alphabet_size = 4;
     generate_input_to.alphabet_size = 4;
@@ -68,7 +68,7 @@ int main() {
     generate_input_to.num_samples = 1000;
 
     generate_input_from.missing_edges = 2;
-    generate_input_to.missing_edges = 10;
+    generate_input_to.missing_edges = 4;
 
     generate_input_from.sample_length = 10;
     generate_input_to.sample_length = 200;
@@ -81,15 +81,16 @@ int main() {
 
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
-        {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
-        // {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
-        {"Brute Force With Jumps Iterative", PreprocessJumpsAlgorithm::run_iter},
+        // {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
+        {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
+        // {"Brute Force With Jumps Iterative", PreprocessJumpsAlgorithm::run_iter},
         // {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
         // {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
         // {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
         // {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
-        {"Heuristic Repair", HeuristicIterativeRepairAlgorithm::run<>},
+        // {"Heuristic Repair", HeuristicIterativeRepairAlgorithm::run<>},
         // {"Save Prefix State Iterative", SavePrefixState::run},
+        {"Pruning Experiment Recursive", PruningExperimentAlgorithm::run<>},
     };
 
 
