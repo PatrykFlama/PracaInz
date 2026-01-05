@@ -66,3 +66,29 @@ pair<int, int> randomIntInversedCorrelated(pair<int, int> range1, pair<int, int>
 
     return {first, second};
 }
+
+// generate num_states first, then choose missing_edges such that larger num_states are more likely to get smaller missing_edges
+// skew parameter controls how strongly missing_edges is reduced for larger num_states
+// (skew > 1 = stronger bias towards smaller missing_edges when num_states is large)
+pair<int, int> randomNumStatesAndScaledMissing(pair<int, int> num_range, pair<int, int> missing_range, float skew = 2.0f) {
+    int num = randomInt(num_range.first, num_range.second);
+
+    int missing_min = missing_range.first;
+    int missing_max = missing_range.second;
+
+    int num_span = num_range.second - num_range.first;
+    float frac = (num_span > 0) ? static_cast<float>(num - num_range.first) / static_cast<float>(num_span) : 0.5f;
+    if (frac < 0.0f) frac = 0.0f;
+    if (frac > 1.0f) frac = 1.0f;
+
+    // val in [0,1], where larger frac (bigger num) produces smaller val -> smaller allowed max
+    float val = 1.0f - std::pow(frac, skew);
+
+    int missing_span = missing_max - missing_min;
+    int max_allowed = missing_min + static_cast<int>(std::floor(val * static_cast<float>(missing_span) + 1e-6f));
+    if (max_allowed < missing_min) max_allowed = missing_min;
+    if (max_allowed > missing_max) max_allowed = missing_max;
+
+    int missing = randomInt(missing_min, max_allowed);
+    return {num, missing};
+}

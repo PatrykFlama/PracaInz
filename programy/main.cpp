@@ -54,7 +54,7 @@ int main() {
     initFilesystem();
 
     const bool SAVE_AUTOMATA_TO_FILES = false;
-    const size_t TEST_RUNS = 10;
+    const size_t TEST_RUNS = 10000;
 
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
@@ -114,9 +114,11 @@ int main() {
 
         // generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
         // generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
-        const auto [missing_edges, num_states] = randomIntInversedCorrelated(
+        // pick num_states first and then scale missing_edges down for larger state counts
+        const auto [num_states, missing_edges] = randomNumStatesAndScaledMissing(
+            {generate_input_from.num_states, generate_input_to.num_states},
             {generate_input_from.missing_edges, generate_input_to.missing_edges},
-            {generate_input_from.num_states, generate_input_to.num_states}
+            2.0f // skew: >1 biases missing_edges smaller for larger num_states
         );
         generate_input.num_states = num_states;
         generate_input.missing_edges = missing_edges;
