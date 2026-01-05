@@ -97,10 +97,17 @@ int main() {
     for (size_t i : tq::trange(TEST_RUNS)) {
         GenerateAutomatonInput generate_input;
 
-        generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
+        // generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
+        // generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
+        const auto [missing_edges, num_states] = randomIntInversedCorrelated(
+            {generate_input_from.missing_edges, generate_input_to.missing_edges},
+            {generate_input_from.num_states, generate_input_to.num_states}
+        );
+        generate_input.num_states = num_states;
+        generate_input.missing_edges = missing_edges;
+
         generate_input.alphabet_size = randomInt(generate_input_from.alphabet_size, generate_input_to.alphabet_size);
         generate_input.num_samples = randomInt(generate_input_from.num_samples, generate_input_to.num_samples);
-        generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
         generate_input.sample_length = randomInt(generate_input_from.sample_length, generate_input_to.sample_length);
         generate_input.length_variance = generate_input_from.length_variance; // keep constant
         generate_input.type = generate_input_from.type; // keep constant
