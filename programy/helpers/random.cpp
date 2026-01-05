@@ -22,16 +22,21 @@ pair<int, int> randomIntCorrelated(pair<int, int> range1, pair<int, int> range2)
     int first = randomInt(range1.first, range1.second);
     int second = randomInt(range2.first, range2.second);
 
-    float prob_higher = (float)(first - range1.first) / (range1.second - range1.first);
-    float prob_lower = 1.0f - prob_higher;
+    const int range1_span = range1.second - range1.first;
+    float prob_higher = range1_span > 0
+        ? static_cast<float>(first - range1.first) / range1_span
+        : 0.5f; // avoid division by zero when range is a single value
+    prob_higher = max(0.0f, min(1.0f, prob_higher));
 
     float rand_val = randomFloat(0.0f, 1.0f);
     if (rand_val < prob_higher) {
         // make second higher
-        second = randomInt(max(second, first), range2.second);
+        const int low = max(second, first);
+        second = (low > range2.second) ? range2.second : randomInt(low, range2.second);
     } else {
         // make second lower
-        second = randomInt(range2.first, min(second, first));
+        const int high = min(second, first);
+        second = (high < range2.first) ? range2.first : randomInt(range2.first, high);
     }
 
     return {first, second};
@@ -42,16 +47,21 @@ pair<int, int> randomIntInversedCorrelated(pair<int, int> range1, pair<int, int>
     int first = randomInt(range1.first, range1.second);
     int second = randomInt(range2.first, range2.second);
 
-    float prob_higher = (float)(first - range1.first) / (range1.second - range1.first);
-    float prob_lower = 1.0f - prob_higher;
+    const int range1_span = range1.second - range1.first;
+    float prob_higher = range1_span > 0
+        ? static_cast<float>(first - range1.first) / range1_span
+        : 0.5f; // avoid division by zero when range is a single value
+    prob_higher = max(0.0f, min(1.0f, prob_higher));
 
     float rand_val = randomFloat(0.0f, 1.0f);
     if (rand_val < prob_higher) {
         // make second lower
-        second = randomInt(range2.first, min(second, first));
+        const int high = min(second, first);
+        second = (high < range2.first) ? range2.first : randomInt(range2.first, high);
     } else {
         // make second higher
-        second = randomInt(max(second, first), range2.second);
+        const int low = max(second, first);
+        second = (low > range2.second) ? range2.second : randomInt(low, range2.second);
     }
 
     return {first, second};
