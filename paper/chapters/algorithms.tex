@@ -1,5 +1,7 @@
 \section{Podejście Brute Force}
 
+Podejście brute force polega na sprawdzeniu calej przestrzeni przeszukiwań, tzn. zapełnienia brakujących przejść w automacie kazda mozliwą ich kombinacją, a następnie zasymulowania kadej z próbek i sprawdzeniu czy kończy w stanie zgodnym z danymi wejściowymi.
+
 \section{Algorytm ze skokami (Jump Tables)}
 
 Algorytm ze skokami stanowi optymalizację symulacji przechodzenia próbką po automacie, z algorytmu Brute Force. Jego głównym celem jest zredukowanie liczby krawędzi, które muszą być przetworzone podczas weryfikacji próbki z automatem. \\
@@ -89,118 +91,122 @@ Czas budowy tablic skoków wynosi $\mathcal{O}(N \cdot M \cdot |Q|)$, gdzie $N$ 
 % TODO - elaborate; maybe drawing of example problematic case?
 Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w automacie. W najgorszym przypadku, gdy wszystkie przejścia są brakujące, czas walidacji pozostaje $\mathcal{O}(M)$, jednak w praktyce, dla automatu z niewielką liczbą brakujących przejść, czas ten może być znacznie mniejszy.
 
-
 \subsection{Heurystyka naprawy automatu z losowymi restartami}
 
-W celu praktycznego rozwiązania problemu naprawy brakujących przejść w deterministycznym automacie skończonym zastosowano heurystykę opartą na lokalnym przeszukiwaniu przestrzeni rozwiązań, uzupełnioną o mechanizm losowych restartów. Metoda ta ma na celu znalezienie automatu zgodnego ze wszystkimi przykładami pozytywnymi i negatywnymi, przy istotnie mniejszym koszcie obliczeniowym niż pełne przeszukiwanie metodą brutalną.
+Heurystyka polega na algorytmie hill climbing z losowymi restartami, w której funkcja celu to minimalizowanie liczby próbek, które kończą niepoprawnie względem danych wejściowych.
 
-\subsubsection{Ocena poprawności próbek}
+% old version of descprition hill climbing
+% \subsection{Heurystyka naprawy automatu z losowymi restartami}
 
-Podstawową operacją wykorzystywaną w algorytmie jest symulacja działania automatu na danej próbce wejściowej. Próbka uznawana jest za poprawnie sklasyfikowaną, jeżeli:
-\begin{itemize}
-    \item w trakcie symulacji nie zostanie napotkane brakujące przejście,
-    \item automat zakończy działanie w stanie akceptującym dla próbki pozytywnej,
-    \item automat zakończy działanie w stanie nieakceptującym dla próbki negatywnej.
-\end{itemize}
+% W celu praktycznego rozwiązania problemu naprawy brakujących przejść w deterministycznym automacie skończonym zastosowano heurystykę opartą na lokalnym przeszukiwaniu przestrzeni rozwiązań, uzupełnioną o mechanizm losowych restartów. Metoda ta ma na celu znalezienie automatu zgodnego ze wszystkimi przykładami pozytywnymi i negatywnymi, przy istotnie mniejszym koszcie obliczeniowym niż pełne przeszukiwanie metodą brutalną.
 
-\subsubsection{Hill Climbing}
+% \subsubsection{Ocena poprawności próbek}
 
-Główna część heurystyki opiera się na algorytmie hill climbing, który iteracyjnie modyfikuje przejścia automatu w celu minimalizacji liczby błędnie sklasyfikowanych próbek.
+% Podstawową operacją wykorzystywaną w algorytmie jest symulacja działania automatu na danej próbce wejściowej. Próbka uznawana jest za poprawnie sklasyfikowaną, jeżeli:
+% \begin{itemize}
+%     \item w trakcie symulacji nie zostanie napotkane brakujące przejście,
+%     \item automat zakończy działanie w stanie akceptującym dla próbki pozytywnej,
+%     \item automat zakończy działanie w stanie nieakceptującym dla próbki negatywnej.
+% \end{itemize}
 
-W każdej iteracji algorytm:
-\begin{enumerate}
-    \item identyfikuje zbiór próbek błędnie sklasyfikowanych przez aktualny automat,
-    \item dla każdej takiej próbki przechodzi przez kolejne symbole słowa,
-    \item dla każdego przejścia testuje wszystkie możliwe stany docelowe,
-    \item wybiera przejście minimalizujące całkowitą liczbę błędnych klasyfikacji.
-\end{enumerate}
+% \subsubsection{Hill Climbing}
 
-Jeżeli w danej iteracji nie nastąpi żadna poprawa, algorytm kończy działanie, uznając, że osiągnięto minimum lokalne.
+% Główna część heurystyki opiera się na algorytmie hill climbing, który iteracyjnie modyfikuje przejścia automatu w celu minimalizacji liczby błędnie sklasyfikowanych próbek.
 
-\subsubsection{Losowe restarty}
+% W każdej iteracji algorytm:
+% \begin{enumerate}
+%     \item identyfikuje zbiór próbek błędnie sklasyfikowanych przez aktualny automat,
+%     \item dla każdej takiej próbki przechodzi przez kolejne symbole słowa,
+%     \item dla każdego przejścia testuje wszystkie możliwe stany docelowe,
+%     \item wybiera przejście minimalizujące całkowitą liczbę błędnych klasyfikacji.
+% \end{enumerate}
 
-Ponieważ algorytm hill climbing może zatrzymać się w minimum lokalnym, zastosowano mechanizm losowych restartów. Każdy restart polega na:
-\begin{itemize}
-    \item przywróceniu wybrakowanego automatu do stanu początkowego,
-    \item losowej inicjalizacji wszystkich brakujących przejść,
-    \item ponownym uruchomieniu procedury hill climbing.
-\end{itemize}
+% Jeżeli w danej iteracji nie nastąpi żadna poprawa, algorytm kończy działanie, uznając, że osiągnięto minimum lokalne.
 
-Jeżeli w trakcie któregoś restartu zostanie znaleziony automat zgodny ze wszystkimi próbkami, algorytm kończy działanie sukcesem.
+% \subsubsection{Losowe restarty}
 
-\subsubsection{Złożoność obliczeniowa}
+% Ponieważ algorytm hill climbing może zatrzymać się w minimum lokalnym, zastosowano mechanizm losowych restartów. Każdy restart polega na:
+% \begin{itemize}
+%     \item przywróceniu wybrakowanego automatu do stanu początkowego,
+%     \item losowej inicjalizacji wszystkich brakujących przejść,
+%     \item ponownym uruchomieniu procedury hill climbing.
+% \end{itemize}
 
-Niech:
-\begin{itemize}
-    \item $n$ oznacza liczbę stanów automatu,
-    \item $m$ maksymalną długość próbki,
-    \item $|S|$ łączną liczbę próbek,
-    \item $I$ maksymalną liczbę iteracji hill climbing,
-    \item $R$ liczbę losowych restartów.
-\end{itemize}
+% Jeżeli w trakcie któregoś restartu zostanie znaleziony automat zgodny ze wszystkimi próbkami, algorytm kończy działanie sukcesem.
 
-Złożoność heurystyki z losowymi restartami wynosi:
-\[
-\mathcal{O}(R \cdot I \cdot |S| \cdot m \cdot n),
-\]
-co w praktyce pozwala na znaczące przyspieszenie względem algorytmu brutalnego kosztem braku gwarancji znalezienia rozwiązania optymalnego.
+% \subsubsection{Złożoność obliczeniowa}
 
-\subsubsection{Pseudokod algorytmu}
+% Niech:
+% \begin{itemize}
+%     \item $n$ oznacza liczbę stanów automatu,
+%     \item $m$ maksymalną długość próbki,
+%     \item $|S|$ łączną liczbę próbek,
+%     \item $I$ maksymalną liczbę iteracji hill climbing,
+%     \item $R$ liczbę losowych restartów.
+% \end{itemize}
 
-\begin{algorithm}[H]
-\caption{Heurystyczna naprawa automatu z losowymi restartami}
-\KwIn{Wybrakowany automat $A = (Q,\Sigma,\delta,q_0,F)$, próbki pozytywne $S^+$, próbki negatywne $S^-$}
-\KwOut{Naprawiony automat $A'$ lub informacja o niepowodzeniu}
+% Złożoność heurystyki z losowymi restartami wynosi:
+% \[
+% \mathcal{O}(R \cdot I \cdot |S| \cdot m \cdot n),
+% \]
+% co w praktyce pozwala na znaczące przyspieszenie względem algorytmu brutalnego kosztem braku gwarancji znalezienia rozwiązania optymalnego.
 
-\For{$r \leftarrow 1$ \KwTo $R$}{
-    $A_r \leftarrow A$\;
-    Losowo uzupełnij wszystkie brakujące przejścia w $A_r$\;
+% \subsubsection{Pseudokod algorytmu}
 
-    \For{$i \leftarrow 1$ \KwTo $I$}{
-        $invalid \leftarrow \{w \in S^+ \cup S^- \mid A_r \text{ błędnie klasyfikuje } w\}$\;
+% \begin{algorithm}[H]
+% \caption{Heurystyczna naprawa automatu z losowymi restartami}
+% \KwIn{Wybrakowany automat $A = (Q,\Sigma,\delta,q_0,F)$, próbki pozytywne $S^+$, próbki negatywne $S^-$}
+% \KwOut{Naprawiony automat $A'$ lub informacja o niepowodzeniu}
 
-        \If{$invalid = \emptyset$}{
-            \Return{$A_r$}
-        }
+% \For{$r \leftarrow 1$ \KwTo $R$}{
+%     $A_r \leftarrow A$\;
+%     Losowo uzupełnij wszystkie brakujące przejścia w $A_r$\;
 
-        $any\_change \leftarrow false$\;
+%     \For{$i \leftarrow 1$ \KwTo $I$}{
+%         $invalid \leftarrow \{w \in S^+ \cup S^- \mid A_r \text{ błędnie klasyfikuje } w\}$\;
 
-        \ForEach{$w \in invalid$}{
-            $q \leftarrow q_0$\;
+%         \If{$invalid = \emptyset$}{
+%             \Return{$A_r$}
+%         }
 
-            \For{$j \leftarrow 0$ \KwTo $|w|-1$}{
-                $a \leftarrow w[j]$\;
-                $q_{\text{old}} \leftarrow \delta(q,a)$\;
-                $best \leftarrow q_{\text{old}}$\;
-                $best\_errors \leftarrow |invalid|$\;
+%         $any\_change \leftarrow false$\;
 
-                \ForEach{$p \in Q$}{
-                    \If{$p \neq q_{\text{old}}$}{
-                        tymczasowo ustaw $\delta(q,a) \leftarrow p$\;
-                        $errors \leftarrow$ liczba błędnie sklasyfikowanych próbek z $S^+ \cup S^-$\;
+%         \ForEach{$w \in invalid$}{
+%             $q \leftarrow q_0$\;
 
-                        \If{$errors < best\_errors$}{
-                            $best \leftarrow p$\;
-                            $best\_errors \leftarrow errors$\;
-                        }
-                    }
-                }
+%             \For{$j \leftarrow 0$ \KwTo $|w|-1$}{
+%                 $a \leftarrow w[j]$\;
+%                 $q_{\text{old}} \leftarrow \delta(q,a)$\;
+%                 $best \leftarrow q_{\text{old}}$\;
+%                 $best\_errors \leftarrow |invalid|$\;
 
-                ustaw $\delta(q,a) \leftarrow best$\;
+%                 \ForEach{$p \in Q$}{
+%                     \If{$p \neq q_{\text{old}}$}{
+%                         tymczasowo ustaw $\delta(q,a) \leftarrow p$\;
+%                         $errors \leftarrow$ liczba błędnie sklasyfikowanych próbek z $S^+ \cup S^-$\;
 
-                \If{$best \neq q_{\text{old}}$}{
-                    $any\_change \leftarrow true$\;
-                }
+%                         \If{$errors < best\_errors$}{
+%                             $best \leftarrow p$\;
+%                             $best\_errors \leftarrow errors$\;
+%                         }
+%                     }
+%                 }
 
-                $q \leftarrow best$\;
-            }
-        }
+%                 ustaw $\delta(q,a) \leftarrow best$\;
 
-        \If{$any\_change = false$}{
-            \textbf{przerwij}
-        }
-    }
-}
+%                 \If{$best \neq q_{\text{old}}$}{
+%                     $any\_change \leftarrow true$\;
+%                 }
 
-\Return{\textbf{niepowodzenie}}
-\end{algorithm}
+%                 $q \leftarrow best$\;
+%             }
+%         }
+
+%         \If{$any\_change = false$}{
+%             \textbf{przerwij}
+%         }
+%     }
+% }
+
+% \Return{\textbf{niepowodzenie}}
+% \end{algorithm}
