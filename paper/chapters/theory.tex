@@ -42,16 +42,6 @@ W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Jest t
 Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
 
 \subsection{Definicja problemu (uproszczona)}
-% TODO
-% - wejście:
-%     - DFA, w którym:
-%         - niektóre przejścia są nieokreślone
-%     - zbiór próbek pozytywnych $S^+$ (słowa akceptowane)
-%     - zbiór próbek negatywnych $S^-$ (słowa odrzucane)
-% - wyjście:
-%     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$
-
-% tą wersję problemu tak na prawdę będziemy analizować 
 
 \begin{definition}[Problem naprawienia częściowego DFA (uproszczony)]
 \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i $S^{-} \subseteq \Sigma^{*}$. Liczba stanów $|Q|$ jest ustalona.
@@ -76,12 +66,34 @@ Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i 
 
 
 \section{FPT}
-% TODO
+
 \subsection{W[1]-trudność}
-% TODO
-% Redukcja k-klik do naszego problemu
+
+\begin{definition}[Problem klik]
+\textbf{Wejście:} graf nieskierowany $G = (V, E)$.
+
+\noindent \textbf{Wyjście:} klika w grafie $G$, czyli podzbiór wierzchołków $V' \subseteq V$ taki, że dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
+
+\noindent Problem kliki należy do problemów NP-zupełnych. 
+\end{definition}
+
+
+\begin{definition}[Problem k-klik]
+\noindent Problem k-klik to zparametryzowana (\textit{Fixed Parameter Traceability}) wersja problemu kliki, w której dodatkowo podana jest liczba całkowita $k$ i należy odpowiedzieć, czy w grafie istnieje klika o rozmiarze co najmniej $k$.
+
+\noindent\textbf{Wejście:} graf nieskierowany $G = (V, E)$ oraz liczba całkowita $k$.
+
+\noindent \textbf{Wyjście:} odpowiedź, czy w grafie $G$ istnieje kliką o rozmiarze co najmniej $k$, czyli podzbiór $V' \subseteq V$ taki, że $|V'| \geq k$ oraz dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
+
+\noindent Problem k-klik należy do klasy W[1]-zupełnych problemów.
+% TODO: link to source/reference
+\end{definition}
+
+Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmżemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmiarze co najmniej $k$. Dodatkowo pokażemy jak z rozwiązanego problemu naprawienia częściowego DFA wyprowadzić rozwiązanie problemu k-klik.
+% TODO: 'pokażemy' - is this adequate in sentence?
 
 \subsubsection{Dla $|\Sigma|=O(n)$}
+
 
 % TODO explain figure
 \import{theory}{reduction_kclique_n}

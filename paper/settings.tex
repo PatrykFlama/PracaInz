@@ -50,7 +50,16 @@ urlcolor=black,%
     {\thmname{#1}\thmnumber{ #2}\thmnote{ - #3}}% Head spec
 
 \theoremstyle{definition-break}
-\newtheorem{definition}{Definicja}
+\newtheorem{definition}{Definicja}[section]
+
+% Other environments
+\newtheorem{fact}{Fakt}[section]
+\newtheorem{theorem}{Twierdzenie}[section]
+\newtheorem{lemma}{Lemat}[theorem]
+
+% Special characters
+\renewcommand\qedsymbol{$\square$}
+
 
 % Path to images
 \graphicspath{ {./images/} }
