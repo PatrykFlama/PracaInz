@@ -113,7 +113,7 @@ Na koniec musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli 
 
 Zagwarantowanie tego faktu opiera się na prostej obserwacji: krawędź $\text{choice}_i$, nie prowadząca do stanu odrzucającego, znajduje się za wierzchołkami $v_i$. Oznacza to, że aby słowo zostało zaakceptowane, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $\text{choice}_i$ do stanu akceptującego. \\
 Aby uprościć tą obserwację, możemy dodać dodatkową krawędź między stanem $v_i$ a wierzchołkami $u_i$, tak jak na rysunku \ref{fig:kcliquen-v2}. \\
-W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{choice}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{choice}$ do stanu akceptującego. \\y
+W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{test}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{test}$ do stanu akceptującego. \\y
 
 \import{theory/figures}{reduction_kclique_n_v2}
 

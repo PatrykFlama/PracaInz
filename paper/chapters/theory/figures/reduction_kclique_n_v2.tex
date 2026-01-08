@@ -40,8 +40,8 @@
     \draw[->,dashed,thick] (s) -- (tlast) node[midway,above] {$p_{k}$};
 
     % krawędź choice
-    \node[draw,state,inner sep=2pt] (choice_edge) at (6,-1.6) {$ $};
-    \draw[->,thick] (vi) -- (choice_edge) node[midway,above] {$\text{choice}$};
+    \node[draw,state,inner sep=2pt] (test_edge) at (6,-1.6) {$ $};
+    \draw[->,thick] (vi) -- (test_edge) node[midway,above] {$\text{test}$};
 
     % sekcja weryfikacji wierzchołka
     \node[draw,state,inner sep=2pt] (vv1) at (7.5,-0.2) {$q_{\lambda}$};
@@ -50,9 +50,9 @@
     \node (vdots1) at (7.5,-2.2) {$\vdots$};
     \node[draw,state,inner sep=2pt] (vvn) at (7.5,-3) {$q_{\lambda}$};
 
-    \draw[->,thick] (choice_edge) -- (vv1) node[midway,above] {$e_1$};
-    \draw[->,thick] (choice_edge) -- (vvi) node[midway,above] {$e_i$};
-    \draw[->,thick] (choice_edge) -- (vvn) node[midway,above] {$e_n$};
+    \draw[->,thick] (test_edge) -- (vv1) node[midway,above] {$e_1$};
+    \draw[->,thick] (test_edge) -- (vvi) node[midway,above] {$e_i$};
+    \draw[->,thick] (test_edge) -- (vvn) node[midway,above] {$e_n$};
 
     % sekcja wyboru
     \node[draw,state,inner sep=2pt] (choice1) at (10,-0.8) {$q_{\lambda}$};
@@ -71,7 +71,7 @@
         draw=green!60!black,
         thick,
         rounded corners,
-        fit=(vv1)(vvi)(vvn)(choice1)(choice2)(accept)(reject)(choice_edge),
+        fit=(vv1)(vvi)(vvn)(choice1)(choice2)(accept)(reject)(test_edge),
         label={[green!60!black]above:dla każdego $v_i$}
     ] {};
 
