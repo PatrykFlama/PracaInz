@@ -58,6 +58,8 @@ int main() {
     
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
+    // if generate_input_from.value is defined (non-zero), then that value is used for drawing from range
+
     const vector<int> NUM_STATES_CHOICES = {10, 50, 100};
     // generate_input_from.num_states = 50;
     // generate_input_to.num_states = 50;
@@ -66,15 +68,16 @@ int main() {
     generate_input_to.alphabet_size = 4;
 
     const vector<int> NUM_SAMPLES_CHOICES = {10, 100, 1000};
-    // generate_input_from.num_samples = 10;
-    // generate_input_to.num_samples = 1000;
+    generate_input_from.num_samples = 10;
+    generate_input_to.num_samples = 1000;
 
+    const vector<int> MISSING_EDGES_CHOICES = {4, 6, 8};
     generate_input_from.missing_edges = 4;
     generate_input_to.missing_edges = 4;
 
     const vector<int> SAMPLE_LENGTH_CHOICES = {10, 100, 1000};
-    // generate_input_from.sample_length = 10;
-    // generate_input_to.sample_length = 1000;
+    generate_input_from.sample_length = 10;
+    generate_input_to.sample_length = 1000;
 
     generate_input_from.length_variance = 0.2f;
     generate_input_from.type = AUTOMATON_SIMPLE;
@@ -121,6 +124,7 @@ int main() {
         // );
         // generate_input.num_states = num_states;
         // generate_input.missing_edges = missing_edges;
+
         if (generate_input_from.num_states == 0) {
             generate_input.num_states = randomInt(NUM_STATES_CHOICES);
         } else if (generate_input_from.num_states == generate_input_to.num_states) {
@@ -129,7 +133,11 @@ int main() {
             generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
         }
 
-        generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
+        if (generate_input_from.missing_edges == generate_input_to.missing_edges) {
+            generate_input.missing_edges = generate_input_from.missing_edges;
+        } else {
+            generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
+        }
 
         generate_input.alphabet_size = randomInt(generate_input_from.alphabet_size, generate_input_to.alphabet_size);
 
