@@ -7,5 +7,5 @@
 *.out
 *.run.xml
 *.bcf
-*.bbl
+*.bbl*
 *.blg
