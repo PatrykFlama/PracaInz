@@ -58,8 +58,9 @@ int main() {
     
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
-    generate_input_from.num_states = 50;
-    generate_input_to.num_states = 50;
+    const vector<int> NUM_STATES_CHOICES = {10, 50, 100};
+    // generate_input_from.num_states = 50;
+    // generate_input_to.num_states = 50;
 
     generate_input_from.alphabet_size = 4;
     generate_input_to.alphabet_size = 4;
@@ -113,16 +114,22 @@ int main() {
     for (size_t i : tq::trange(TEST_RUNS)) {
         GenerateAutomatonInput generate_input;
 
-        // generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
-        // generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
-        // pick num_states first and then scale missing_edges down for larger state counts
-        const auto [num_states, missing_edges] = randomNumStatesAndScaledMissing(
-            pair<int,int>{generate_input_from.num_states, generate_input_to.num_states},
-            pair<int,int>{generate_input_from.missing_edges, generate_input_to.missing_edges},
-            2.0f // skew: >1 biases missing_edges smaller for larger num_states
-        );
-        generate_input.num_states = num_states;
-        generate_input.missing_edges = missing_edges;
+        // const auto [num_states, missing_edges] = randomNumStatesAndScaledMissing(
+        //     pair<int,int>{generate_input_from.num_states, generate_input_to.num_states},
+        //     pair<int,int>{generate_input_from.missing_edges, generate_input_to.missing_edges},
+        //     2.0f // skew: >1 biases missing_edges smaller for larger num_states
+        // );
+        // generate_input.num_states = num_states;
+        // generate_input.missing_edges = missing_edges;
+        if (generate_input_from.num_states == 0) {
+            generate_input.num_states = randomInt(NUM_STATES_CHOICES);
+        } else if (generate_input_from.num_states == generate_input_to.num_states) {
+            generate_input.num_states = generate_input_from.num_states;
+        } else {
+            generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
+        }
+
+        generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
 
         generate_input.alphabet_size = randomInt(generate_input_from.alphabet_size, generate_input_to.alphabet_size);
 
