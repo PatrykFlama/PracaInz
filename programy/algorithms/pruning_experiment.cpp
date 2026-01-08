@@ -78,6 +78,7 @@ namespace PruningExperimentAlgorithm {
 
         auto split_strategy = [&](size_t total_samples) -> size_t {
             return (size_t)min(pow(broken_automaton.num_states, 2), (double)total_samples);
+            // return total_samples / 2;
         };
 
         const auto pos_samples = split_samples(

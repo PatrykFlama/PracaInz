@@ -55,10 +55,10 @@ int main() {
 
     const bool SAVE_AUTOMATA_TO_FILES = false;
     const size_t TEST_RUNS = 10000;
-
+    
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
-    generate_input_from.num_states = 10;
+    generate_input_from.num_states = 50;
     generate_input_to.num_states = 50;
 
     generate_input_from.alphabet_size = 4;
@@ -67,11 +67,11 @@ int main() {
     generate_input_from.num_samples = 10;
     generate_input_to.num_samples = 1000;
 
-    generate_input_from.missing_edges = 2;
-    generate_input_to.missing_edges = 4;
+    generate_input_from.missing_edges = 1;
+    generate_input_to.missing_edges = 5;
 
     generate_input_from.sample_length = 10;
-    generate_input_to.sample_length = 200;
+    generate_input_to.sample_length = 1000;
 
     generate_input_from.length_variance = 0.2f;
     generate_input_from.type = AUTOMATON_SIMPLE;
@@ -80,11 +80,12 @@ int main() {
     generate_input_to.k_scc = 3;
 
 
+
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
         // {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
         {"Brute Force Recursive", {BruteForceAlgorithm::run_rec<>}},
         // {"Brute Force With Jumps Iterative", PreprocessJumpsAlgorithm::run_iter},
-        // {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
+        {"Brute Force With Jumps Recursive", PreprocessJumpsAlgorithm::run_rec},
         // {"Brute Force With Edge Heuristic", {EdgeOrderingAlgorithm::run_backtracking_dynamic<>}},
         // {"Brute Force With Sample Heuristic Iterative", OrderingSamplesAlgorithm::run_iter},
         // {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
@@ -136,31 +137,31 @@ int main() {
             timeout_ms
         );
 
-        bool similar = check_similarity(
-            testing_results,
-            algorithm_names,
-            "Brute Force Iterative",
-            {"Brute Force Iterative"},
-            0.05
-        );
+        // bool similar = check_similarity(
+        //     testing_results,
+        //     algorithm_names,
+        //     "Brute Force Iterative",
+        //     {"Brute Force Iterative"},
+        //     0.05
+        // );
 
 
-        if (similar) {
-            const Automaton &A = testing_results[0].input.broken_automaton;
-            const Automaton &B = testing_results[0].output.fixed_automaton;
+        // if (similar) {
+        //     const Automaton &A = testing_results[0].input.broken_automaton;
+        //     const Automaton &B = testing_results[0].output.fixed_automaton;
    
-            Samples p = testing_results[0].input.positive_samples;
-            Samples n = testing_results[0].input.negative_samples;
-            EdgeStats stats = computeEdgeStats(B, p, n);
+        //     Samples p = testing_results[0].input.positive_samples;
+        //     Samples n = testing_results[0].input.negative_samples;
+        //     EdgeStats stats = computeEdgeStats(B, p, n);
 
-            string dot = "automata/dot_files/automaton_run_" + to_string(i) + ".dot";
-            string png = "automata/png_files/automaton_run_" + to_string(i) + ".png";
+        //     string dot = "automata/dot_files/automaton_run_" + to_string(i) + ".dot";
+        //     string png = "automata/png_files/automaton_run_" + to_string(i) + ".png";
 
-            if (SAVE_AUTOMATA_TO_FILES) {
-                saveAutomatonAsDot(A, B, stats, dot);
-                renderDotToPng(dot, png);
-            }
-        }
+        //     if (SAVE_AUTOMATA_TO_FILES) {
+        //         saveAutomatonAsDot(A, B, stats, dot);
+        //         renderDotToPng(dot, png);
+        //     }
+        // }
 
         for (size_t j = 0; j < testing_results.size(); ++j) {
             testing_times_sum[j] += testing_results[j].runtime_ms;
