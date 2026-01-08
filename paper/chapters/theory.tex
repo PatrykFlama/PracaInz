@@ -107,7 +107,7 @@ Chcemy aby krawędzie $p_i$ prowadziły do stanów $v_j$, które reprezentują w
 Dodatkowo nie możemy wybrać tego samego wierzchołka wielokrotnie, więc musimy zagwarantować, że dla różnych przejść $p_x$ i $p_y$ wybieramy różne wierzchołki $v_i$ i $v_j$. \\
 Na koniec musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
 
-
+% TODO: remove figure V1 and replace it with figure V2 - then explain that edge 'test' is actually not neeeed
 %* zagwarantowanie że wybieramy wierzchołki v_i
 \textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
 
@@ -119,7 +119,10 @@ W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś
 
 % TODO: zagwarantowanie że wybieramy różne wierzchołki dla różnych przejść p_i
 \textbf{Wybór różnych wierzchołków $v_i$ dla różnych przejść $p_x$}
+Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $p_y$ wystarczy stworzyć próbki postaci: 
+$$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{test} \ e_i \ \text{choice}_1 \ p_y \ \text{test} \ e_i }$$
 
+% TODO explain why it works
 
 % TODO: zagwarantowanie że wybrane wierzchołki tworzą klikę
 \textbf{Gwarancja, że wybrane wierzchołki $v_i$ tworzą klikę w oryginalnym grafie}
