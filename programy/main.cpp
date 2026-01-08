@@ -64,14 +64,16 @@ int main() {
     generate_input_from.alphabet_size = 4;
     generate_input_to.alphabet_size = 4;
 
-    generate_input_from.num_samples = 10;
-    generate_input_to.num_samples = 1000;
+    const vector<int> NUM_SAMPLES_CHOICES = {10, 100, 1000};
+    // generate_input_from.num_samples = 10;
+    // generate_input_to.num_samples = 1000;
 
-    generate_input_from.missing_edges = 1;
-    generate_input_to.missing_edges = 5;
+    generate_input_from.missing_edges = 4;
+    generate_input_to.missing_edges = 4;
 
-    generate_input_from.sample_length = 10;
-    generate_input_to.sample_length = 1000;
+    const vector<int> SAMPLE_LENGTH_CHOICES = {10, 100, 1000};
+    // generate_input_from.sample_length = 10;
+    // generate_input_to.sample_length = 1000;
 
     generate_input_from.length_variance = 0.2f;
     generate_input_from.type = AUTOMATON_SIMPLE;
@@ -115,19 +117,31 @@ int main() {
         // generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
         // pick num_states first and then scale missing_edges down for larger state counts
         const auto [num_states, missing_edges] = randomNumStatesAndScaledMissing(
-            {generate_input_from.num_states, generate_input_to.num_states},
-            {generate_input_from.missing_edges, generate_input_to.missing_edges},
+            pair<int,int>{generate_input_from.num_states, generate_input_to.num_states},
+            pair<int,int>{generate_input_from.missing_edges, generate_input_to.missing_edges},
             2.0f // skew: >1 biases missing_edges smaller for larger num_states
         );
         generate_input.num_states = num_states;
         generate_input.missing_edges = missing_edges;
 
         generate_input.alphabet_size = randomInt(generate_input_from.alphabet_size, generate_input_to.alphabet_size);
-        generate_input.num_samples = randomInt(generate_input_from.num_samples, generate_input_to.num_samples);
-        generate_input.sample_length = randomInt(generate_input_from.sample_length, generate_input_to.sample_length);
+
+        if (generate_input_from.num_samples == 0) {
+            generate_input.num_samples = randomInt(NUM_SAMPLES_CHOICES);
+        } else {
+            generate_input.num_samples = randomInt(generate_input_from.num_samples, generate_input_to.num_samples);
+        }
+        
+        if (generate_input_from.sample_length == 0) {
+            generate_input.sample_length = randomInt(SAMPLE_LENGTH_CHOICES);
+        } else {
+            generate_input.sample_length = randomInt(generate_input_from.sample_length, generate_input_to.sample_length);
+        }
+
         generate_input.length_variance = generate_input_from.length_variance; // keep constant
         generate_input.type = generate_input_from.type; // keep constant
         generate_input.k_scc = randomInt(generate_input_from.k_scc, generate_input_to.k_scc);
+
 
         const auto timeout_ms = computeTimeoutMs(generate_input);
 

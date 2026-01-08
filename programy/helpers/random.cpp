@@ -12,6 +12,21 @@ int randomInt(int min_inclusive, int max_inclusive) {
     return min_inclusive + (rand() % (max_inclusive - min_inclusive + 1));
 }
 
+// pick a random element from an explicit set of integer choices
+int randomInt(const vector<int> &choices) {
+    if (choices.empty()) return 0;
+    if (choices.size() == 1) return choices[0];
+    
+    int idx = rand() % static_cast<int>(choices.size());
+    return choices[idx];
+}
+
+// convenience overload for initializer_list
+int randomInt(initializer_list<int> choices) {
+    vector<int> v(choices);
+    return randomInt(v);
+}
+
 float randomFloat(float min_inclusive, float max_inclusive) {
     float scale = rand() / (float) RAND_MAX; // [0, 1.0]
     return min_inclusive + scale * (max_inclusive - min_inclusive); // [min, max]

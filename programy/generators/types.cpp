@@ -13,13 +13,13 @@ enum AutomatonType {
 
 
 struct GenerateAutomatonInput {
-    AutomatonType type;
-    State num_states;
-    Alphabet alphabet_size;
-    uint missing_edges;
-    uint num_samples;
-    uint sample_length;
-    float length_variance;
+    AutomatonType type = AUTOMATON_SIMPLE;
+    State num_states = 0;
+    Alphabet alphabet_size = 0;
+    uint missing_edges = 0;
+    uint num_samples = 0;
+    uint sample_length = 0;
+    float length_variance = 0.0f;
     uint k_scc = 0;
 };
 
