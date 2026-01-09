@@ -61,7 +61,7 @@ int main() {
 
     const vector<int> NUM_STATES_CHOICES = {10, 50, 100};
     generate_input_from.num_states = 20;
-    generate_input_to.num_states = 20;
+    generate_input_to.num_states = 200;
     const string NUM_STATES_METHOD = "fixed"; // "fixed" "iterate" "random_linear" "random_set"
 
     generate_input_from.alphabet_size = 5;
@@ -74,12 +74,12 @@ int main() {
     const string NUM_SAMPLES_METHOD = "iterate"; // "fixed" "iterate" "random_linear" "random_set"
 
     const vector<int> MISSING_EDGES_CHOICES = {4, 6, 8};
-    generate_input_from.missing_edges = 4;
+    generate_input_from.missing_edges = 5;
     generate_input_to.missing_edges = 6;
     const string MISSING_EDGES_METHOD = "fixed"; // "fixed" "iterate" "random_linear" "random_set"
 
     const vector<int> SAMPLE_LENGTH_CHOICES = {10, 100, 1000};
-    generate_input_from.sample_length = 30;
+    generate_input_from.sample_length = 200;
     generate_input_to.sample_length = 1000;
     const string SAMPLE_LENGTH_METHOD = "fixed"; // "fixed" "iterate" "random_linear" "random_set"
 
