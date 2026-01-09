@@ -58,26 +58,30 @@ int main() {
     
     GenerateAutomatonInput generate_input_from, generate_input_to;
 
-    // if generate_input_from.value is defined (non-zero), then that value is used for drawing from range
 
     const vector<int> NUM_STATES_CHOICES = {10, 50, 100};
-    // generate_input_from.num_states = 50;
-    // generate_input_to.num_states = 50;
+    generate_input_from.num_states = 20;
+    generate_input_to.num_states = 20;
+    const string NUM_STATES_METHOD = "fixed"; // "fixed" "iterate" "random_linear" "random_set"
 
-    generate_input_from.alphabet_size = 4;
-    generate_input_to.alphabet_size = 4;
+    generate_input_from.alphabet_size = 5;
+    generate_input_to.alphabet_size = 5;
+    const string ALPHABET_SIZE_METHOD = "fixed";
 
     const vector<int> NUM_SAMPLES_CHOICES = {10, 100, 1000};
-    generate_input_from.num_samples = 10;
+    generate_input_from.num_samples = 30;
     generate_input_to.num_samples = 1000;
+    const string NUM_SAMPLES_METHOD = "iterate"; // "fixed" "iterate" "random_linear" "random_set"
 
     const vector<int> MISSING_EDGES_CHOICES = {4, 6, 8};
     generate_input_from.missing_edges = 4;
-    generate_input_to.missing_edges = 4;
+    generate_input_to.missing_edges = 6;
+    const string MISSING_EDGES_METHOD = "fixed"; // "fixed" "iterate" "random_linear" "random_set"
 
     const vector<int> SAMPLE_LENGTH_CHOICES = {10, 100, 1000};
-    generate_input_from.sample_length = 10;
+    generate_input_from.sample_length = 30;
     generate_input_to.sample_length = 1000;
+    const string SAMPLE_LENGTH_METHOD = "fixed"; // "fixed" "iterate" "random_linear" "random_set"
 
     generate_input_from.length_variance = 0.2f;
     generate_input_from.type = AUTOMATON_SIMPLE;
@@ -85,7 +89,17 @@ int main() {
     generate_input_from.k_scc = 3;
     generate_input_to.k_scc = 3;
 
-
+    map<string, function<int(int, int)>> general_sampling_methods = {
+        {"fixed", [](int from, int to) { return from; }},
+        {"iterate", [](int from, int to) { static int current = from - 1; current++; if (current > to) current = from; return current; }},
+        {"random_linear", [](int from, int to) { return randomInt(from, to); }},
+        {"random_set", [](int from, int to) { const vector<int> choices = {4, 6, 8}; return randomInt(choices); }},
+    };
+    function<int(int from, int to, const string &method, const map<string, function<int(int, int)>> &methods)> apply_method =
+        [](int from, int to, const string &method, const map<string, function<int(int, int)>> &methods) {
+            return methods.at(method)(from, to);
+        };
+    
 
     const vector<pair<string, function<AlgorithmOutput(AlgorithmInput)>>> algorithms = {
         // {"Brute Force Iterative", {BruteForceAlgorithm::run_iter<>}},
@@ -97,7 +111,7 @@ int main() {
         // {"Brute Force With Sample Heuristic Recursive", OrderingSamplesAlgorithm::run_rec},
         // {"Heuristic Repair", HeuristicIterativeRepairAlgorithm::run<>},
         // {"Save Prefix State Iterative", SavePrefixState::run},
-        {"Pruning Experiment Recursive", PruningExperimentAlgorithm::run<>},
+        // {"Pruning Experiment Recursive", PruningExperimentAlgorithm::run<>},
     };
 
 
@@ -125,33 +139,40 @@ int main() {
         // generate_input.num_states = num_states;
         // generate_input.missing_edges = missing_edges;
 
-        if (generate_input_from.num_states == 0) {
-            generate_input.num_states = randomInt(NUM_STATES_CHOICES);
-        } else if (generate_input_from.num_states == generate_input_to.num_states) {
-            generate_input.num_states = generate_input_from.num_states;
-        } else {
-            generate_input.num_states = randomInt(generate_input_from.num_states, generate_input_to.num_states);
-        }
+        generate_input.num_states = apply_method(
+            generate_input_from.num_states,
+            generate_input_to.num_states,
+            NUM_STATES_METHOD,
+            general_sampling_methods
+        );
 
-        if (generate_input_from.missing_edges == generate_input_to.missing_edges) {
-            generate_input.missing_edges = generate_input_from.missing_edges;
-        } else {
-            generate_input.missing_edges = randomInt(generate_input_from.missing_edges, generate_input_to.missing_edges);
-        }
+        generate_input.missing_edges = apply_method(
+            generate_input_from.missing_edges,
+            generate_input_to.missing_edges,
+            MISSING_EDGES_METHOD,
+            general_sampling_methods
+        );
 
-        generate_input.alphabet_size = randomInt(generate_input_from.alphabet_size, generate_input_to.alphabet_size);
+        generate_input.alphabet_size = apply_method(
+            generate_input_from.alphabet_size,
+            generate_input_to.alphabet_size,
+            ALPHABET_SIZE_METHOD,
+            general_sampling_methods
+        );
 
-        if (generate_input_from.num_samples == 0) {
-            generate_input.num_samples = randomInt(NUM_SAMPLES_CHOICES);
-        } else {
-            generate_input.num_samples = randomInt(generate_input_from.num_samples, generate_input_to.num_samples);
-        }
-        
-        if (generate_input_from.sample_length == 0) {
-            generate_input.sample_length = randomInt(SAMPLE_LENGTH_CHOICES);
-        } else {
-            generate_input.sample_length = randomInt(generate_input_from.sample_length, generate_input_to.sample_length);
-        }
+        generate_input.num_samples = apply_method(
+            generate_input_from.num_samples,
+            generate_input_to.num_samples,
+            NUM_SAMPLES_METHOD,
+            general_sampling_methods
+        );
+
+        generate_input.sample_length = apply_method(
+            generate_input_from.sample_length,
+            generate_input_to.sample_length,
+            SAMPLE_LENGTH_METHOD,
+            general_sampling_methods
+        );
 
         generate_input.length_variance = generate_input_from.length_variance; // keep constant
         generate_input.type = generate_input_from.type; // keep constant
