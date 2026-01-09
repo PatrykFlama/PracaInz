@@ -1,0 +1,7 @@
+Przez eksperymenty chcieliśmy pokazać wyraźnie szybsze działanie algorytmu ze skokami w stosunku do reszty. Chcieliśmy również zbadać zależność zmiany parametrów liczby próbek oraz długości próbek w stosunku do czasu wykonywania. W poniższych wynikach zdecydowaliśmy się pominąć przedstawienie heurystyki, ze względu na jej zbyt długi czas działania w stosunku do reszty.
+
+Testy przeprowadzaliśmy na stałych parametrach, jedynie badany parametr jest zmieniany. Automat oraz próbki przygotowywaliśmy w podany sposób:
+- generowaliśmy losowy automat pełny
+- na podstawie tak wygenerowanego automatu generowaliśmy losowe próbki
+- losowo usuwaliśmy przejścia z automat, które są zawarte w próbce/próbkach.
+Dzięki temu automatycznie wykluczamy wszystkie przypadki przejść, które mogłyby zostać poprowadzone w dowolny sposób i zakłócać testowanie.
