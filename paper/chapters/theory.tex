@@ -97,20 +97,33 @@ Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat o
 
 Na rysunku \ref{fig:kcliquen-v2} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
 Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
-Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone, prowadzi do stanu odrzucającego (dowolne przejście ze stanu odrzucającego prowadzi z powrotem do niego).
+Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone, prowadzi do stanu odrzucającego $\text{sink}_-$.
+% TODO: o boxie 'dla każdego v_i'
 
 \import{theory/figures}{reduction_kclique_n_v2}
 
 \noindent Idea konstrukcji: \\
 
 Chcemy aby krawędzie $p_?$ prowadziły do stanów $v_?$. Jeżeli krawędź $p_x$ prowadzi do stanu $v_i$, interpretujemy to jako wybranie wierzchołka $v_i$ jako $x$-ty wierzchołek w klice. \\
-$$\forall x\in\{1..k\}\ \exists i\in\{1..n\} \ \delta(q_{\lambda},p_x)=v_i$$ 
+
+\begin{equation}
+\forall x\in\{1..k\}\ \exists i\in\{1..n\} \ \delta(q_{\lambda},p_x)=v_i
+\label{eq:kclique-vi}
+\end{equation}
 
 Do tej samej kliki nie możemy wybrać tego samego wierzchołka wielokrotnie, więc musimy zagwarantować, że dla różnych przejść $p_x$ i $p_y$ wybieramy różne wierzchołki $v_i$ i $v_j$. \\
-$$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall i, j \in \{1..n\} \ (\delta(q_{\lambda}, p_x) = v_i \land \delta(q_{\lambda}, p_y) = v_j) \implies i \neq j$$
+
+\begin{equation}
+\forall (x, y \in \{1..k\} \land x \neq y) \ \forall i, j \in \{1..n\} \ (\delta(q_{\lambda}, p_x) = v_i \land \delta(q_{\lambda}, p_y) = v_j) \implies i \neq j
+\label{eq:kclique-diff}
+\end{equation}
 
 Dodatkowo musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
-$$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall{i, j \in \{1..n\}} \ (\delta(q_{\lambda}, p_x) = v_i \land \delta(q_{\lambda}, p_y) = v_j) \implies (v_i, v_j) \in E$$
+
+\begin{equation}
+\forall (x, y \in \{1..k\} \land x \neq y) \ \forall{i, j \in \{1..n\}} \ (\delta(q_{\lambda}, p_x) = v_i \land \delta(q_{\lambda}, p_y) = v_j) \implies (v_i, v_j) \in E
+\label{eq:kclique-clique}
+\end{equation}
 
 %* zagwarantowanie że wybieramy wierzchołki v_i
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
@@ -119,10 +132,18 @@ $$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall{i, j \in \{1..n\}} \ (\de
 % 1. in sink+ discard words (suffixes) having with more than 1 test edge
 % 2. create rejecting samples, that ensure pi will not lead to any positive state
 
-Zagwarantowanie tego faktu opiera się na prostej obserwacji: jedyne krawędzie $t$, które nie prowadzą do stanu odrzucającego, znajdują się za wierzchołkami $v_i$. Oznacza to, że aby słowo zostało zaakceptowane, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $t$ do stanu akceptującego. \\
-W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{test}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{test}$ do stanu akceptującego. \\
+Zagwarantowanie tego faktu opiera się na prostej obserwacji: jedyne krawędzie $t$, które nie prowadzą do stanu odrzucającego, znajdują się za wierzchołkami $v_i$. Oznacza to, że aby próbka mogła zostać zaakceptowana, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $t$ do stanu akceptującego. W przeciwnym wypadku, w trakcie przechodzenia próbką po automacie, trafimy do stanu $\text{sink}_-$, więc próbka zostanie odrzucona.\\
+W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $t$ zaraz po literze $p_x$.
 
-% TODO: write samples
+Jedynym wyjątkiem jest stan $\text{sink}_+$. 
+Wychodząca z niego krawędź $t$ musi też prowadzić do $\text{sink}_+$ - w przeciwnym wypadku próbki \eqref{eq:kclique-n-clique} zostaną odrzucone gdy $p_x, p_y, v_i, v_j$ takich, że $(i, j) \notin E \implies \exists z \in \{1..n\} v_z = \delta(q_{\lambda}, p_x) \land z \neq i$, ponieważ ze stanu $v_z$ przejdziemy wtedy w automacie krawędzią $t$ a następnie $e_i$, a $z \neq i \implies \delta(\delta(v_z, t), e_i) = \text{sink}_+$. Ta próbka nie oznacza niepoprawnego przypisana krawędzi (więc powinna zostać zaakceptowana), a wiemy że w naszej próbce występuje jeszcze jedno przejście krawędzią $t$, więc musi ono prowadzić do stanu $\text{sink}_+$. \\
+Możemy ten problem rozwiązać na 2 sposoby. Korzystając z faktu, że w próbce \eqref{eq:kclique-n-clique} są dokładnie 2 wystąpienia krawędzi $t$, możemy stworzyć alternatywny $\text{sink}_+$ (składający się z 2 wierchołków), który po pierwszym przejściu krawędzią $t$ prowadzi do drugiego stanu $\text{sink}_+$, a po drugim przejściu krawędzią $t$ prowadzi do stanu odrzucajcego $\text{sink}_-$. \\
+Alternatywną metodą jest odrzucenie prowadzenie krawędzi $p_x$ do stanu $\text{sink}_+$ poprzez dodanie próbek odrzucających, które wymuszają prowadzenie krawędzi $p_x$ do stanu odrzucajcego:
+
+\begin{equation}
+\forall x\in\{1..k\} \ {[p_x] \in S^-}
+\label{eq:kclique-n-sink}
+\end{equation}
 
 % TODO: explain why wy do not need the t edge, and can use only the c edges
 
@@ -130,14 +151,21 @@ W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś
 \noindent \textbf{Wybór różnych wierzchołków $v_i$ dla różnych przejść $p_x$}
 
 Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $p_y$ wystarczy stworzyć próbki postaci: 
-$$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{test} \ e_i \ \text{choice}_1 \ p_y \ \text{test} \ e_i }$$
+
+\begin{equation}
+\forall (x, y \in \{1..k\} \land x \neq y) \ \forall i \in \{1..n\} \ {[p_x \ t \ e_i \ c_1 \ p_y \ t \ e_i]  \in S^+}
+\label{eq:kclique-n-diff}
+\end{equation}
 
 % TODO explain why it works
 
 % TODO: zagwarantowanie że wybrane wierzchołki tworzą klikę
 \noindent \textbf{Gwarancja, że wybrane wierzchołki $v_i$ tworzą klikę w oryginalnym grafie}
 
-
+\begin{equation}
+42
+\label{eq:kclique-n-clique}
+\end{equation}
 
 \subsubsection{Dla $|\Sigma|=3$}
 
