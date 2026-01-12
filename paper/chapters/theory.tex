@@ -112,22 +112,27 @@ $$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall i, j \in \{1..n\} \ (\del
 Dodatkowo musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
 $$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall{i, j \in \{1..n\}} \ (\delta(q_{\lambda}, p_x) = v_i \land \delta(q_{\lambda}, p_y) = v_j) \implies (v_i, v_j) \in E$$
 
-% TODO: explain that edge 'test' is actually not neeeed
 %* zagwarantowanie że wybieramy wierzchołki v_i
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
 
-Zagwarantowanie tego faktu opiera się na prostej obserwacji: krawędź $\text{choice}_i$, nie prowadząca do stanu odrzucającego, znajduje się za wierzchołkami $v_i$. Oznacza to, że aby słowo zostało zaakceptowane, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $\text{choice}_i$ do stanu akceptującego. \\
-Aby uprościć tą obserwację, możemy dodać dodatkową krawędź między stanem $v_i$ a wierzchołkami $u_i$, tak jak na rysunku \ref{fig:kcliquen-v2}. \\
+% TODO: fix sink+ were we to lead all pi to it, then we would accept all samples (and all positive); we have 2 options:
+% 1. in sink+ discard words (suffixes) having with more than 1 test edge
+% 2. create rejecting samples, that ensure pi will not lead to any positive state
+
+Zagwarantowanie tego faktu opiera się na prostej obserwacji: jedyne krawędzie $t$, które nie prowadzą do stanu odrzucającego, znajdują się za wierzchołkami $v_i$. Oznacza to, że aby słowo zostało zaakceptowane, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $t$ do stanu akceptującego. \\
 W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{test}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{test}$ do stanu akceptującego. \\
 
-% TODO: zagwarantowanie że wybieramy różne wierzchołki dla różnych przejść p_i
+% TODO: write samples
+
+% TODO: explain why wy do not need the t edge, and can use only the c edges
+
+%* zagwarantowanie że wybrane wierzchołki v_i są różne
 \noindent \textbf{Wybór różnych wierzchołków $v_i$ dla różnych przejść $p_x$}
 
 Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $p_y$ wystarczy stworzyć próbki postaci: 
 $$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{test} \ e_i \ \text{choice}_1 \ p_y \ \text{test} \ e_i }$$
 
 % TODO explain why it works
-% TODO fix sink
 
 % TODO: zagwarantowanie że wybrane wierzchołki tworzą klikę
 \noindent \textbf{Gwarancja, że wybrane wierzchołki $v_i$ tworzą klikę w oryginalnym grafie}
@@ -139,6 +144,8 @@ $$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{tes
 % TODO explain figure
 \import{theory/figures}{reduction_kclique_3}
 
+% TODO: explain how did we reduce alphabet size from O(n) to 3
+% TODO: write new samples
 
 \subsubsection{Dla $|\Sigma|=2$}
 

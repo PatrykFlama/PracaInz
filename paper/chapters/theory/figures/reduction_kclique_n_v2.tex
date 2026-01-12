@@ -15,8 +15,10 @@
     \node[draw,state,inner sep=2pt] (s) at (0,-2) {$q_{\lambda}$};
 
     % wierzchołek sink
-    \node[draw,accept,inner sep=2pt] (sink) at (0,-4) {sink};
-    \draw[->,thick] (s) -- (sink) node[midway,above] {$c_1,c_2$};
+    \node[draw,accept,inner sep=2pt] (sinkp) at (0,-4) {$\text{sink}_+$};
+    \draw[->,thick] (s) -- (sinkp) node[midway,above] {$c_1,c_2$};
+
+    \node[draw,reject,inner sep=2pt] (sinkn) at (1.5,-4) {$\text{sink}_-$};
 
     % punkty docelowe dla krawędzi
     \coordinate (t1) at (-1.5,0);
