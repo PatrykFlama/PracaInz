@@ -9,6 +9,7 @@
     small/.style={circle, draw, minimum size=5mm},
     accept/.style={circle, draw, double, minimum size=8mm},
     reject/.style={circle, draw, minimum size=8mm},
+    tostart/.style={state, dashed, thick},
     every label/.style={font=\small}
 ]
     % wierzchołek startowy
@@ -62,9 +63,9 @@
     \draw[->,thick] (ui) -- (udots2) node[midway,above] {$0$};
     \draw[->,thick] (udots2) -- (un) node[midway,above] {$0$};
 
-    \node[draw,state,inner sep=2pt] (u1s) at (6,-7) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (uis) at (10,-7) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (uns) at (14,-7) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (u1s) at (6,-7) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (uis) at (10,-7) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (uns) at (14,-7) {$q_{\lambda}$};
 
     \draw[->,thick] (u1) -- (u1s) node[midway,right] {$1$};
     \draw[->,thick] (ui) -- (uis) node[midway,right] {$2*1$};
@@ -85,8 +86,8 @@
     \draw[->,thick] (wi) -- (wdots2) node[midway,above] {$0$};
     \draw[->,thick] (wdots2) -- (wn) node[midway,above] {$0$};
 
-    \node[draw,state,inner sep=2pt] (w1s) at (6,-11) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (wns) at (14,-11) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (w1s) at (6,-11) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (wns) at (14,-11) {$q_{\lambda}$};
 
     \draw[->,thick] (w1) -- (w1s) node[midway,right] {$3*1$};
     \draw[->,thick] (wn) -- (wns) node[midway,right] {$3*1$};
