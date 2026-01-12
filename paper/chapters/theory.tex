@@ -95,11 +95,11 @@ Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat o
 \subsubsection{Dla $|\Sigma|=O(n)$}
 % TODO add complexity - time, memory, etc
 
-Na rysunku \ref{fig:kcliquen} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
+Na rysunku \ref{fig:kcliquen-v2} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
 Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
 Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone, prowadzi do stanu odrzucającego (dowolne przejście ze stanu odrzucającego prowadzi z powrotem do niego).
 
-\import{theory/figures}{reduction_kclique_n}
+\import{theory/figures}{reduction_kclique_n_v2}
 
 \noindent Idea konstrukcji: \\
 
@@ -112,18 +112,16 @@ $$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall i, j \in \{1..n\} \ (\del
 Dodatkowo musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
 $$\forall (x, y \in \{1..k\} \land x \neq y) \ \forall{i, j \in \{1..n\}} \ (\delta(q_{\lambda}, p_x) = v_i \land \delta(q_{\lambda}, p_y) = v_j) \implies (v_i, v_j) \in E$$
 
-% TODO: remove figure V1 and replace it with figure V2 - then explain that edge 'test' is actually not neeeed
+% TODO: explain that edge 'test' is actually not neeeed
 %* zagwarantowanie że wybieramy wierzchołki v_i
-\textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
+\noindent \textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
 
 Zagwarantowanie tego faktu opiera się na prostej obserwacji: krawędź $\text{choice}_i$, nie prowadząca do stanu odrzucającego, znajduje się za wierzchołkami $v_i$. Oznacza to, że aby słowo zostało zaakceptowane, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $\text{choice}_i$ do stanu akceptującego. \\
 Aby uprościć tą obserwację, możemy dodać dodatkową krawędź między stanem $v_i$ a wierzchołkami $u_i$, tak jak na rysunku \ref{fig:kcliquen-v2}. \\
-W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{test}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{test}$ do stanu akceptującego. \\y
-
-\import{theory/figures}{reduction_kclique_n_v2}
+W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{test}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{test}$ do stanu akceptującego. \\
 
 % TODO: zagwarantowanie że wybieramy różne wierzchołki dla różnych przejść p_i
-\textbf{Wybór różnych wierzchołków $v_i$ dla różnych przejść $p_x$}
+\noindent \textbf{Wybór różnych wierzchołków $v_i$ dla różnych przejść $p_x$}
 
 Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $p_y$ wystarczy stworzyć próbki postaci: 
 $$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{test} \ e_i \ \text{choice}_1 \ p_y \ \text{test} \ e_i }$$
@@ -132,7 +130,7 @@ $$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{tes
 % TODO fix sink
 
 % TODO: zagwarantowanie że wybrane wierzchołki tworzą klikę
-\textbf{Gwarancja, że wybrane wierzchołki $v_i$ tworzą klikę w oryginalnym grafie}
+\noindent \textbf{Gwarancja, że wybrane wierzchołki $v_i$ tworzą klikę w oryginalnym grafie}
 
 
 
