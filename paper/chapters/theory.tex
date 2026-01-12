@@ -42,16 +42,6 @@ W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Jest t
 Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
 
 \subsection{Definicja problemu (uproszczona)}
-% TODO
-% - wejście:
-%     - DFA, w którym:
-%         - niektóre przejścia są nieokreślone
-%     - zbiór próbek pozytywnych $S^+$ (słowa akceptowane)
-%     - zbiór próbek negatywnych $S^-$ (słowa odrzucane)
-% - wyjście:
-%     - czy istnieje sposób uzupełnienia brakujących przejść i stanów tak, aby otrzymany automat był deterministyczny oraz zgodny z dostarczonymi przykładami, tzn. akceptował wszystkie słowa z $S^+$ oraz odrzucał wszystkie słowa z $S^-$
-
-% tą wersję problemu tak na prawdę będziemy analizować 
 
 \begin{definition}[Problem naprawienia częściowego DFA (uproszczony)]
 \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i $S^{-} \subseteq \Sigma^{*}$. Liczba stanów $|Q|$ jest ustalona.
@@ -76,29 +66,81 @@ Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i 
 
 
 \section{FPT}
-% TODO
+
 \subsection{W[1]-trudność}
-% TODO
-% Redukcja k-klik do naszego problemu
+
+\begin{definition}[Problem klik]
+\textbf{Wejście:} graf nieskierowany $G = (V, E)$.
+
+\noindent \textbf{Wyjście:} klika w grafie $G$, czyli podzbiór wierzchołków $V' \subseteq V$ taki, że dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
+
+\noindent Problem kliki należy do problemów NP-zupełnych. 
+\end{definition}
+
+
+\begin{definition}[Problem k-klik]
+\noindent Problem k-klik to zparametryzowana (\textit{Fixed Parameter Traceability}) wersja problemu kliki, w której dodatkowo podana jest liczba całkowita $k$ i należy odpowiedzieć, czy w grafie istnieje klika o rozmiarze co najmniej $k$.
+
+\noindent\textbf{Wejście:} graf nieskierowany $G = (V, E)$ oraz liczba całkowita $k$.
+
+\noindent \textbf{Wyjście:} odpowiedź, czy w grafie $G$ istnieje kliką o rozmiarze co najmniej $k$, czyli podzbiór $V' \subseteq V$ taki, że $|V'| \geq k$ oraz dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
+
+\noindent Problem k-klik należy do klasy W[1]-zupełnych problemów.
+% TODO: link to source/reference
+\end{definition}
+
+Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmżemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmiarze co najmniej $k$. Dodatkowo pokażemy jak z rozwiązanego problemu naprawienia częściowego DFA wyprowadzić rozwiązanie problemu k-klik.
+
 
 \subsubsection{Dla $|\Sigma|=O(n)$}
+% TODO add complexity - time, memory, etc
 
-% TODO explain figure
-\import{theory}{reduction_kclique_n}
+Na rysunku \ref{fig:kcliquen} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
+Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
+Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone, prowadzi do stanu odrzucającego (dowolne przejście ze stanu odrzucającego prowadzi z powrotem do niego).
 
+\import{theory/figures}{reduction_kclique_n}
+
+\noindent Idea konstrukcji: \\
+
+Chcemy aby krawędzie $p_i$ prowadziły do stanów $v_j$, które reprezentują wierzchołki w grafie. Jeżeli krawędź $p_x$ prowadzi do stanu $v_i$, to oznacza, że wybieramy wierzchołek $v_i$ jako $x$-ty wierzchołek w klice. \\
+Dodatkowo nie możemy wybrać tego samego wierzchołka wielokrotnie, więc musimy zagwarantować, że dla różnych przejść $p_x$ i $p_y$ wybieramy różne wierzchołki $v_i$ i $v_j$. \\
+Na koniec musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
+
+% TODO: remove figure V1 and replace it with figure V2 - then explain that edge 'test' is actually not neeeed
+%* zagwarantowanie że wybieramy wierzchołki v_i
+\textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
+
+Zagwarantowanie tego faktu opiera się na prostej obserwacji: krawędź $\text{choice}_i$, nie prowadząca do stanu odrzucającego, znajduje się za wierzchołkami $v_i$. Oznacza to, że aby słowo zostało zaakceptowane, musimy przejść przez krawędź $p_x$ do któregoś ze stanów $v_i$, a następnie przez krawędź $\text{choice}_i$ do stanu akceptującego. \\
+Aby uprościć tą obserwację, możemy dodać dodatkową krawędź między stanem $v_i$ a wierzchołkami $u_i$, tak jak na rysunku \ref{fig:kcliquen-v2}. \\
+W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś ze stanów $v_i$, dodajemy w każdej próbce literę $\text{test}$ zaraz po literze $p_x$. W ten sposób, aby słowo zostało zaakceptowane, musimy przejść krawędzią $p_x$ do któregoś ze stanów $v_i$, a następnie krawędzią $\text{test}$ do stanu akceptującego. \\y
+
+\import{theory/figures}{reduction_kclique_n_v2}
+
+% TODO: zagwarantowanie że wybieramy różne wierzchołki dla różnych przejść p_i
+\textbf{Wybór różnych wierzchołków $v_i$ dla różnych przejść $p_x$}
+
+Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $p_y$ wystarczy stworzyć próbki postaci: 
+$$\forall{x, y \in {1..k}, i \in {1..n}}   {s_{x, y, i} \in S^+  p_x \ \text{test} \ e_i \ \text{choice}_1 \ p_y \ \text{test} \ e_i }$$
+
+% TODO explain why it works
+% TODO fix sink
+
+% TODO: zagwarantowanie że wybrane wierzchołki tworzą klikę
+\textbf{Gwarancja, że wybrane wierzchołki $v_i$ tworzą klikę w oryginalnym grafie}
 
 
 
 \subsubsection{Dla $|\Sigma|=3$}
 
 % TODO explain figure
-\import{theory}{reduction_kclique_3}
+\import{theory/figures}{reduction_kclique_3}
 
 
 \subsubsection{Dla $|\Sigma|=2$}
 
 % TODO explain figure
-\import{theory}{reduction_kclique_2}
+\import{theory/figures}{reduction_kclique_2}
 
 
 \subsection{W[2]-trudność}
