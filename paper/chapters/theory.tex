@@ -103,9 +103,14 @@ Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejści
 
 \noindent Idea konstrukcji: \\
 
-Chcemy aby krawędzie $p_i$ prowadziły do stanów $v_j$, które reprezentują wierzchołki w grafie. Jeżeli krawędź $p_x$ prowadzi do stanu $v_i$, to oznacza, że wybieramy wierzchołek $v_i$ jako $x$-ty wierzchołek w klice. \\
-Dodatkowo nie możemy wybrać tego samego wierzchołka wielokrotnie, więc musimy zagwarantować, że dla różnych przejść $p_x$ i $p_y$ wybieramy różne wierzchołki $v_i$ i $v_j$. \\
-Na koniec musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
+Chcemy aby krawędzie $p_?$ prowadziły do stanów $v_?$. Jeżeli krawędź $p_x$ prowadzi do stanu $v_i$, interpretujemy to jako wybranie wierzchołka $v_i$ jako $x$-ty wierzchołek w klice. \\
+$$\forall{x \in {1..k}} \exists{i \in {1..n}} \delta(q_{\lambda}, p_x) = v_i$$
+
+Do tej samej kliki nie możemy wybrać tego samego wierzchołka wielokrotnie, więc musimy zagwarantować, że dla różnych przejść $p_x$ i $p_y$ wybieramy różne wierzchołki $v_i$ i $v_j$. \\
+$$\forall{x, y \in {1..k} \and x \neq y} \forall{i, j \in {1..n}} (\delta(q_{\lambda}, p_x) = v_i \and \delta(q_{\lambda}, p_y) = v_j) \implies (i \neq j)$$
+
+Dodatkowo musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli że każdy wybrany wierzchołek jest połączony z każdym innym wybranym wierzchołkiem. \\
+$$\forall{x, y \in {1..k}, x \neq y} \forall{i, j \in {1..n}} (\delta(q_{\lambda}, p_x) = v_i \and \delta(q_{\lambda}, p_y) = v_j) \implies ((v_i, v_j) \in E)$$
 
 % TODO: remove figure V1 and replace it with figure V2 - then explain that edge 'test' is actually not neeeed
 %* zagwarantowanie że wybieramy wierzchołki v_i
