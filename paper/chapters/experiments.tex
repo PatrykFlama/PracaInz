@@ -18,6 +18,11 @@ Dzięki temu automatycznie wykluczamy wszystkie przypadki przejść w automacie,
 
 Przy rysowaniu wykresów średni czas wykonania liczyliśmy na podstawie okna przesuwnego, tak żeby zredukować szum.
 
+W badaniach pominięto wyniki heurystyki, ponieważ jej czas wykonania był
+znacznie dłuższy w porównaniu z pozostałymi algorytmami. W praktyce
+uniemożliwiało to przeprowadzenie testów dla tych samych zakresów
+parametrów oraz czytelne przedstawienie wyników na wspólnych wykresach.
+
 \section{Wyniki}
 Na wykresie ~\ref{fig:sample_length} widoczny jest wzrost czasu działania obu algorytmów wraz ze zwiększaniem długości próbek. Algorytm naiwny charakteryzuje się szybkim przyrostem czasu wykonania, osiągając dla największych długości próbek wartości kilkukrotnie wyższe niż algorytm ze skokami. Algorytm ze skokami wykazuje stabilniejszy przebieg oraz wolniejsze tempo wzrostu, co wskazuje na jego lepszą skalowalność względem długości próbek.
 
