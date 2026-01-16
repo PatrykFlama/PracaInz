@@ -7,59 +7,34 @@ Testy zostały wykonane na środowisku o poniższych parametrach:
   \item Szybkość procesora: 
 \end{itemize}
 
-\section{Cel}
-Przez eksperymenty chcieliśmy pokazać wyraźnie szybsze działanie algorytmu ze skokami w stosunku do reszty. Chcieliśmy również zbadać zależność zmiany parametrów liczby próbek oraz długości próbek w stosunku do czasu wykonywania. W poniższych wynikach zdecydowaliśmy się pominąć przedstawienie heurystyki, ze względu na jej zbyt długi czas działania w stosunku do reszty.
-
 \section{Sposób testowania}
 Testy przeprowadzaliśmy na stałych parametrach, jedynie badany parametr jest zmieniany. Automat oraz próbki przygotowywaliśmy w podany sposób:
 \begin{itemize}
-  \item generowaliśmy losowy automat pełny,
+  \item generowaliśmy losowy automat pełny(posiadający przejście dla każdego symbolu alfabetu w każdym stanie),
   \item na podstawie tak wygenerowanego automatu generowaliśmy losowe próbki,
-  \item losowo usuwaliśmy przejścia z automatu, które są zawarte w próbce lub próbkach.
+  \item losowo usuwaliśmy ustaloną liczbę przejść z automatu, które są zawarte w próbce lub próbkach.
 \end{itemize}
 Dzięki temu automatycznie wykluczamy wszystkie przypadki przejść w automacie, które mogłyby zostać poprowadzone w dowolny sposób i zakłócać testowanie.
 
 Przy rysowaniu wykresów średni czas wykonania liczyliśmy na podstawie okna przesuwnego, tak żeby zredukować szum.
 
 \section{Wyniki}
+Na wykresie ~\ref{fig:sample_length} widoczny jest wzrost czasu działania obu algorytmów wraz ze zwiększaniem długości próbek. Algorytm naiwny charakteryzuje się szybkim przyrostem czasu wykonania, osiągając dla największych długości próbek wartości kilkukrotnie wyższe niż algorytm ze skokami. Algorytm ze skokami wykazuje stabilniejszy przebieg oraz wolniejsze tempo wzrostu, co wskazuje na jego lepszą skalowalność względem długości próbek.
 
-\subsection{Test 1}
-Pierwszy test Rys.~\ref{fig:sample_length} został wykonany na parametrach: 
-\begin{itemize}
-  \item liczba próbek z zakresu [10,1000], 
-  \item liczba stanów: 20,
-  \item liczba próbek: 30,
-  \item rozmiar alfabetu: 5,
-  \item brakujące krawędzie: 4,
-  \item wariancja długości próbek: 0,2.
-\end{itemize}
+Na wykresie ~\ref{fig:num_samples}, w przypadku algorytmu ze skokami obserwowany jest niemal liniowy wzrost czasu działania wraz ze wzrostem liczby próbek. Algorytm naiwny wykazuje nieregularne zachowanie w postaci skoków czasowych, co może być efektem rekurencyjnego przeszukiwania. W porównaniu z testem zmiany długości próbek, wpływ liczby próbek na czas wykonania jest wyraźnie mniejszy.
 
-Dla obu algorytmów czas rośnie wraz z długością próbek. Analiza wykresu pokazuje, że algorytm ze skokami jest znacznie szybszy niż algorytm naiwny.
+Na podstawie przeprowadzonych testów można stwierdzić, że algorytm ze skokami jest istotnie szybszy od algorytmu naiwnego dla badanych konfiguracji. Uzyskane wyniki potwierdzają jego przewagę wydajnościową oraz lepszą skalowalność zarówno względem długości, jak i liczby próbek.
 
-
-\subsection{Test 2}
-Drugi test Rys.~\ref{fig:num_samples} został wykonany na parametrach: 
-\begin{itemize}
-  \item liczba próbek: 30, 
-  \item liczba stanów: 20,
-  \item liczba próbek z zakresu [30,1000],
-  \item rozmiar alfabetu: 5,
-  \item brakujące krawędzie: 4,
-  \item wariancja długości próbek: 0,2.
-\end{itemize}
-
-Dla algorytmu ze skokami czas wykonania rośnie wraz z liczbą próbek, natomiast algorytm naiwny wykazuje skoki czasowe. W porównaniu z wcześniejszym testem tempo wzrostu jest wyraźnie niższe.
-
-\begin{figure} 
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{charts/sample_length.pdf}
-  \caption{Średni czas wykonania algorytmu w zależności od długości próbek, liczony na oknie przesuwnym 500.}
+  \caption{Średni czas wykonania algorytmu w zależności od długości próbek, liczony na oknie przesuwnym 500. Parametry: 20 stanów, 30 próbek, alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek : 0,2, długość próbek z zakresu [30,1000].}
   \label{fig:sample_length}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{charts/num_samples.pdf}
-  \caption{Średni czas wykonania algorytmu w zależności od liczby próbek, liczony na oknie przesuwnym 500.}
+  \caption{Średni czas wykonania algorytmu w zależności od liczby próbek, liczony na oknie przesuwnym 500. Parametry: 20 stanów, liczba próbek z zakresu [10,1000], alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek: 0,2, długość próbek: 30.}
   \label{fig:num_samples}
 \end{figure}
