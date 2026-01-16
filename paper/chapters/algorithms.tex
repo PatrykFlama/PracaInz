@@ -95,6 +95,6 @@ Czas budowy tablic skoków wynosi $\mathcal{O}(|S| \cdot M \cdot N)$, gdzie $|S|
 Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w automacie. W najgorszym przypadku, gdy wszystkie przejścia są brakujące lub co drugie przejście jest brakujące, czas walidacji pozostaje $\mathcal{O}(M)$.
 W praktyce jednak, dla automatu z niewielką liczbą brakujących przejść, czas ten może być znacznie mniejszy.
 
-\subsection{Heurystyka naprawy automatu z losowymi restartami}
+\section{Heurystyka naprawy automatu z losowymi restartami}
 
 Heurystyka oparta jest na algorytmie hill climbing \cite{hill_climbing} z losowymi restartami, w którym każda modyfikacja przejścia automatu oceniana jest poprzez globalną funkcję celu równą liczbie próbek naruszających specyfikację wejściową.
