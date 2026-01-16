@@ -16,10 +16,13 @@
     \node[draw,state,inner sep=2pt] (s) at (0,0) {$q_{\lambda}$};
 
     % wierzchołek sink
-    \node[draw,accept,inner sep=2pt] (s1) at (0,-2) {$ $};
-    \draw[->,thick] (s) -- (s1) node[midway,right] {$2*1$};
-    \node[draw,accept,inner sep=1.5pt] (s2) at (0,-4) {$ $};
-    \draw[->,thick] (s1) -- (s2) node[midway,right] {$16*1$};
+    % \node[draw,accept,inner sep=2pt] (s1) at (0,-2) {$ $};
+    % \draw[->,thick] (s) -- (s1) node[midway,right] {$2*1$};
+    % \node[draw,accept,inner sep=1.5pt] (s2) at (0,-4) {$ $};
+    % \draw[->,thick] (s1) -- (s2) node[midway,right] {$16*1$};
+    \node[draw,accept,inner sep=1.5pt] (sinkp) at (0,-3) {$sink_+$};
+    \draw[->,thick] (s) -- (sinkp) node[midway,right] {$1$};
+    \node[draw,reject,inner sep=1.5pt] (sinkn) at (0,-5) {$sink_-$};
 
 
     % wierzchołki wyliczajce indeks v
@@ -93,7 +96,7 @@
     \draw[->,thick] (wn) -- (wns) node[midway,right] {$3*1$};
 
     % warstwa sąsiedztwa
-    \node[draw,state,inner sep=2pt] (neigh1) at (10,-13) {$n_1$};
+    \node[draw,state,inner sep=2pt] (neigh1) at (10,-13) {$n_0$};
     \node (neighdots1) at (12,-13) {$\dots$};
     \node[draw,state,inner sep=2pt] (neighi) at (14,-13) {$n_j$};
     \node (neighdots2) at (16,-13) {$\dots$};
