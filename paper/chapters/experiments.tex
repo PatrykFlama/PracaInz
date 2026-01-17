@@ -4,7 +4,6 @@ Testy zostały wykonane na środowisku o poniższych parametrach:
   \item System:
   \item Procesor:
   \item Architektura:
-  \item Szybkość procesora: 
 \end{itemize}
 
 \section{Sposób testowania}
@@ -14,21 +13,19 @@ Testy przeprowadzaliśmy na stałych parametrach, jedynie badany parametr jest z
   \item na podstawie tak wygenerowanego automatu generowaliśmy losowe próbki,
   \item losowo usuwaliśmy ustaloną liczbę przejść z automatu, które są zawarte w próbce lub próbkach.
 \end{itemize}
-Dzięki temu automatycznie wykluczamy wszystkie przypadki przejść w automacie, które mogłyby zostać poprowadzone w dowolny sposób i zakłócać testowanie.
+Dzięki temu automatycznie wykluczamy wszystkie przypadki niezdefiniowanych przejść w automacie, które mogą zostać poprowadzone w dowolny sposób. Takim sposobem eliminujemy trywialne przypadki, w których dowolny przebieg przejścia algorytmu prowadzi do poprawnego rozwiązania, koncentrując testy na trudniejszych instancjach problemu.
 
-Przy rysowaniu wykresów średni czas wykonania liczyliśmy na podstawie okna przesuwnego, tak żeby zredukować szum.
+Przy rysowaniu wykresów średni czas wykonania obliczano z wykorzystaniem okna przesuwnego. Dane zostały posortowane względem badanego parametru, a następnie dla kolejnych fragmentów danych o stałej liczbie obserwacji wyznaczano średnią arytmetyczną wartości parametru oraz odpowiadających mu czasów wykonania. Okno przesuwne było centrowane, co oznacza, że każda wartość na wykresie reprezentuje średnią obliczoną z obserwacji znajdujących się symetrycznie wokół danego punktu. Zastosowanie okna przesuwnego pozwoliło na wygładzenie przebiegu wykresów oraz uwidocznienie ich tendencji.
 
-W badaniach pominięto wyniki heurystyki, ponieważ jej czas wykonania był
-znacznie dłuższy w porównaniu z pozostałymi algorytmami. W praktyce
-uniemożliwiało to przeprowadzenie testów dla tych samych zakresów
-parametrów oraz czytelne przedstawienie wyników na wspólnych wykresach.
+\section{Cel}
+Celem przeprowadzonych eksperymentów było zbadanie wydajności algorytmu ze skokami, który stanowi najbardziej obiecujące podejście spośród rozważanych rozwiązań, oraz porównanie jego działania z algorytmem naiwnym. Testy obejmowały ocenę wpływu długości próbek oraz ich liczby na czas wykonania obu algorytmów.
 
 \section{Wyniki}
-Na wykresie ~\ref{fig:sample_length} widoczny jest wzrost czasu działania obu algorytmów wraz ze zwiększaniem długości próbek. Algorytm naiwny charakteryzuje się szybkim przyrostem czasu wykonania, osiągając dla największych długości próbek wartości kilkukrotnie wyższe niż algorytm ze skokami. Algorytm ze skokami wykazuje stabilniejszy przebieg oraz wolniejsze tempo wzrostu, co wskazuje na jego lepszą skalowalność względem długości próbek.
+Na wykresie ~\ref{fig:sample_length} widoczny jest liniowy wzrost czasu działania obu algorytmów wraz ze zwiększaniem długości próbek. Algorytm naiwny charakteryzuje się szybkim przyrostem czasu wykonania, osiągając dla największych długości próbek wartości kilkukrotnie wyższe niż algorytm ze skokami. Algorytm ze skokami wykazuje stabilniejszy przebieg oraz wolniejsze tempo wzrostu, co wskazuje na jego lepszą skalowalność względem długości próbek.
 
-Na wykresie ~\ref{fig:num_samples}, w przypadku algorytmu ze skokami obserwowany jest niemal liniowy wzrost czasu działania wraz ze wzrostem liczby próbek. Algorytm naiwny wykazuje nieregularne zachowanie w postaci skoków czasowych, co może być efektem rekurencyjnego przeszukiwania. W porównaniu z testem zmiany długości próbek, wpływ liczby próbek na czas wykonania jest wyraźnie mniejszy.
+Na wykresie ~\ref{fig:num_samples} podobnie obserwowany jest liniowy wzrost czasu działania obu algorytmów wraz ze zwiększaniem ilości próbek, przy czym wpływ liczby próbek jest wyraźnie mniejszy niż wpływ ich długości.
 
-Na podstawie przeprowadzonych testów można stwierdzić, że algorytm ze skokami jest istotnie szybszy od algorytmu naiwnego dla badanych konfiguracji. Uzyskane wyniki potwierdzają jego przewagę wydajnościową oraz lepszą skalowalność zarówno względem długości, jak i liczby próbek.
+Na podstawie przeprowadzonych testów można stwierdzić, że algorytm ze skokami jest istotnie szybszy od algorytmu naiwnego dla badanych konfiguracji. Uzyskane wyniki potwierdzają jego przewagę wydajnościową zarówno względem długości, jak i liczby próbek. Zaobserwowane zachowanie jest zgodne z oczekiwaniami wynikającymi z charakterystyki analizowanych algorytmów.
 
 \begin{figure}[htbp]
   \centering
@@ -40,6 +37,6 @@ Na podstawie przeprowadzonych testów można stwierdzić, że algorytm ze skokam
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{charts/num_samples.pdf}
-  \caption{Średni czas wykonania algorytmu w zależności od liczby próbek, liczony na oknie przesuwnym 500. Parametry: 20 stanów, liczba próbek z zakresu [10,1000], alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek: 0,2, długość próbek: 30.}
+  \caption{Średni czas wykonania algorytmu w zależności od liczby próbek, liczony na oknie przesuwnym 10000. Parametry: 20 stanów, liczba próbek z zakresu [10,1000], alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek: 0,2, długość próbek: 30.}
   \label{fig:num_samples}
 \end{figure}
