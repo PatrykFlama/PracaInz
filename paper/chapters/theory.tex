@@ -70,28 +70,21 @@ Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i 
 
 \subsection{W[1]-trudność}
 
-\begin{definition}[Problem klik]
-\textbf{Wejście:} graf nieskierowany $G = (V, E)$.
-
-\noindent \textbf{Wyjście:} klika w grafie $G$, czyli podzbiór wierzchołków $V' \subseteq V$ taki, że dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
-
-\noindent Problem kliki należy do problemów NP-zupełnych. 
-\end{definition}
-
-
 \begin{definition}[Problem k-klik]
-\noindent Problem k-klik to zparametryzowana (\textit{Fixed Parameter Traceability}) wersja problemu kliki, w której dodatkowo podana jest liczba całkowita $k$ i należy odpowiedzieć, czy w grafie istnieje klika o rozmiarze co najmniej $k$.
+% \noindent Problem k-klik to zparametryzowana wersja problemu kliki, w której dodatkowo podana jest liczba całkowita $k$ i należy odpowiedzieć, czy w grafie istnieje klika o rozmiarze co najmniej $k$.
 
-\noindent\textbf{Wejście:} graf nieskierowany $G = (V, E)$ oraz liczba całkowita $k$.
+% \noindent\textbf{Wejście:} graf nieskierowany $G = (V, E)$ oraz liczba całkowita $k$.
 
-\noindent \textbf{Wyjście:} odpowiedź, czy w grafie $G$ istnieje kliką o rozmiarze co najmniej $k$, czyli podzbiór $V' \subseteq V$ taki, że $|V'| \geq k$ oraz dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
+% \noindent \textbf{Wyjście:} odpowiedź, czy w grafie $G$ istnieje kliką o rozmiarze co najmniej $k$, czyli podzbiór $V' \subseteq V$ taki, że $|V'| \geq k$ oraz dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
 
-\noindent Problem k-klik należy do klasy W[1]-zupełnych problemów.
-% TODO: link to source/reference
+Weźmy graf nieskierowany $G = (V, E)$ oraz liczbę całkowita $k$. Problem k-klik polega na znalezieniu w grafie $G$ kliki o rozmiarze co najmniej $k$, czyli podzbioru $V' \subseteq V$ takiego, że $|V'| \geq k$ oraz dla każdej pary wierzchołków $u, v \in V'$ zachodzi $(u, v) \in E$.
+
+\noindent Problem k-klik należy do klasy W[1]-zupełnych problemów \cite{parametrized_algorithms}.
 \end{definition}
 
 Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmżemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmiarze co najmniej $k$. Dodatkowo pokażemy jak z rozwiązanego problemu naprawienia częściowego DFA wyprowadzić rozwiązanie problemu k-klik.
 
+% TODO: why we can solve problem of exactly k-clique instead of at least k-clique
 % TODO: explain used syntax: [abc] means word sample from letters a,b,c; V_i means i-th vertex in graph, v_i means state corresponding to V_i, etc 
 
 \subsubsection{Dla $|\Sigma|=O(n)$}
@@ -181,6 +174,10 @@ Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą
 \import{theory/figures}{reduction_kclique_bin_example}
 
 \import{theory/figures}{reduction_kclique_3}
+%! TODO FIXME: the edge c leading to sink+ - its impossible, instead we should:
+% 1. move edge t to after the bin stage
+% 2. explain why it still 'works'
+% 3. ensure that missing edges leading to q_lambda are rejected (they are, since next letter is 0/1 and to sink+ leads t)
 
 Idea działania oraz konstrukcja próbek pozostaje taka sama jak w przypadku alfabetu o rozmiarze $O(n)$, z tą różnicą, że każda krawędź jest teraz reprezentowana jako ciąg krawędzi zgodnie z powyższą konwencją. \\
 W poniższym zapisie $bin(a)$ oznacza ciąg liter reprezentujący literę $a$ w kodzie binarnym.
@@ -218,6 +215,8 @@ Rysunek \ref{fig:kclique2} przedstawia konstrukcję automatu dla redukcji z k-kl
 Konstrukcja próbek dla zagwarantowania wyboru różnych stanów $v_i$ oraz zagwarantowania, że wybrane wierzchołki tworzą klikę pozostaje analogiczna do poprzednich. Nie posiadamy już litery testowej $t$, więc musimy zmodyfikować zagwarantowanie prowadzenia brakujących krawędzi do wierzchołków $v_i$. \\
 
 \import{theory/figures}{reduction_kclique_2}
+%! TODO FIXME: missing edges can still lead to q_lambda, where any number of 1s will result in success
+% solution: add rejecting samples that will ensure we land in rejecting vertice after taking the missing edge
 
 Nowa idea automatu (rysunek \ref{fig:kclique2}) opiera się na przypisywaniu literom wartości od 1 do $n$, a następnie kodowaniu ich w systemie unarnym. W ten sposób każda litera jest reprezentowana jako ciąg liter $0$. \\
 W poniższym zapisie $un(a)$ oznacza reprezentację litery $a$ w kodzie unarnym. Aby rozróżniać przejścia literą $1$, będziemy je składać z różnych wielokrotności $1$. Dlategu ustalamy zapis $d * a$ jako powtórzenie litery $a$ dokładnie $d$ razy.
@@ -256,6 +255,23 @@ Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadne
 \subsection{W[2]-trudność}
 % TODO
 % Redukcja z k-set cover (bierzemy k setów do pokrycia) do naszego problemu
+
+\begin{definition}[Problem k-zbioru pokrywającego (k-set cover)]
+Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie k-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
+
+\noindent Problem k-zbioru pokrywającego należy do klasy W[2]-zupełnych problemów \cite{parametrized_algorithms}.
+\end{definition}
+
+% TODO: why we can solve problem of exactly k-set cover instead of at most k-set cover
+
+Pokażemy redukcję z problemu k-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu k-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem k-zbioru pokrywającego. 
+
+Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go w analogiczny sposób jak w przypadku redukcji z k-klik zmniejszyć do stałego rozmiaru alfabetu. 
+
+\import{theory/figures}{reduction_ksetcover}
+
+
+
 
 
 \subsection{Przynależność do W[P]}
