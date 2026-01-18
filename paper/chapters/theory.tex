@@ -6,7 +6,7 @@
 % - czym są próbki
 
 \begin{definition}[Deterministyczny automat skończony (DFA)]
-Deterministyczny automat skończony (DFA) to szóstka uporządkowana $(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
+Deterministyczny automat skończony (DFA) to krotka $(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
 \begin{itemize}
     \item $Q$ to skończony zbiór stanów,
     \item $\Sigma$ to skończony alfabet wejściowy,
@@ -37,7 +37,7 @@ oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \su
 
 
 \subsection{Trywialność przypadku brakujących stanów}
-W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Jest to jednak przypadek trywialny, bo możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w drzewie prefiksowym zbudowanym z próbek - jeżeli automat jest naprawialny, to będzie to automat rozwiązujący problem. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany (i tak wykładniczej) złożoności. 
+W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Jest to jednak przypadek trywialny, bo możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to będzie to automat rozwiązujący problem. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany (i tak wykładniczej) złożoności. 
 
 Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
 
@@ -63,11 +63,15 @@ Weryfikacja polega na sprawdzeniu, czy uzupełniony automat jest deterministyczn
 \subsection{NP-trudność}
 
 \begin{fact}
-Poniższy problem \textit{najmniejszego zgodnego automatu} jest NP-zupełny \cite{grammatical_inference}:
+Poniższy problem \textit{najmniejszego zgodnego automatu} \ref{def:minimal_consistent_dfa} jest NP-zupełny \cite{grammatical_inference}:
+\end{fact}
 
+\begin{definition}[Problem najmniejszego zgodnego automatu]   
 Otrzymujemy liczbę natrualną $n \in \mathbb{N}$ oraz dwa zbiory słów nad alfabetem $\Sigma$: zbiór słów akceptowanych $S^+ \subseteq \Sigma^{*}$ oraz zbiór słów odrzucanych $S^{-} \subseteq \Sigma^{*}$. 
 Należy odpowiedzieć na pytanie, czy istnieje deterministyczny automat skończony (DFA) $\mathcal{A}$, z co najwyżej $n$ stanami, taki że wszystkie słowa z $S^+$ są akceptowane przez $\mathcal{A}$, a wszystkie słowa z $S^-$ są odrzucane przez $\mathcal{A}$.
-\end{fact}
+\label{def:minimal_consistent_dfa}
+\end{definition}
+
 
 Możemy przeprowadzić redukcję z problemu \textit{najmniejszego zgodnego automatu} do naszego problemu \textit{naprawienia częściowego DFA}. \\
 Weźmy instancję problemu \textit{najmniejszego zgodnego automatu} - liczbę naturalną $n$ oraz zbiory słów $S^+$ oraz $S^-$. Stwórzmy częściowy automat DFA $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
@@ -105,7 +109,7 @@ Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat o
 
 Na rysunku \ref{fig:kcliquen-v2} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
 Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
-Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone i nie wychodzi ze stanu $sink_+$ lub $sink_-$, prowadzi do stanu odrzucającego $\text{sink}_-$. Niezaznaczone przejścia wychodzące ze stanów $\text{sink}_+$ i $\text{sink}_-$ prowadzą do tych samych stanów. \\
+Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone i nie wychodzi ze stanu $\text{sink}_+$ lub $\text{sink}_-$, prowadzi do stanu odrzucającego $\text{sink}_-$. Niezaznaczone przejścia wychodzące ze stanów $\text{sink}_+$ i $\text{sink}_-$ prowadzą do tych samych stanów. \\
 Część automatu zaznaczona ramką jest powielana dla każdego stanu $v_.$. \\
 
 \import{theory/figures}{reduction_kclique_n_v2}
@@ -164,8 +168,11 @@ Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $
 W ten sposób, jeżeli oba przejścia $p_x$ i $p_y$ prowadziłyby do tego samego stanu $v_i$, to po pierwszym przejściu krawędziami $t \ e_i c_1$ trafilibyśmy do stanu $q_{\lambda}$, a następnie po drugim przejściu krawędziami $t \ e_i$ trafilibyśmy do stanu odrzucajcego $q_{\lambda}$, więc próbka zostałaby odrzucona. \\
 Jeżeli jednak przejścia $p_x$ i $p_y$ prowadzą do różnych stanów $v_i$ i $v_j$, to pierwsze lub drugie przejście krawędziami $t \ e_i$ doprowadzi do stanu $q_{\lambda}$, a następnie przejście krawędzią $c_1$ doprowadzi do stanu akceptującego $\text{sink}_+$, więc próbka zostanie zaakceptowana.
 
+\vspace{0.3cm}
+
 %* zagwarantowanie że wybrane wierzchołki tworzą klikę
 \noindent \textbf{Gwarancja, że wybrane wierzchołki tworzą klikę}
+
 Aby zagwarantować, że wybrane wierzchołki tworzą klikę, tworzymy próbki wymuszające sąsiedztwo wybranych wierzchołków:
 
 \begin{equation}
@@ -173,7 +180,7 @@ Aby zagwarantować, że wybrane wierzchołki tworzą klikę, tworzymy próbki wy
 \label{eq:kclique-n-clique}
 \end{equation}
 
-%! FIXME: wypadałoby się upewnić że wszędzie gdzie miałem napisać STAN (w automacie) to napisałem stan, a tam gdize miałem napisać WIERZCHOŁEK (w grafie) to napisałem wierzchołek
+% TODO: wypadałoby się upewnić że wszędzie gdzie miałem napisać STAN (w automacie) to napisałem stan, a tam gdize miałem napisać WIERZCHOŁEK (w grafie) to napisałem wierzchołek
 
 Jeżeli dany stan nie sprawdza wyboru wierzchołków $V_i$ lub $V_j$ w grafie, to któraś z wybranych krawędzi $p_x$ lub $p_y$ nie prowadzi do stanu $v_i$ lub $v_j$. Wtedy przejście krawędziami $t \ e_i$ lub $t \ e_j$ doprowadzi do stanu akceptującego $\text{sink}_+$. \\
 Jeżeli mamy jednak sytuację, w której $\delta(q_{\lambda}, p_x) = v_i$ oraz $\delta(q_{\lambda}, p_y) = v_j$, to przejście krawędziami $t \ e_i$ doprowadzi do stanu $u_i$, skąd krawędzią $c_1$ trafimy do $q_{\lambda}$. 
@@ -181,7 +188,7 @@ Przejście krawędziami $t \ e_j$ doprowadzi do stanu $u_j$. Ze stanu $u_j$ prze
 
 \subsubsection{Dla $|\Sigma|=3$}
 
-Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu możemy użyć kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$, gdzie $n$ to liczba unikalnych liter w oryginalnym alfabecie. Nadal będziemy korzystać z litery testowej $t$ \\
+Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu możemy użyć kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$, gdzie $n$ to liczba unikalnych liter w oryginalnym alfabecie. Nadal będziemy korzystać z litery testowej $t$. \\
 Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą $bin(a)$ reprezentuje ciąg stanów połączonych krawędziami o etykietach odpowiadających kolejnym bitom w kodzie binarnym $bin(a)$. Jeżeli mamy wiele krawędzi $bin$ wychodzących z tego samego wierzchołka, to ich krawędzie o tych samych etykietach stanowią tą samą krawędź. Na przykład, jeżeli mamy litery $a$ oraz $b$ reprezentowane przez $101$ oraz $100$, reprezentują one 4 krawędzie - najpierw ciąg dwóch, gdzie pierwsza ma etykietę $1$, a druga $0$ - następnie krawędzie $1$ oraz $0$ wychodzące z ostatniego wierzchołka (tak jak na rysunku \ref{fig:kclique-bin-example}). \\
 
 \import{theory/figures}{reduction_kclique_bin_example}
@@ -234,8 +241,12 @@ Konstrukcja próbek dla zagwarantowania wyboru różnych stanów $v_i$ oraz zagw
 Nowa idea automatu (rysunek \ref{fig:kclique2}) opiera się na przypisywaniu literom wartości od 1 do $n$, a następnie kodowaniu ich w systemie unarnym. W ten sposób każda litera jest reprezentowana jako ciąg liter $0$. \\
 W poniższym zapisie $un(a)$ oznacza reprezentację litery $a$ w kodzie unarnym. Aby rozróżniać przejścia literą $1$, będziemy je składać z różnych wielokrotności $1$. Dlategu ustalamy zapis $d * a$ jako powtórzenie litery $a$ dokładnie $d$ razy.
 
+
+\vspace{0.3cm}
+
 %* zagwarantowanie że wybieramy stany v_i
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do wierzchołków $v_i$}
+
 Zaczniemy od zagwarantowania, że brakujące krawędzie nie prowadzą do żadnego stanu akceptującego, w tym do stanu $\text{sink}_+$. \\
 
 \begin{equation}
@@ -243,11 +254,11 @@ Zaczniemy od zagwarantowania, że brakujące krawędzie nie prowadzą do żadneg
 \label{eq:kclique-2-sink}
 \end{equation}
 
-Nie mamy już litery testowej $t$, więc musimy zmodyfikować automat oraz próbki tak, aby wymusić przejście brakującą krawędzią do któregoś ze stanów $v_i$. Możemy zastąpić literę $t$ specjalnym ciągiem $10*1$, który nie prowadzi do $sink_-$. Wtedy ten sam ciąg $10*1$ wystąpi dwukrotnie w każdej próbce, zaraz po przejściu brakującą krawędzią. 
+Nie mamy już litery testowej $t$, więc musimy zmodyfikować automat oraz próbki tak, aby wymusić przejście brakującą krawędzią do któregoś ze stanów $v_i$. Możemy zastąpić literę $t$ specjalnym ciągiem $10*1$, który nie prowadzi do $\text{sink}_-$. Wtedy ten sam ciąg $10*1$ wystąpi dwukrotnie w każdej próbce, zaraz po przejściu brakującą krawędzią. 
 
-Weźmy dowolną próbkę \eqref{eq:kclique-2-clique}, oraz odpowiadające jej $x, y, i, j$. Jeżeli brakująca krawędź odpowiadająca stanowi $p_y$ nie prowadzi do żadnego ze stanów $v_.$, to nie istnieje żaden inny stan do którego mogłaby ona prowadzić - musi prowadzić do stanu, po którym następuje przejście $11*1$, jedyne takie przejścia to $v_.$ oraz $sink_+$. Jednak przejście do $sink_+$ zostało wykluczone próbką \eqref{eq:kclique-2-sink}, więc pozostaje tylko przejście do któregoś ze stanów $v_.$.
+Weźmy dowolną próbkę \eqref{eq:kclique-2-clique}, oraz odpowiadające jej $x, y, i, j$. Jeżeli brakująca krawędź odpowiadająca stanowi $p_y$ nie prowadzi do żadnego ze stanów $v_.$, to nie istnieje żaden inny stan do którego mogłaby ona prowadzić - musi prowadzić do stanu, po którym następuje przejście $11*1$, jedyne takie przejścia to $v_.$ oraz $\text{sink}_+$. Jednak przejście do $\text{sink}_+$ zostało wykluczone próbką \eqref{eq:kclique-2-sink}, więc pozostaje tylko przejście do któregoś ze stanów $v_.$.
 
-Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadnego ze stanów $v_.$, to może prowadzić tylko do stanów po których następuje przejście $10*1$. Jedynymi takimi stanami są stany $v_.$, $\delta(v_., 1)$ oraz $sink_+$ (który został wykluczony próbką \eqref{eq:kclique-2-sink}). Przejście do stanu $\delta(v_., 1)$, a następnie kolejnymi literami z próbik - $un(i)$ doprowadzi nas do krawędzi $3*1$ lub $4*1$, natomiast w próbce występuje $2*1$, a po nim $un(y)$ - czyli litera $0$. To przejście zostanie więc zawszez odrzucone. Pozostaje więc tylko przejście do któregoś ze stanów $v_.$. \\
+Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadnego ze stanów $v_.$, to może prowadzić tylko do stanów po których następuje przejście $10*1$. Jedynymi takimi stanami są stany $v_.$, $\delta(v_., 1)$ oraz $\text{sink}_+$ (który został wykluczony próbką \eqref{eq:kclique-2-sink}). Przejście do stanu $\delta(v_., 1)$, a następnie kolejnymi literami z próbik - $un(i)$ doprowadzi nas do krawędzi $3*1$ lub $4*1$, natomiast w próbce występuje $2*1$, a po nim $un(y)$ - czyli litera $0$. To przejście zostanie więc zawszez odrzucone. Pozostaje więc tylko przejście do któregoś ze stanów $v_.$. \\
 
 %* zagwarantowanie że wybrane stany v_i są różne
 \noindent \textbf{Wybór różnych stanów $v_i$ dla różnych brakujących krawędzi}
@@ -305,7 +316,7 @@ Dodatkowo, w analogiczny sposób jak w przypadku redukcji z k-klik, tworzymy pr�
 
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do stanów $s_i$}
 
-Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub $sink_+$ doprowadzi do $\text{sink}_-$ po przejściu następną literą $t$.\\
+Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub $\text{sink}_+$ doprowadzi do $\text{sink}_-$ po przejściu następną literą $t$.\\
 Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
 
 \begin{equation}
@@ -320,3 +331,6 @@ Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodaje
 % Póki co tylko nan bazie luźnej definicji z wikipedii - nasz prolem jest w klacie problemów gdzie mamy zbiór S n elementów (wszystkie możliwe naprawienia przejść), a my chcemy wybrać podzbiór z k - tak aby jakaś własność została utrzymana (być zgodnym z próbkami). Chcemy móc zapisać nasz wybór jako k intów zapisanych binarnie. \\
 % Wg tej lużnej definicji, możemy mieć podejrzenia że nasz problem przynależy do W[P].
 
+\begin{center}
+\colorbox{red}{\textcolor{white}{\textbf{Przynależność do W[P] jeszcze będzie uzupełniona (prawdopodobnie)}}}
+\end{center}

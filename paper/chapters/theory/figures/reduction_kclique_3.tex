@@ -1,7 +1,7 @@
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[
-    scale=0.95,
+    scale=0.9,
     ->,
     >=Stealth,
     node distance=14mm,
@@ -51,28 +51,28 @@
     \node[draw,state,inner sep=1.5pt] (vn) at (3,-3.6) {$v_{n}$};
 
     % krawędź testowa
-    \node[draw,state,inner sep=2pt] (test) at (5,-2) {$ $};
-    \draw[->,thick] (vi) -- (test) node[midway,above] {$t$};
+    % \node[draw,state,inner sep=2pt] (test) at (5,-2) {$ $};
+    % \draw[->,thick] (vi) -- (test) node[midway,above] {$t$};
 
     % sekcja weryfikacji wierzchołka
-    \node[draw,tostart,inner sep=2pt] (vv1) at (8,-0.4) {$q_{\lambda}$};
-    \node (vdots1) at (8,-1.1) {$\vdots$};
-    \node[draw,state,inner sep=2pt] (vvi) at (8,-2) {$u_{i}$};
-    \node (vdots1) at (8,-2.7) {$\vdots$};
-    \node[draw,tostart,inner sep=2pt] (vvn) at (8,-3.6) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (vv1) at (6,-0.4) {$q_{\lambda}$};
+    \node (vdots1) at (6,-1.1) {$\vdots$};
+    \node[draw,state,inner sep=2pt] (vvi) at (6,-2) {$u_{i}$};
+    \node (vdots1) at (6,-2.7) {$\vdots$};
+    \node[draw,tostart,inner sep=2pt] (vvn) at (6,-3.6) {$q_{\lambda}$};
 
-    \draw[->,thick] (test) -- (vv1) node[midway,above] {$bin(1)$};
-    \draw[->,thick] (test) -- (vvi) node[midway,above] {$bin(i)$};
-    \draw[->,thick] (test) -- (vvn) node[midway,above] {$bin(n)$};
+    \draw[->,thick] (vi) -- (vv1) node[midway,above] {$bin(1)$};
+    \draw[->,thick] (vi) -- (vvi) node[midway,above] {$bin(i)$};
+    \draw[->,thick] (vi) -- (vvn) node[midway,above] {$bin(n)$};
 
     % sekcja wyboru
-    % \node[draw,state,inner sep=2pt] (choicenode) at (8,-2) {$ $};
-    % \draw[->,thick] (vvi) -- (choicenode) node[midway,above] {$c$};
+    \node[draw,state,inner sep=2pt] (test) at (8,-2) {$ $};
+    \draw[->,thick] (vvi) -- (test) node[midway,above] {$c$};
 
     \node[draw,tostart,inner sep=2pt] (choice1) at (10,-1.1) {$q_{\lambda}$};
     \node[draw,state,inner sep=2pt] (choice2) at (10,-2.7) {$c_2$};
-    \draw[->,thick] (vvi) -- (choice1) node[midway,above] {$0$};
-    \draw[->,thick] (vvi) -- (choice2) node[midway,above] {$1$};
+    \draw[->,thick] (test) -- (choice1) node[midway,above] {$0$};
+    \draw[->,thick] (test) -- (choice2) node[midway,above] {$1$};
 
     % sekcja testu sąsiedztwa
     \node[accept, inner sep=1.5pt] (accept) at (12,-1.1) {};
