@@ -51,8 +51,8 @@ Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i 
 \end{definition}
 
 \section{NP-zupełność}
-% TODO
-% Definicja NP zupełności
+
+Aby wykazać że problem jest NP-zupełny, musimy udowodnić, że należy do klasy NP oraz że jest NP-trudny.
 
 
 \subsection{Przynależność do NP}
@@ -99,13 +99,15 @@ Weźmy graf nieskierowany $G = (V, E)$ oraz liczbę całkowita $k$. Problem k-kl
 \noindent Problem k-klik należy do klasy W[1]-zupełnych problemów \cite{parametrized_algorithms}.
 \end{definition}
 
+Jeżeli w grafie wejściowym istnieje klika rozmiaru większego od $k$, to zawiera ona w sobie klikę rozmiaru dokładnie $k$, więc możemy rozważać wersję problemu k-klik, w której szukamy kliki o rozmiarze dokładnie $k$.
+
 Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmżemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmiarze co najmniej $k$. Dodatkowo pokażemy jak z rozwiązanego problemu naprawienia częściowego DFA wyprowadzić rozwiązanie problemu k-klik.
 
-% TODO: why we can solve problem of exactly k-clique instead of at least k-clique
-% TODO: explain used syntax: [abc] means word sample from letters a,b,c; V_i means i-th vertex in graph, v_i means state corresponding to V_i, etc 
+W poniższych rozważaniach przyjmiemy konwencję, w której $V = \{V_1, V_2, .., V_n\}$ to zbiór wierzchołków o rozmiarze $n = |V|$ grafu wejściowego, a $E$ to zbiór krawędzi grafu wejściowego. \\
+Stany automatu będą odpowiadały wierzchołkom grafu wejściowego - dla każdego wierzchołka $V_i \in V$ stworzymy stan $v_i \in Q$. \\
+Dodatkowo ciąg liter z alfabetu $\Sigma$ zapisany w nawiasach kwadratowych $[a \ b \ c]$ oznacza próbkę składającą się z liter $a$, $b$ oraz $c$. 
 
 \subsubsection{Dla $|\Sigma|=O(n)$}
-% TODO add complexity - time, memory, etc
 
 Na rysunku \ref{fig:kcliquen-v2} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
 Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
@@ -137,7 +139,6 @@ Dodatkowo musimy zagwarantować, że wybrane wierzchołki tworzą klikę, czyli 
 \label{eq:kclique-clique}
 \end{equation}
 
-% TODO: explain the concept/intuition behind the construction - how is it supposed to work
 
 %* zagwarantowanie że wybieramy stany v_i
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi $p_x$ do wierzchołków $v_i$}
@@ -180,11 +181,19 @@ Aby zagwarantować, że wybrane wierzchołki tworzą klikę, tworzymy próbki wy
 \label{eq:kclique-n-clique}
 \end{equation}
 
-% TODO: wypadałoby się upewnić że wszędzie gdzie miałem napisać STAN (w automacie) to napisałem stan, a tam gdize miałem napisać WIERZCHOŁEK (w grafie) to napisałem wierzchołek
 
 Jeżeli dany stan nie sprawdza wyboru wierzchołków $V_i$ lub $V_j$ w grafie, to któraś z wybranych krawędzi $p_x$ lub $p_y$ nie prowadzi do stanu $v_i$ lub $v_j$. Wtedy przejście krawędziami $t \ e_i$ lub $t \ e_j$ doprowadzi do stanu akceptującego $\text{sink}_+$. \\
 Jeżeli mamy jednak sytuację, w której $\delta(q_{\lambda}, p_x) = v_i$ oraz $\delta(q_{\lambda}, p_y) = v_j$, to przejście krawędziami $t \ e_i$ doprowadzi do stanu $u_i$, skąd krawędzią $c_1$ trafimy do $q_{\lambda}$. 
 Przejście krawędziami $t \ e_j$ doprowadzi do stanu $u_j$. Ze stanu $u_j$ przejście krawędziami $c_2 \ e_i$ doprowadzi do stanu akceptującego tylko wtedy, gdy w oryginalnym grafie istnieje krawędź $(v_j, v_i) \in E$. W przeciwnym wypadku przejście krawędziami $c_2 \ e_i$ doprowadzi do stanu odrzucającego. \\
+
+
+\noindent \textbf{Złożoność konstrukcji}
+
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru grafu wejściowego - posiada on $O(n^2)$ stanów oraz $n$-krotnie więcej krawędzi, z racji iż $|\Sigma|=O(n)$. \\
+Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
+
+Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długość jest stała $O(1)$.
+
 
 \subsubsection{Dla $|\Sigma|=3$}
 
@@ -231,6 +240,14 @@ Jeżeli brakująca krawędź prowadzić do stanu $q_\lambda$, to następny ciąg
 \forall (x, y \in \{1..k\} \land x \neq y) \ \forall{i, j \in \{1..n\}} \ [bin(x) \ 0 \ t \ bin(i) \ 0 \ bin(y) \ 0 \ t \ bin(j) \ 1 \ bin(i)] \in S^+
 \label{eq:kclique-3-clique}
 \end{equation}
+
+
+\noindent \textbf{Złożoność konstrukcji}
+
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru grafu wejściowego - posiada on $O(n^2 * \log n)$ stanów oraz $3$-krotnie więcej krawędzi. \\
+Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
+
+Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długość wynosi $O(\log n)$.
 
 
 \subsubsection{Dla $|\Sigma|=2$}
@@ -283,18 +300,21 @@ Pozostaje jeszcze przypadek, w którym brakująca krawędź prowadzi do stanu st
 \end{equation}
 
 
+\noindent \textbf{Złożoność konstrukcji}
+
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru grafu wejściowego - posiada on $O(n^2)$ stanów oraz $2$-krotnie więcej krawędzi. \\
+Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
+
+Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długość wynosi $O(n)$.
+
 
 \subsection{W[2]-trudność}
-% TODO
-% Redukcja z k-set cover (bierzemy k setów do pokrycia) do naszego problemu
 
 \begin{definition}[Problem k-zbioru pokrywającego (k-set cover)]
 Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie k-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
 
 \noindent Problem k-zbioru pokrywającego należy do klasy W[2]-zupełnych problemów \cite{parametrized_algorithms}.
 \end{definition}
-
-% TODO: why we can solve problem of exactly k-set cover instead of at most k-set cover
 
 Pokażemy redukcję z problemu k-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu k-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem k-zbioru pokrywającego. 
 
@@ -331,6 +351,14 @@ Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodaje
 \forall x\in\{1..k\} \ {[p_x] \in S^-}
 \label{eq:kcover-si}
 \end{equation}
+
+
+\noindent \textbf{Złożoność konstrukcji}
+
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru danych wejściowych - posiada on $O(n^2)$ stanów oraz $n$-krotnie więcej krawędzi. \\
+Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
+
+Liczba próbek jest wielomianowa i wynosi $O(k + |U|)$, a ich łączna długość wynosi $O(k)$.
 
 
 \subsection{Przynależność do W[P]}
