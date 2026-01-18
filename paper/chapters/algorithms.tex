@@ -1,6 +1,6 @@
 \section{Podejście Brute Force}
 
-Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwych sposobów uzupełnienia brakujących przejść w automacie. Algorytm generuje kolejne warianty automatu poprzez przypisywanie stanów docelowych do brakujących przejść dla poszczególnych symboli alfabetu.
+Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwych sposobów uzupełnienia brakujących przejść w automacie. Algorytm generuje kolejne warianty automatu poprzez przypisywanie stanów brakującym przejściom dla poszczególnych symboli alfabetu.
 
 Każdy taki wariant traktowany jest jako osobny kandydat rozwiązania problemu. Dla wygenerowanego automatu algorytm symuluje następnie przetwarzanie wszystkich próbek, przechodząc krok po kroku przez kolejne stany zgodnie z symbolami próbek. Po zakończeniu symulacji sprawdzane jest, czy każda z próbek kończy się w stanie zgodnym z danymi wejściowymi.
 
@@ -104,4 +104,84 @@ W praktyce jednak, dla automatu z niewielką liczbą brakujących przejść, cza
 
 Algorytm hill climbing \cite{hill_climbing} jest algorytmem, który rozpoczyna działanie od pewnego początkowego rozwiązania, a następnie iteracyjnie wprowadza niewielkie modyfikacje, dążąc do poprawy wartości funkcji celu. W każdej iteracji rozważane są rozwiązania sąsiednie, różniące się od aktualnego jedynie pojedynczą zmianą, w tym przypadku: przypisaniem innego stanu docelowego do jednego przejścia automatu. Jeżeli taka modyfikacja prowadzi do poprawy wartości funkcji celu, w tym przypadku: więcej próbek osiąga docelowy stan zgodny z danymi wejściowymi, jest ona akceptowana jako nowe rozwiązanie bieżące.
 
-Metoda ta jest podatna na zatrzymanie się w minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W celu ograniczenia tego problemu stosujemy losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejśc automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
+Metoda ta jest podatna na zatrzymanie się w minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W celu ograniczenia tego problemu zastosowano losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejśc automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
+
+\section{Pruning przestrzeni rozwiązań}
+
+W celu ograniczenia liczby analizowanych konfiguracji automatu
+zastosowano mechanizm odcinania nieperspektywicznych gałęzi przeszukiwań
+(pruning). Podstawową obserwacją jest fakt, że częściowe ustalenie
+przejść automatu zawęża zbiór wszystkich możliwych poprawnych
+konfiguracji.
+
+W trakcie działania algorytmu utrzymywany jest zbiór potencjalnie
+poprawnych automatów, zgodnych z dotychczas ustalonymi przejściami.
+Każde przypisanie stanu do kolejnego brakującego przejścia powoduje
+zawężenie tego zbioru poprzez odrzucenie wszystkich konfiguracji, które
+nie spełniają nowo wprowadzonego ograniczenia.
+
+Jeżeli na pewnym etapie, przy częściowo ustalonym automacie, zbiór
+potencjalnych konfiguracji staje się pusty, oznacza to, że żadna
+kompletna konfiguracja automatu zgodna z danymi wejściowymi nie może
+powstać w danym kierunku dalszej eksploracji. W takiej sytuacji algorytm
+przerywa dalsze rozważanie tej gałęzi, niezależnie od tego, że nie
+wszystkie przejścia zostały jeszcze ustalone.
+
+Zastosowanie pruningu pozwala uniknąć dalszego rozpatrywania konfiguracji,
+które z góry nie mogą prowadzić do poprawnego rozwiązania, co znacząco
+redukuje liczbę analizowanych przypadków.
+
+\section{Wykorzystanie struktury trie}
+
+W celu ograniczenia wielokrotnego przetwarzania tych samych prefiksów
+próbek zastosowano strukturę drzewa trie. Wszystkie próbki wejściowe
+zostały przekształcone do postaci jednego drzewa, w którym każda krawędź
+odpowiada pojedynczemu symbolowi alfabetu, a ścieżki od korzenia do węzłów
+reprezentują prefiksy próbek.
+
+Dzięki takiej reprezentacji wspólne prefiksy próbek są przetwarzane tylko
+raz. Zamiast wielokrotnego przechodzenia tych samych przejść automatu dla
+każdej próbki osobno, algorytm wykonuje jedno przejście dla danego
+prefiksu, a następnie kontynuuje przetwarzanie dla wszystkich próbek,
+które ten prefiks współdzielą.
+
+Algorytm nie symuluje więc każdej próbki niezależnie, lecz eksploruje
+strukturę drzewa trie, odwiedzając kolejne węzły i odpowiadające im
+przejścia automatu. W ten sposób eliminowane jest powtarzające się
+przechodzenie tych samych krawędzi automatu, co prowadzi do istotnej
+redukcji liczby wykonywanych operacji, szczególnie w przypadku dużej
+liczby próbek o wspólnych prefiksach.
+
+\section{Backtracking z wykorzystaniem skoków}
+
+Backtracking jest metodą przeszukiwania polegającą na stopniowym
+konstruowaniu rozwiązania poprzez podejmowanie kolejnych decyzji oraz
+cofanie się do wcześniejszych kroków w momencie, gdy dalsza eksploracja
+danego kierunku nie może prowadzić do poprawnego rozwiązania. Podejście
+to umożliwia systematyczne badanie możliwych uzupełnień automatu przy
+jednoczesnym odrzucaniu nieperspektywicznych konfiguracji na możliwie
+wczesnym etapie.
+
+W rozważanym algorytmie backtracking wykorzystywany jest w połączeniu z
+mechanizmem skoków pomiędzy zapamiętanymi przejściami automatu. Dzięki
+temu algorytm nie rozpoczyna symulacji próbek od początku po każdej
+modyfikacji, lecz kontynuuje przetwarzanie od ostatniego poprawnie
+zdefiniowanego przejścia, co znacząco redukuje liczbę powtarzanych
+operacji.
+
+Algorytm analizuje próbki pojedynczo i dla aktualnie rozpatrywanej
+próbki identyfikuje pierwsze brakujące przejście napotkane podczas jej
+symulacji. Wybrane przejście staje się kolejną decyzją do ustalenia, a
+algorytm przypisuje mu kolejno możliwe stany docelowe. Po każdej
+modyfikacji kontynuowana jest symulacja próbki z wykorzystaniem
+mechanizmu skoków.
+
+Jeżeli w trakcie dalszego przetwarzania okaże się, że aktualna
+konfiguracja automatu nie pozwala doprowadzić próbki do stanu zgodnego z
+danymi wejściowymi, algorytm cofa ostatnią decyzję i próbuje kolejnego
+możliwego przypisania. Proces ten jest powtarzany aż do znalezienia
+poprawnej konfiguracji automatu lub wyczerpania wszystkich możliwych
+kombinacji, co skutkuje powrotem do wcześniejszych etapów przeszukiwania.
+
+
+
