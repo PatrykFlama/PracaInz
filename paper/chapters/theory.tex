@@ -188,32 +188,35 @@ Przejście krawędziami $t \ e_j$ doprowadzi do stanu $u_j$. Ze stanu $u_j$ prze
 
 \subsubsection{Dla $|\Sigma|=3$}
 
-Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu możemy użyć kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$, gdzie $n$ to liczba unikalnych liter w oryginalnym alfabecie. Nadal będziemy korzystać z litery testowej $t$. \\
-Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą $bin(a)$ reprezentuje ciąg stanów połączonych krawędziami o etykietach odpowiadających kolejnym bitom w kodzie binarnym $bin(a)$. Jeżeli mamy wiele krawędzi $bin$ wychodzących z tego samego wierzchołka, to ich krawędzie o tych samych etykietach stanowią tą samą krawędź. Na przykład, jeżeli mamy litery $a$ oraz $b$ reprezentowane przez $101$ oraz $100$, reprezentują one 4 krawędzie - najpierw ciąg dwóch, gdzie pierwsza ma etykietę $1$, a druga $0$ - następnie krawędzie $1$ oraz $0$ wychodzące z ostatniego wierzchołka (tak jak na rysunku \ref{fig:kclique-bin-example}). \\
+Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu użejemy kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$. \\
+Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą $bin(a)$ reprezentuje ciąg stanów połączonych krawędziami o etykietach odpowiadających kolejnym bitom w kodzie binarnym $bin(a)$. Jeżeli mamy wiele krawędzi $bin$ wychodzących z tego samego wierzchołka, to ich krawędzie o tych samych etykietach stanowią tą samą krawędź. Na przykład, jeżeli mamy litery $a$ oraz $b$ reprezentowane przez $101$ oraz $100$, reprezentują one 4 krawędzie - najpierw ciąg dwóch, gdzie pierwsza ma etykietę $1$, a druga $0$ - następnie krawędzie $1$ oraz $0$ wychodzące z ostatniego wierzchołka (tak jak na rysunku \ref{fig:kclique-bin-example}).
 
 \import{theory/figures}{reduction_kclique_bin_example}
 
 \import{theory/figures}{reduction_kclique_3}
-%! TODO FIXME: the edge c leading to sink+ - its impossible, instead we should:
-% 1. move edge t to after the bin stage
-% 2. explain why it still 'works'
-% 3. ensure that missing edges leading to q_lambda are rejected (they are, since next letter is 0/1 and to sink+ leads t)
 
 Idea działania oraz konstrukcja próbek pozostaje taka sama jak w przypadku alfabetu o rozmiarze $O(n)$, z tą różnicą, że każda krawędź jest teraz reprezentowana jako ciąg krawędzi zgodnie z powyższą konwencją. \\
+Dodatkowo nie będziemy już korzystać z litery $t$, a litery $c_0$ i $c_1$ zastąpimy literą $c$, po której nastąpi litera $0$ lub $1$. \\
+
 W poniższym zapisie $bin(a)$ oznacza ciąg liter reprezentujący literę $a$ w kodzie binarnym.
 
-\vspace{0.5cm}
+\vspace{0.3cm}
 
 %* zagwarantowanie że wybieramy stany v_i
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do wierzchołków $v_i$}
 
-Zagwarantowanie tego faktu opiera się na tej samej obserwacji co w przypadku alfabetu o rozmiarze $O(n)$. Aby próbka mogła zostać zaakceptowana, musimy dwukrotnie przejść przez krawędź $t$ - dodamy więc w każdej próbce literę $t$ po każdym wyborze wierzchołka $v_i$. \\
-Dodatkowo nadal musimy zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$. Jak uprzednio, robimy to poprzez liczenie ile razy przeszliśmy krawędzią $t$, lub poprzez dodanie próbek odrzucających:
+Zagwarantowanie tego faktu opiera się na tej samej obserwacji co w przypadku alfabetu o rozmiarze $O(n)$. Aby próbka mogła zostać zaakceptowana, musimy dwukrotnie przejść przez krawędź $c$ - dodamy więc w każdej próbce literę $c$ po każdym wyborze wierzchołka $v_i$. 
+
+Teraz jedyne stany do których może prowadzić wybrakowana krawędź to stany $v_i$, stan $u_i$, stan $q_\lambda$ oraz stan $\text{sink}_+$. \\
+Jeżeli brakująca krawędź prowadzi do $u_i$, to następna litera $1$ lub $0$ doprowadzi do stanu odrzucającego. \\
+Aby zapobiec prowadzeniu brakujących krawędzi do stanu $sink_+$, możemy skorzystać z tej samej metody co poprzednio - stworzyć odpowiednie odrzucające próbki:
 
 \begin{equation}
 \forall x\in\{1..k\} \ {[bin(x) \ 0] \in S^-}
 \label{eq:kclique-3-sink}
 \end{equation}
+
+Jeżeli brakująca krawędź prowadzić do stanu $q_\lambda$, to następny ciąg liter $bin(i)$ doprowadzi do stanu odrzucającego jeżeli $k \le i$. W przeciwnym wypadku doprowadzi nas do stanu $v_i$, skąd następna litera $c$ doprowadzi do stanu odrzucającego. \\
 
 %* zagwarantowanie że wybrane stany v_i są różne
 \noindent \textbf{Wybór różnych stanów $v_i$ dla różnych brakujących krawędzi}
@@ -235,8 +238,6 @@ Rysunek \ref{fig:kclique2} przedstawia konstrukcję automatu dla redukcji z k-kl
 Konstrukcja próbek dla zagwarantowania wyboru różnych stanów $v_i$ oraz zagwarantowania, że wybrane wierzchołki tworzą klikę pozostaje analogiczna do poprzednich. Nie posiadamy już litery testowej $t$, więc musimy zmodyfikować zagwarantowanie prowadzenia brakujących krawędzi do wierzchołków $v_i$. \\
 
 \import{theory/figures}{reduction_kclique_2}
-%! TODO FIXME: missing edges can still lead to q_lambda, where any number of 1s will result in success
-% solution: add rejecting samples that will ensure we land in rejecting vertice after taking the missing edge
 
 Nowa idea automatu (rysunek \ref{fig:kclique2}) opiera się na przypisywaniu literom wartości od 1 do $n$, a następnie kodowaniu ich w systemie unarnym. W ten sposób każda litera jest reprezentowana jako ciąg liter $0$. \\
 W poniższym zapisie $un(a)$ oznacza reprezentację litery $a$ w kodzie unarnym. Aby rozróżniać przejścia literą $1$, będziemy je składać z różnych wielokrotności $1$. Dlategu ustalamy zapis $d * a$ jako powtórzenie litery $a$ dokładnie $d$ razy.
@@ -258,7 +259,14 @@ Nie mamy już litery testowej $t$, więc musimy zmodyfikować automat oraz prób
 
 Weźmy dowolną próbkę \eqref{eq:kclique-2-clique}, oraz odpowiadające jej $x, y, i, j$. Jeżeli brakująca krawędź odpowiadająca stanowi $p_y$ nie prowadzi do żadnego ze stanów $v_.$, to nie istnieje żaden inny stan do którego mogłaby ona prowadzić - musi prowadzić do stanu, po którym następuje przejście $11*1$, jedyne takie przejścia to $v_.$ oraz $\text{sink}_+$. Jednak przejście do $\text{sink}_+$ zostało wykluczone próbką \eqref{eq:kclique-2-sink}, więc pozostaje tylko przejście do któregoś ze stanów $v_.$.
 
-Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadnego ze stanów $v_.$, to może prowadzić tylko do stanów po których następuje przejście $10*1$. Jedynymi takimi stanami są stany $v_.$, $\delta(v_., 1)$ oraz $\text{sink}_+$ (który został wykluczony próbką \eqref{eq:kclique-2-sink}). Przejście do stanu $\delta(v_., 1)$, a następnie kolejnymi literami z próbik - $un(i)$ doprowadzi nas do krawędzi $3*1$ lub $4*1$, natomiast w próbce występuje $2*1$, a po nim $un(y)$ - czyli litera $0$. To przejście zostanie więc zawszez odrzucone. Pozostaje więc tylko przejście do któregoś ze stanów $v_.$. \\
+Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadnego ze stanów $v_.$, to może prowadzić tylko do stanów po których następuje przejście $10*1$. Jedynymi takimi stanami są stany $v_.$, $\delta(v_., 1)$ oraz $\text{sink}_+$ (który został wykluczony próbką \eqref{eq:kclique-2-sink}). Przejście do stanu $\delta(v_., 1)$, a następnie kolejnymi literami z próbik - $un(i)$ doprowadzi nas do krawędzi $3*1$ lub $4*1$, natomiast w próbce występuje $2*1$, a po nim $un(y)$ - czyli litera $0$. To przejście zostanie więc zawszez odrzucone. Pozostaje więc tylko przejście do któregoś ze stanów $v_.$. 
+
+Pozostaje jeszcze przypadek, w którym brakująca krawędź prowadzi do stanu startowego $q_\lambda$. Aby odrzucić taki przypadek, dodajemy próbki odrzucające:
+
+\begin{equation}
+\forall x\in\{1..k\} \ {[un(x) \ 1] \in S^-}
+\label{eq:kclique-2-start}
+\end{equation}
 
 %* zagwarantowanie że wybrane stany v_i są różne
 \noindent \textbf{Wybór różnych stanów $v_i$ dla różnych brakujących krawędzi}
