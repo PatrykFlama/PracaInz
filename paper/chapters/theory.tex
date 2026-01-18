@@ -266,23 +266,25 @@ Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodzi
 
 Pokażemy redukcję z problemu k-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu k-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem k-zbioru pokrywającego. 
 
-Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go w analogiczny sposób jak w przypadku redukcji z k-klik zmniejszyć do stałego rozmiaru alfabetu. 
+Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go w analogiczny sposób jak w przypadku redukcji z k-klik zmniejszyć do stałego rozmiaru alfabetu. \\
+Przyjmijmy też, że $n = |\mathcal{F}|$. \\
 
 \noindent Idea konstrukcji: \\
-Każdy stan $s_i$ odpowiada zbiorowi $S_i \in \mathcal{F}'$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
+Każdy stan $s_i$ odpowiada zbiorowi $S_i \in \mathcal{F}$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
 Jeżeli brakująca krawędź $p_x$ prowadzi do stanu $s_i$, to interpretujemy to jako wybranie zbioru $S_i$ jako $x$-tego zbioru w pokryciu. \\
 Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (odrzucającego) $q_{\lambda}$, jeżeli dany zbiór $S_i$ nie zawiera elementu $u_j$. W przeciwnym wypadku prowadzi do stanu akceptującego $\text{sink}_+$. Konstrukcja ta reprezentuje elementu z uniwersum $U$, które znajdują się w zbiorze $S_i$.
 
 \import{theory/figures}{reduction_ksetcover}
 
-Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą do każdego, wybranego przez krawędź $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w przeciwnym wypadku odrzucana. \\
-
+W tym problemie nie musimy gwarantować wyboru różnych stanów $s_i$ dla różnych krawędzi $p_x$, ponieważ wybór tego samego zbioru wielokrotnie nie ma wpływu na pokrycie uniwersum.
 
 \noindent \textbf{Gwarancja pokrycia uniwersum}
 
-% TODO: pokrycie uniwersum
+Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą do każdego, wybranego przez krawędź $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w przeciwnym wypadku odrzucana. \\
+
 \begin{equation}
-42
+\forall j \in \{1..|U|\} \ {[p_1 \ t \ e_j \ p_2 \ t \ e_j \ ... \ p_k \ t \ e_j] \in S^+}
+\label{eq:kcover-cover}
 \end{equation}
 
 Dodatkowo, w analogiczny sposób jak w przypadku redukcji z k-klik, tworzymy próbki wymuszające prowadzenie brakujących krawędzi do stanów $s_i$ oraz wybór różnych stanów dla różnych krawędzi $p_x$.
@@ -290,18 +292,14 @@ Dodatkowo, w analogiczny sposób jak w przypadku redukcji z k-klik, tworzymy pr�
 
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do stanów $s_i$}
 
-% TODO: prowadzenie do s_i
+Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub $sink_+$ doprowadzi do $\text{sink}_-$ po przejściu następną literą $t$.\\
+Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
+
 \begin{equation}
-42
+\forall x\in\{1..k\} \ {[p_x] \in S^-}
+\label{eq:kcover-si}
 \end{equation}
 
-
-\noindent \textbf{Wybór różnych stanów $s_i$ dla różnych krawędzi $p_x$}
-
-% TODO: wybór różnych s_i
-\begin{equation}
-42
-\end{equation}
 
 \subsection{Przynależność do W[P]}
 % TODO
