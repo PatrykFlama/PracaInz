@@ -8,12 +8,60 @@
     small/.style={circle, draw, minimum size=5mm},
     accept/.style={circle, draw, double, minimum size=8mm},
     reject/.style={circle, draw, minimum size=8mm},
+    tostart/.style={state, dashed, thick},
     every label/.style={font=\small}
 ]
 
+    % wierzchołek startowy
+    \node[draw,state,inner sep=2pt] (s) at (0,-2) {$q_{\lambda}$};
 
+    % wierzchołek sink
+    % \node[draw,accept,inner sep=2pt] (sinkp) at (0,-4) {$\text{sink}_+$};
+    % \draw[->,thick] (s) -- (sinkp) node[midway,above] {$c_1,c_2$};
+
+    \node[draw,reject,inner sep=2pt] (sinkn) at (1.5,-3) {$\text{sink}_-$};
+
+    % punkty docelowe dla krawędzi
+    \coordinate (t1) at (-1.5,0);
+    \coordinate (tx) at (0,0);
+    \coordinate (tlast) at (1.5,0);
+
+    % krawędzie p
+    \draw[->,dashed,thick] (s) -- (t1) node[midway,left] {$p_{1}$};
+    \node at (-0.6, -0.2) {$\dots$};
+    \draw[->,dashed,thick] (s) -- (tx) node[midway,left] {$p_{x}$};
+    \node at (0.7, -0.2) {$\dots$};
+    \draw[->,dashed,thick] (s) -- (tlast) node[midway,left] {$p_{k}$};
+
+    % wierzchołki v
+    \node[draw,state,inner sep=1.5pt] (v1) at (3,-0.4) {$s_{1}$};
+    \node (vdots1) at (3,-1.1) {$\vdots$};
+    \node[draw,state,inner sep=1.5pt] (vi) at (3,-2) {$s_{i}$};
+    \node (vdots2) at (3,-2.7) {$\vdots$};
+    \node[draw,state,inner sep=1.5pt] (vn) at (3,-3.6) {$s_{n}$};
+
+    % krawędź test
+    \node[draw,state,inner sep=2pt] (test_edge) at (5,-2) {$ $};
+    \draw[->,thick] (vi) -- (test_edge) node[midway,above] {$t$};
+
+    % sekcja weryfikacji wierzchołka
+    \node[draw,tostart,inner sep=2pt] (u1) at (7,-0.4) {$q_{\lambda}$};
+    \node[draw,accept,inner sep=2pt] (u2) at (7,-3.6) {$\text{sink}_+$};
+
+    \draw[->,thick] (test_edge) -- (u1) node[midway,right] {$e_j \ \text{s.t.} \ j \notin S_i$};
+    \draw[->,thick] (test_edge) -- (u2) node[midway,right] {$e_j \ \text{s.t.} \ j \in S_i$};
+
+    \coordinate (label_end) at (8.2,-1);
+    % zielona ramka
+    \node[
+        draw=green!60!black,
+        thick,
+        rounded corners,
+        fit=(u1)(test_edge)(u2)(label_end),
+        label={[green!60!black]above:dla każdego $v_i$}
+    ] {};
 
 \end{tikzpicture}
-\caption{Konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu}
+\caption{Konstrukcja automatu dla redukcji z k-zbioru pokrywającego, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu}
 \label{fig:ksetcover}
 \end{figure}
