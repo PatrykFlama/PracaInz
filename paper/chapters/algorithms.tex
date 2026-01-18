@@ -1,6 +1,11 @@
 \section{Podejście Brute Force}
 
-Podejście brute force polega na sprawdzeniu całej przestrzeni przeszukiwań, tzn. zapełnienia brakujących przejść w automacie każą możliwą kombinacją, a następnie zasymulowania każdej z próbek i sprawdzeniu czy kończy w stanie zgodnym z danymi wejściowymi. Algorytm kończy działanie w momencie znalezienia właściwej kombinacji.
+Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwych sposobów uzupełnienia brakujących przejść w automacie. Algorytm generuje kolejne warianty automatu poprzez przypisywanie stanów docelowych do brakujących przejść dla poszczególnych symboli alfabetu.
+
+Każdy taki wariant traktowany jest jako osobny kandydat rozwiązania problemu. Dla wygenerowanego automatu algorytm symuluje następnie przetwarzanie wszystkich próbek, przechodząc krok po kroku przez kolejne stany zgodnie z symbolami próbek. Po zakończeniu symulacji sprawdzane jest, czy każda z próbek kończy się w stanie zgodnym z danymi wejściowymi.
+
+Jeżeli dla danego wariantu automatu warunek ten nie jest spełniony, algorytm odrzuca go i przechodzi do analizy kolejnej kombinacji uzupełnień. Proces ten jest powtarzany aż do momentu znalezienia pierwszego wariantu, dla którego wszystkie próbki są poprawnie obsługiwane. W tym momencie algorytm kończy działanie.
+
 
 \subsubsection{Złożoność obliczeniowa}
 Czas algorytmu wynosi $\mathcal{O}(N^k \cdot M \cdot |S|)$, gdzie $N$ to liczba stanów, $k$ to liczba brakujących przejść, $M$ to maksymalna długość próbki, a $|S|$ to liczba próbek.
@@ -97,4 +102,6 @@ W praktyce jednak, dla automatu z niewielką liczbą brakujących przejść, cza
 
 \section{Heurystyka naprawy automatu z losowymi restartami}
 
-Heurystyka oparta jest na algorytmie hill climbing \cite{hill_climbing} z losowymi restartami, w którym każda modyfikacja przejścia automatu oceniana jest poprzez globalną funkcję celu równą liczbie próbek naruszających specyfikację wejściową.
+Algorytm hill climbing \cite{hill_climbing} jest algorytmem, który rozpoczyna działanie od pewnego początkowego rozwiązania, a następnie iteracyjnie wprowadza niewielkie modyfikacje, dążąc do poprawy wartości funkcji celu. W każdej iteracji rozważane są rozwiązania sąsiednie, różniące się od aktualnego jedynie pojedynczą zmianą, w tym przypadku: przypisaniem innego stanu docelowego do jednego przejścia automatu. Jeżeli taka modyfikacja prowadzi do poprawy wartości funkcji celu, w tym przypadku: więcej próbek osiąga docelowy stan zgodny z danymi wejściowymi, jest ona akceptowana jako nowe rozwiązanie bieżące.
+
+Metoda ta jest podatna na zatrzymanie się w minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W celu ograniczenia tego problemu stosujemy losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejśc automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
