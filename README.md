@@ -8,7 +8,7 @@ Zgaduję, że przypadku, gdy liczba brakujących krawędzi jest dowolna, trzeba 
 
 Możliwe stopnie trudności obejmowałyby przeanalizowanie tego dla deterministycznych automatów skończonych, automatów z sumą (każda krawędź ma jakąś liczbę, a wartość słowa to suma wartości krawędzi) i ewentualnie automatów niedeterministycznych (ale to już chyba za trudne).
 
-
+- [Praca dyplomowa opisująca problem i rozwiązania](paper)
 - [Programy do testowania algorytmów naprawiania DFA](programy)
 - [Analiza empiryczna wyników eksperymentów](analiza)
 - [Link do dysku z wynikami eksperymentów](https://drive.google.com/drive/folders/1PSMrtszgpOd5jcioOSFZGcdl_dgbD6ZP?usp=sharing)
