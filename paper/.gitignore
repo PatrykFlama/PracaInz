@@ -6,6 +6,6 @@
 *.toc
 *.out
 *.run.xml
-*.bcf
+*.bcf*
 *.bbl*
 *.blg

@@ -1,0 +1,43 @@
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+    scale=0.95,
+    ->,
+    >=Stealth,
+    node distance=14mm,
+    state/.style={circle, draw, minimum size=8mm},
+    small/.style={circle, draw, minimum size=5mm},
+    accept/.style={circle, draw, double, minimum size=8mm},
+    reject/.style={circle, draw, minimum size=8mm},
+    tostart/.style={state, dashed, thick},
+    every label/.style={font=\small}
+]
+
+    % Left section
+    \node[draw,state,inner sep=2pt] (v1) at (0,0) {$s_1$};
+    \node[draw,state,inner sep=2pt] (v2) at (3,1) {$s_2$};
+    \node[draw,state,inner sep=2pt] (v3) at (3,-1) {$s_3$};
+
+    \draw [->,thick] (v1) -- (v2) node[midway,above] {$bin(a)$};
+    \draw [->,thick] (v1) -- (v3) node[midway,below] {$bin(b)$};
+
+    % equiv arrow
+    \node at (4.5,0) {$\Leftrightarrow$};
+
+    % Right section
+    %% States
+    \node[draw,state,inner sep=2pt] (b1) at (6,0) {$s_1$};
+    \node[draw,state,inner sep=2pt] (b2) at (8,0) {$ $};
+    \node[draw,state,inner sep=2pt] (b3) at (10,0) {$ $};
+    \node[draw,state,inner sep=2pt] (b4) at (12,1) {$s_2$};
+    \node[draw,state,inner sep=2pt] (b5) at (12,-1) {$s_3$};
+    %% Edges
+    \draw [->,thick] (b1) -- (b2) node[midway,above] {$1$};
+    \draw [->,thick] (b2) -- (b3) node[midway,above] {$0$};
+    \draw [->,thick] (b3) -- (b4) node[midway,above] {$1$};
+    \draw [->,thick] (b3) -- (b5) node[midway,below] {$0$};
+
+\end{tikzpicture}
+\caption{Przykład reprezentacji krawędzi z etykietą $bin$.}
+\label{fig:kclique-bin-example}
+\end{figure}

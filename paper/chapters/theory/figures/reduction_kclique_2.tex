@@ -9,16 +9,20 @@
     small/.style={circle, draw, minimum size=5mm},
     accept/.style={circle, draw, double, minimum size=8mm},
     reject/.style={circle, draw, minimum size=8mm},
+    tostart/.style={state, dashed, thick},
     every label/.style={font=\small}
 ]
     % wierzchołek startowy
     \node[draw,state,inner sep=2pt] (s) at (0,0) {$q_{\lambda}$};
 
     % wierzchołek sink
-    \node[draw,accept,inner sep=2pt] (s1) at (0,-2) {$ $};
-    \draw[->,thick] (s) -- (s1) node[midway,right] {$2*1$};
-    \node[draw,accept,inner sep=1.5pt] (s2) at (0,-4) {$ $};
-    \draw[->,thick] (s1) -- (s2) node[midway,right] {$16*1$};
+    % \node[draw,accept,inner sep=2pt] (s1) at (0,-2) {$ $};
+    % \draw[->,thick] (s) -- (s1) node[midway,right] {$2*1$};
+    % \node[draw,accept,inner sep=1.5pt] (s2) at (0,-4) {$ $};
+    % \draw[->,thick] (s1) -- (s2) node[midway,right] {$16*1$};
+    \node[draw,accept,inner sep=1.5pt] (sinkp) at (0,-3) {$sink_+$};
+    \draw[->,thick] (s) -- (sinkp) node[midway,right] {$1$};
+    \node[draw,reject,inner sep=1.5pt] (sinkn) at (0,-5) {$sink_-$};
 
 
     % wierzchołki wyliczajce indeks v
@@ -62,9 +66,9 @@
     \draw[->,thick] (ui) -- (udots2) node[midway,above] {$0$};
     \draw[->,thick] (udots2) -- (un) node[midway,above] {$0$};
 
-    \node[draw,state,inner sep=2pt] (u1s) at (6,-7) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (uis) at (10,-7) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (uns) at (14,-7) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (u1s) at (6,-7) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (uis) at (10,-7) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (uns) at (14,-7) {$q_{\lambda}$};
 
     \draw[->,thick] (u1) -- (u1s) node[midway,right] {$1$};
     \draw[->,thick] (ui) -- (uis) node[midway,right] {$2*1$};
@@ -85,14 +89,14 @@
     \draw[->,thick] (wi) -- (wdots2) node[midway,above] {$0$};
     \draw[->,thick] (wdots2) -- (wn) node[midway,above] {$0$};
 
-    \node[draw,state,inner sep=2pt] (w1s) at (6,-11) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (wns) at (14,-11) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (w1s) at (6,-11) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (wns) at (14,-11) {$q_{\lambda}$};
 
     \draw[->,thick] (w1) -- (w1s) node[midway,right] {$3*1$};
     \draw[->,thick] (wn) -- (wns) node[midway,right] {$3*1$};
 
     % warstwa sąsiedztwa
-    \node[draw,state,inner sep=2pt] (neigh1) at (10,-13) {$n_1$};
+    \node[draw,state,inner sep=2pt] (neigh1) at (10,-13) {$n_0$};
     \node (neighdots1) at (12,-13) {$\dots$};
     \node[draw,state,inner sep=2pt] (neighi) at (14,-13) {$n_j$};
     \node (neighdots2) at (16,-13) {$\dots$};

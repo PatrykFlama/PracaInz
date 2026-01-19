@@ -8,70 +8,71 @@
     small/.style={circle, draw, minimum size=5mm},
     accept/.style={circle, draw, double, minimum size=8mm},
     reject/.style={circle, draw, minimum size=8mm},
+    tostart/.style={state, dashed, thick},
     every label/.style={font=\small}
 ]
     % wierzchołek startowy
     \node[draw,state,inner sep=2pt] (s) at (0,-2) {$q_{\lambda}$};
 
     % wierzchołek sink
-    \node[draw,accept,inner sep=2pt] (sink) at (0,-4) {sink};
-    \draw[->,thick] (s) -- (sink) node[midway,above] {$\text{choice}_1,\text{choice}_2$};
+    \node[draw,accept,inner sep=2pt] (sinkp) at (0,-4) {$\text{sink}_+$};
+    \draw[->,thick] (s) -- (sinkp) node[midway,above] {$c_1,c_2$};
 
-    % wierzchołki v
-    \node[draw,state,inner sep=1.5pt] (v1) at (4,0) {$v_{1}$};
-    \node (vdots1) at (4,-0.7) {$\vdots$};
-    \node[draw,state,inner sep=1.5pt] (vi) at (4,-1.6) {$v_{i}$};
-    \node[draw,state,inner sep=1.5pt] (vj) at (4,-2.6) {$v_{j}$};
-    \node (vdots2) at (4,-3.2) {$\vdots$};
-    \node[draw,state,inner sep=1.5pt] (vn) at (4,-4.0) {$v_{n}$};
+    \node[draw,reject,inner sep=2pt] (sinkn) at (1.5,-4) {$\text{sink}_-$};
 
     % punkty docelowe dla krawędzi
-    \coordinate (t1) at (3,-0.8);
-    \coordinate (tx) at (3,-1.6);
-    \coordinate (ty) at (3,-2.4);
-    \coordinate (tlast) at (3,-3.2);
+    \coordinate (t1) at (-1.5,0);
+    \coordinate (tx) at (0,0);
+    \coordinate (tlast) at (1.5,0);
 
     % krawędzie p
-    \draw[->,dashed,thick] (s) -- (t1) node[midway,above] {$p_{1}$};
-    \node at (2.8,-1.2) {$\vdots$};
-    \draw[->,dashed,thick] (s) -- (tx) node[midway,above] {$p_{x}$};
-    \draw[->,dashed,thick] (s) -- (ty) node[midway,above] {$p_{y}$};
-    \node at (2.8,-2.6) {$\vdots$};
-    \draw[->,dashed,thick] (s) -- (tlast) node[midway,above] {$p_{k}$};
+    \draw[->,dashed,thick] (s) -- (t1) node[midway,left] {$p_{1}$};
+    \node at (-0.6, -0.2) {$\dots$};
+    \draw[->,dashed,thick] (s) -- (tx) node[midway,left] {$p_{x}$};
+    \node at (0.7, -0.2) {$\dots$};
+    \draw[->,dashed,thick] (s) -- (tlast) node[midway,left] {$p_{k}$};
 
-    % krawędź choice
-    \node[draw,state,inner sep=2pt] (test_edge) at (6,-1.6) {$ $};
-    \draw[->,thick] (vi) -- (test_edge) node[midway,above] {$\text{test}$};
+    % wierzchołki v
+    \node[draw,state,inner sep=1.5pt] (v1) at (3,-0.4) {$v_{1}$};
+    \node (vdots1) at (3,-1.1) {$\vdots$};
+    \node[draw,state,inner sep=1.5pt] (vi) at (3,-2) {$v_{i}$};
+    \node (vdots2) at (3,-2.7) {$\vdots$};
+    \node[draw,state,inner sep=1.5pt] (vn) at (3,-3.6) {$v_{n}$};
+
+    % krawędź test
+    \node[draw,state,inner sep=2pt] (test_edge) at (5,-2) {$ $};
+    \draw[->,thick] (vi) -- (test_edge) node[midway,above] {$t$};
 
     % sekcja weryfikacji wierzchołka
-    \node[draw,state,inner sep=2pt] (vv1) at (7.5,-0.2) {$q_{\lambda}$};
-    \node (vdots1) at (7.5,-0.8) {$\vdots$};
-    \node[draw,state,inner sep=2pt] (vvi) at (7.5,-1.6) {$u_i$};
-    \node (vdots1) at (7.5,-2.2) {$\vdots$};
-    \node[draw,state,inner sep=2pt] (vvn) at (7.5,-3) {$q_{\lambda}$};
+    \node[draw,tostart,inner sep=2pt] (vv1) at (7,-0.4) {$q_{\lambda}$};
+    \node (vdots1) at (7,-1.1) {$\vdots$};
+    \node[draw,state,inner sep=2pt] (vvi) at (7,-2) {$u_i$};
+    \node (vdots1) at (7,-2.7) {$\vdots$};
+    \node[draw,tostart,inner sep=2pt] (vvn) at (7,-3.6) {$q_{\lambda}$};
 
     \draw[->,thick] (test_edge) -- (vv1) node[midway,above] {$e_1$};
     \draw[->,thick] (test_edge) -- (vvi) node[midway,above] {$e_i$};
     \draw[->,thick] (test_edge) -- (vvn) node[midway,above] {$e_n$};
 
     % sekcja wyboru
-    \node[draw,state,inner sep=2pt] (choice1) at (10,-0.8) {$q_{\lambda}$};
-    \node[draw,state,inner sep=2pt] (choice2) at (10,-2.4) {$c_2$};
-    \draw[->,thick] (vvi) -- (choice1) node[midway,above] {$\text{choice}_1$};
-    \draw[->,thick] (vvi) -- (choice2) node[midway,below] {$\text{choice}_2$};
+    \node[draw,tostart,inner sep=2pt] (choice1) at (9,-1.1) {$q_{\lambda}$};
+    \node[draw,state,inner sep=2pt] (choice2) at (9,-2.7) {$ $};
+    \draw[->,thick] (vvi) -- (choice1) node[midway,above] {$c_1$};
+    \draw[->,thick] (vvi) -- (choice2) node[midway,below] {$c_2$};
 
     % sekcja testu sąsiedztwa
-    \node[accept, inner sep=1.5pt] (accept) at (13,-1.4) {};
-    \node[reject, inner sep=1.5pt] (reject) at (13,-3) {};
-    \draw[->,thick] (choice2) -- (accept) node[midway,above] {$e_j | v_j \in N(v_i)$};
-    \draw[->,thick] (choice2) -- (reject) node[midway,below] {$e_j | v_j \notin N(v_i)$};
+    \node[accept, inner sep=1.5pt] (accept) at (11,-1.1) {};
+    \node[reject, inner sep=1.5pt] (reject) at (11,-4.3) {};
+    \draw[->,thick] (choice2) -- (accept) node[midway,right] {$e_j \ \text{s.t.} \ (i, j) \in E$};
+    \draw[->,thick] (choice2) -- (reject) node[midway,right] {$e_j \ \text{s.t.} \ (i, j) \notin E$};
 
+    \coordinate (label_end) at (13,-4.5);
     % zielona ramka
     \node[
         draw=green!60!black,
         thick,
         rounded corners,
-        fit=(vv1)(vvi)(vvn)(choice1)(choice2)(accept)(reject)(test_edge),
+        fit=(vv1)(vvi)(vvn)(choice1)(choice2)(accept)(reject)(test_edge)(label_end),
         label={[green!60!black]above:dla każdego $v_i$}
     ] {};
 
