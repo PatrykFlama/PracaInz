@@ -10,7 +10,3 @@ Warianty problemu obejmują sytuację, gdy liczba brakujących stanów/krawędzi
 Zgaduję, że przypadku, gdy liczba brakujących krawędzi jest dowolna, trzeba będzie pokazać NP-zupełność, a gdy ograniczona, problem jest w P (być może tylko dla ustalonego alfabetu). W takim razie praca obejmowałaby dowód takiej NP-zupełności, a także analizę wariantu ograniczonego, wraz z implementacją (być może z kilkoma heurystykami) i analizą wydajności.
 
 Możliwe stopnie trudności obejmowałyby przeanalizowanie tego dla deterministycznych automatów skończonych, automatów z sumą (każda krawędź ma jakąś liczbę, a wartość słowa to suma wartości krawędzi) i ewentualnie automatów niedeterministycznych (ale to już chyba za trudne).
-
-
-# References
-- [TQDM file](https://gitlab.com/miguelraggi/tqdm-cpp)
