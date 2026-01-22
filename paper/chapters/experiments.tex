@@ -1,3 +1,12 @@
+\section{Implementacja}
+Program został zaimplementowany w C++ 15. Kod jest gotowy do pobrania z publicznego repozytorium na github:
+
+\begin{itemize}
+  \item \url{https://github.com/PatrykFlama/PracaInz}
+\end{itemize}
+
+Kod jest w folderze programy, w pliku main.cpp można konfigurować liczbę stanów, rozmiar alfabetu, liczbę próbek oraz ich długość, wariancję długości próbek, liczbę brakujących krawędzi, typ automatu oraz liczbę testów i wybrać algorytmy do testowania. Kod można uruchamiać za pomocą Makefile.
+
 \section{Środowisko}
 Testy zostały wykonane na środowisku o poniższych parametrach:
 \begin{itemize}
@@ -21,6 +30,8 @@ Przy rysowaniu wykresów średni czas wykonania obliczano z wykorzystaniem okna 
 Celem przeprowadzonych eksperymentów było zbadanie wydajności algorytmu ze skokami, który stanowi najbardziej obiecujące podejście spośród rozważanych rozwiązań, oraz porównanie jego działania z algorytmem naiwnym. Testy obejmowały ocenę wpływu długości próbek oraz ich liczby na czas wykonania obu algorytmów.
 
 \section{Wyniki}
+Na wykresie ~\ref{fig:missing_edges} obserwowany jest wyraźny wzrost czasu wykonania obu algorytmów wraz ze wzrostem liczby brakujących krawędzi. Algorytm naiwny wykazuje znacznie szybszy przyrost czasu niż wariant wykorzystujący tablice skoków. Algorytm ze skokami charakteryzuje się wolniejszym tempem wzrostu i lepszą skalowalnością względem tego parametru.
+
 Na wykresie ~\ref{fig:sample_length} widoczny jest liniowy wzrost czasu działania obu algorytmów wraz ze zwiększaniem długości próbek. Algorytm naiwny charakteryzuje się szybkim przyrostem czasu wykonania, osiągając dla największych długości próbek wartości kilkukrotnie wyższe niż algorytm ze skokami. Algorytm ze skokami wykazuje stabilniejszy przebieg oraz wolniejsze tempo wzrostu, co wskazuje na jego lepszą skalowalność względem długości próbek.
 
 Na wykresie ~\ref{fig:num_samples} podobnie obserwowany jest liniowy wzrost czasu działania obu algorytmów wraz ze zwiększaniem ilości próbek, przy czym wpływ liczby próbek jest wyraźnie mniejszy niż wpływ ich długości.
@@ -39,4 +50,11 @@ Na podstawie przeprowadzonych testów można stwierdzić, że algorytm ze skokam
   \includegraphics[width=0.8\textwidth]{charts/num_samples.pdf}
   \caption{Średni czas wykonania algorytmu w zależności od liczby próbek, liczony na oknie przesuwnym 10000. Parametry: 20 stanów, liczba próbek z zakresu [10,1000], alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek: 0,2, długość próbek: 30.}
   \label{fig:num_samples}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{charts/missing_edges.pdf}
+  \caption{Średni czas wykonania algorytmu w zależności od liczby brakujących przejść, liczony na oknie przesuwnym 300. Parametry: 20 stanów, 30 próbek, alfabet 5-symbolowy, brakujące krawędzie z zakresu [1,10], wariancja długości próbek: 0,2, długość próbek: 30.}
+  \label{fig:missing_edges}
 \end{figure}
