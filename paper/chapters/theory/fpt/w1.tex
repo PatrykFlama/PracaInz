@@ -30,7 +30,7 @@ Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
 Przejścia $p_i$ oznaczone przerywaną linią odpowiadają brakującym przejściom w automacie. Każde przejście, które nie jest zaznaczone i nie wychodzi ze stanu $\text{sink}_+$ lub $\text{sink}_-$, prowadzi do stanu odrzucającego $\text{sink}_-$. Niezaznaczone przejścia wychodzące ze stanów $\text{sink}_+$ i $\text{sink}_-$ prowadzą do tych samych stanów. \\
 Część automatu zaznaczona ramką jest powielana dla każdego stanu $v_.$. \\
 
-\import{theory/figures}{reduction_kclique_n_v2}
+\import{theory/figures/w1}{reduction_kclique_n_v2}
 
 \noindent Idea konstrukcji: \\
 
@@ -116,9 +116,9 @@ Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długoś�
 Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu użejemy kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$. \\
 Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą $bin(a)$ reprezentuje ciąg stanów połączonych krawędziami o etykietach odpowiadających kolejnym bitom w kodzie binarnym $bin(a)$. Jeżeli mamy wiele krawędzi $bin$ wychodzących z tego samego wierzchołka, to ich krawędzie o tych samych etykietach stanowią tą samą krawędź. Na przykład, jeżeli mamy litery $a$ oraz $b$ reprezentowane przez $101$ oraz $100$, reprezentują one 4 krawędzie - najpierw ciąg dwóch, gdzie pierwsza ma etykietę $1$, a druga $0$ - następnie krawędzie $1$ oraz $0$ wychodzące z ostatniego wierzchołka (tak jak na rysunku \ref{fig:kclique-bin-example}).
 
-\import{theory/figures}{reduction_kclique_bin_example}
+\import{theory/figures/w1}{reduction_kclique_bin_example}
 
-\import{theory/figures}{reduction_kclique_3}
+\import{theory/figures/w1}{reduction_kclique_3}
 
 Idea działania oraz konstrukcja próbek pozostaje taka sama jak w przypadku alfabetu o rozmiarze $O(n)$, z tą różnicą, że każda krawędź jest teraz reprezentowana jako ciąg krawędzi zgodnie z powyższą konwencją. \\
 Dodatkowo nie będziemy już korzystać z litery $t$, a litery $c_0$ i $c_1$ zastąpimy literą $c$, po której nastąpi litera $0$ lub $1$. \\
@@ -170,7 +170,7 @@ Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długoś�
 Rysunek \ref{fig:kclique2} przedstawia konstrukcję automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze 2. \\
 Konstrukcja próbek dla zagwarantowania wyboru różnych stanów $v_i$ oraz zagwarantowania, że wybrane wierzchołki tworzą klikę pozostaje analogiczna do poprzednich. Nie posiadamy już litery testowej $t$, więc musimy zmodyfikować zagwarantowanie prowadzenia brakujących krawędzi do wierzchołków $v_i$. \\
 
-\import{theory/figures}{reduction_kclique_2}
+\import{theory/figures/w1}{reduction_kclique_2}
 
 Nowa idea automatu (rysunek \ref{fig:kclique2}) opiera się na przypisywaniu literom wartości od 1 do $n$, a następnie kodowaniu ich w systemie unarnym. W ten sposób każda litera jest reprezentowana jako ciąg liter $0$. \\
 W poniższym zapisie $un(a)$ oznacza reprezentację litery $a$ w kodzie unarnym. Aby rozróżniać przejścia literą $1$, będziemy je składać z różnych wielokrotności $1$. Dlategu ustalamy zapis $d * a$ jako powtórzenie litery $a$ dokładnie $d$ razy.
