@@ -19,7 +19,6 @@ using namespace std;
 In this program we will empirically measure efficiency of chosen algorithm, based on chosen input generation method.  
 */
 
-//TODO: figure out how what the tolerance should be in the check_similarity and check_timeout
 void init() {
     srand(static_cast<unsigned>(time(0)));
 }

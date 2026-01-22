@@ -1,5 +1,4 @@
-% TODO Potrzebne wprowadzenie do rozdziału, np. "W tym rozdziale podamy deﬁnicje..."
-W tym rozdziale przedstawimy dokładną definicję problemu naprawy częściowego DFA. Pokażemy, w jaki sposób problem można sprowadzić wyłącznie do brakujących krawędzi, wprowadzimy potrzebne oznaczenia oraz wykażemy NP-zupełność tego problemu. Ponadto omówimy jego trudność w kontekście klas parametryzowanych, ze szczególnym uwzględnieniem hierarchii W oraz klas $W[2]$ i $W[P]$.
+W tym rozdziale przedstawimy dokładną definicję problemu naprawy częściowego DFA. Pokażemy, w jaki sposób problem można sprowadzić wyłącznie do brakujących krawędzi, wprowadzimy potrzebne oznaczenia oraz wykażemy $\mathbb{NP}$-zupełność tego problemu. Ponadto omówimy jego trudność w kontekście klas parametryzowanych, ze szczególnym uwzględnieniem hierarchii W oraz klas $W[2]$ i $W[P]$.
 
 \section{Definicja problemu, framework}
 
@@ -23,7 +22,7 @@ Deterministyczny automat skończony (DFA) to krotka $(Q, \Sigma, \delta, q_\lamb
     \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym:
 \begin{itemize}
     \item niektóre krawędzie w automacie mogły zostać usunięte, więc dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
-    \item niektóre stany $q$ mogły zostać usunięte z automatu (brakujące stany), więc nie należą one ani do $\mathbb{F_A}$, ani do $\mathbb{F_R}$,
+    \item niektóre stany mogły zostać usunięte z automatu (brakujące stany), więc nie należą one ani do $\mathbb{F_A}$, ani do $\mathbb{F_R}$,
 \end{itemize}
 oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \subseteq \Sigma^{*}$ (słowa odrzucane).
 
@@ -46,12 +45,13 @@ Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i 
 \vspace{0.3cm}
 
 \noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść i klasyfikacji stanów tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia należy podać takie uzupełnienie. \\
-Zauważamy, że w tym problemie nie możemy dodawać nowych stanów do automatu.
+
+\noindent Zauważamy, że w tym problemie nie możemy dodawać nowych stanów do automatu.
 
 \label{def:fixpartialdfa}
 \end{definition}
 
-\section{NP-zupełność}
+\section{$\mathbb{NP}$-zupełność}
 \import{theory}{npcomplex}
 
 \section{Złożoność parametryzowana}

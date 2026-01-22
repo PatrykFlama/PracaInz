@@ -1,21 +1,21 @@
-Aby wykazać że problem naprawiania częściowego DFA \ref{def:fixpartialdfa} jest NP-zupełny, musimy udowodnić, że należy do klasy NP oraz że jest NP-trudny.
+Aby wykazać że problem naprawiania częściowego DFA \ref{def:fixpartialdfa} jest $\mathbb{NP}$-zupełny, musimy udowodnić, że należy do klasy $\mathbb{NP}$ oraz że jest $\mathbb{NP}$-trudny.
 
 
 \begin{lemma}
-[Problem naprawienia częściowego DFA należy do klasy NP] 
+[Problem naprawienia częściowego DFA należy do klasy $\mathbb{NP}$] 
 \end{lemma}
 
 \vspace{-0.8cm}
 
 \begin{proof}
-Problem naprawienia częściowego DFA należy do klasy NP, ponieważ dla danej instancji problemu możemy w czasie wielomianowym zweryfikować poprawność podanego rozwiązania. \\
+Problem naprawienia częściowego DFA należy do klasy $\mathbb{NP}$, ponieważ dla danej instancji problemu możemy w czasie wielomianowym zweryfikować poprawność podanego rozwiązania. \\
 
-Weryfikacja polega na sprawdzeniu, czy uzupełniony automat jest deterministyczny oraz czy akceptuje i odrzuca odpowiednie próbki. Sprawdzenie deterministyczności automatu wymaga przejrzenia wszystkich stanów i liter alfabetu, co zajmuje czas $O(|Q| \cdot |\Sigma|)$. Sprawdzenie klasyfikacji próbek wymaga przejścia przez każdą próbkę i symulacji jej działania na automacie, co zajmuje czas $O((|S^+| + |S^-|) \cdot M)$, gdzie $M$ to maksymalna długość próbki. Ponieważ oba te kroki można wykonać w czasie wielomianowym względem rozmiaru wejścia, problem naprawienia częściowego DFA należy do klasy NP.
+Weryfikacja polega na sprawdzeniu, czy uzupełniony automat jest deterministyczny oraz czy akceptuje i odrzuca odpowiednie próbki. Sprawdzenie deterministyczności automatu wymaga przejrzenia wszystkich stanów i liter alfabetu, co zajmuje czas $O(|Q| \cdot |\Sigma|)$. Sprawdzenie klasyfikacji próbek wymaga przejścia przez każdą próbkę i symulacji jej działania na automacie, co zajmuje czas $O((|S^+| + |S^-|) \cdot M)$, gdzie $M$ to maksymalna długość próbki. Ponieważ oba te kroki można wykonać w czasie wielomianowym względem rozmiaru wejścia, problem naprawienia częściowego DFA należy do klasy $\mathbb{NP}$.
 \end{proof}
 
 
 \begin{fact}
-Problem \textit{najmniejszego zgodnego automatu} jest NP-zupełny \cite{grammatical_inference}:
+Problem \textit{najmniejszego zgodnego automatu} jest $\mathbb{NP}$-zupełny \cite{grammatical_inference}:
 \end{fact}
 
 \begin{definition}[Problem najmniejszego zgodnego automatu]   
@@ -33,7 +33,7 @@ Problem \textit{najmniejszego zgodnego automatu} jest NP-zupełny \cite{grammati
 
 
 \begin{lemma}
-[Problem naprawienia częściowego DFA jest NP-trudny]
+[Problem naprawienia częściowego DFA jest $\mathbb{NP}$-trudny]
 \end{lemma}
 
 \vspace{-0.8cm}
