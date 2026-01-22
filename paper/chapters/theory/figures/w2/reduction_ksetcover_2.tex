@@ -16,9 +16,7 @@
     \node[draw,state,inner sep=2pt] (s) at (0,0) {$q_{\lambda}$};
 
     % sinki
-    \node[draw,accept,inner sep=1.5pt] (sinkp) at (0,-3) {$\text{sink}_+$};
-    \draw[->,thick] (s) -- (sinkp) node[midway,right] {$1$};
-    \node[draw,reject,inner sep=1.5pt] (sinkn) at (0,-5) {$\text{sink}_-$};
+    \node[draw,reject,inner sep=1.5pt] (sinkn) at (0,-3) {$\text{sink}_-$};
 
     % wyliczanie krawędzi p
     \node[draw,state,inner sep=2pt] (p1) at (2,0) {$p_1$};
@@ -39,12 +37,11 @@
     \draw[->,dashed,thick] (pk) -- (tk) node[midway,right] {$1$};
 
     % wierzchołki v
-    \node[draw,state,inner sep=1.5pt] (v1) at (2,-3) {$v_{1}$};
+    \node[draw,state,inner sep=1.5pt] (v1) at (2,-3) {$s_{1}$};
     \node (vdots1) at (3,-3) {$\dots$};
-    \node[draw,state,inner sep=1.5pt] (vi) at (4,-3) {$v_{i}$};
+    \node[draw,state,inner sep=1.5pt] (vi) at (4,-3) {$s_{i}$};
     \node (vdots2) at (5,-3) {$\dots$};
-    \node[draw,state,inner sep=1.5pt] (vn) at (6,-3) {$v_{n}$};
-
+    \node[draw,state,inner sep=1.5pt] (vn) at (6,-3) {$s_{n}$};
 
     % krawędź testowa 
     \node[draw,state,inner sep=2pt] (test_edge) at (4,-5) {$ $};
@@ -64,20 +61,20 @@
     \draw[->,thick] (udots2) -- (un) node[midway,above] {$0$};
 
     % sprawdzanie czy element jest w zbiorze
-    \node[draw,accept,inner sep=2pt] (inset) at (9,-7) {$ $};
-    \node[draw,reject,inner sep=2pt] (outset) at (11,-7) {$ $};
+    \node[draw,accept,inner sep=2pt] (inset) at (9,-7) {$\text{sink}_+$};
+    \node[draw,tostart,inner sep=2pt] (outset) at (11,-7) {$q_{\lambda}$};
 
     \draw[->,thick] (uj) -- (inset) node[midway,left] {$j \in S_i$};
     \draw[->,thick] (uj) -- (outset) node[midway,right] {$j \notin S_i$};
 
-    % % ramka zielona: gadget per s_i
-    % \node[
-    %     draw=green!60!black,
-    %     thick,
-    %     rounded corners,
-    %     fit=(si)(u0)(n1)(nj)(nn)(acc)(back),
-    %     label={[green!60!black]above:dla każdego $s_i$}
-    % ] {};
+    % ramka zielona: gadget per s_i
+    \node[
+        draw=green!60!black,
+        thick,
+        rounded corners,
+        fit=(test_edge)(un)(inset)(outset),
+        label={[green!60!black]above:dla każdego $s_i$}
+    ] {};
 
 \end{tikzpicture}
 \caption{Konstrukcja automatu dla redukcji z $k$-Set Cover, korzystająca z alfabetu o rozmiarze 2}
