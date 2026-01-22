@@ -13,13 +13,17 @@ Weźmy graf nieskierowany $G = (V, E)$ oraz liczbę całkowita $k$. Problem k-kl
 
 Jeżeli w grafie wejściowym istnieje klika rozmiaru większego od $k$, to zawiera ona w sobie klikę rozmiaru dokładnie $k$, więc możemy rozważać wersję problemu k-klik, w której szukamy kliki o rozmiarze dokładnie $k$.
 
-Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmżemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmiarze co najmniej $k$. Dodatkowo pokażemy jak z rozwiązanego problemu naprawienia częściowego DFA wyprowadzić rozwiązanie problemu k-klik.
+Pokażemy, jak dla dowolnego wejścia do problemu k-klik skonstruować automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA istniało wtedy i tylko wtedy, gdy w grafie istnieje klika o rozmiarze co najmniej $k$. Dodatkowo pokażemy jak z rozwiązanego problemu naprawienia częściowego DFA wyprowadzić rozwiązanie problemu k-klik.
+
+\begin{theorem}
+Problem naprawienia częściowego DFA jest W[1]-trudny względem parametru liczby stanów $|Q|$.
+\end{theorem}
 
 W poniższych rozważaniach przyjmiemy konwencję, w której $V = \{V_1, V_2, .., V_n\}$ to zbiór wierzchołków o rozmiarze $n = |V|$ grafu wejściowego, a $E$ to zbiór krawędzi grafu wejściowego. \\
 Stany automatu będą odpowiadały wierzchołkom grafu wejściowego - dla każdego wierzchołka $V_i \in V$ stworzymy stan $v_i \in Q$. \\
 Dodatkowo ciąg liter z alfabetu $\Sigma$ zapisany w nawiasach kwadratowych $[a \ b \ c]$ oznacza próbkę składającą się z liter $a$, $b$ oraz $c$. 
 
-\subsubsection{Dla $|\Sigma|=O(n)$}
+\subsubsection{Redukcja dla rozmiaru alfabetu zależnego od rozmiaru grafu}
 
 Na rysunku \ref{fig:kcliquen-v2} przedstawiona jest konstrukcja automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze zależnym od liczby wierzchołków grafu. \\
 Każdy stan $q_{\lambda}$ odpowiada temu samemu stanowi początkowemu automatu.
@@ -107,7 +111,7 @@ Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru kon
 Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długość jest stała $O(1)$.
 
 
-\subsubsection{Dla $|\Sigma|=3$}
+\subsubsection{Redukcja dla alfabetu o rozmiarze 3}
 
 Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu użejemy kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$. \\
 Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą $bin(a)$ reprezentuje ciąg stanów połączonych krawędziami o etykietach odpowiadających kolejnym bitom w kodzie binarnym $bin(a)$. Jeżeli mamy wiele krawędzi $bin$ wychodzących z tego samego wierzchołka, to ich krawędzie o tych samych etykietach stanowią tą samą krawędź. Na przykład, jeżeli mamy litery $a$ oraz $b$ reprezentowane przez $101$ oraz $100$, reprezentują one 4 krawędzie - najpierw ciąg dwóch, gdzie pierwsza ma etykietę $1$, a druga $0$ - następnie krawędzie $1$ oraz $0$ wychodzące z ostatniego wierzchołka (tak jak na rysunku \ref{fig:kclique-bin-example}).
@@ -162,7 +166,7 @@ Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru kon
 Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długość wynosi $O(\log n)$.
 
 
-\subsubsection{Dla $|\Sigma|=2$}
+\subsubsection{Redukcja dla alfabetu o rozmiarze 2}
 Rysunek \ref{fig:kclique2} przedstawia konstrukcję automatu dla redukcji z k-klik, korzystająca z alfabetu o rozmiarze 2. \\
 Konstrukcja próbek dla zagwarantowania wyboru różnych stanów $v_i$ oraz zagwarantowania, że wybrane wierzchołki tworzą klikę pozostaje analogiczna do poprzednich. Nie posiadamy już litery testowej $t$, więc musimy zmodyfikować zagwarantowanie prowadzenia brakujących krawędzi do wierzchołków $v_i$. \\
 

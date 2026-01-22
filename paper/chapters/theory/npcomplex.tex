@@ -1,28 +1,47 @@
-Aby wykazać że problem jest NP-zupełny, musimy udowodnić, że należy do klasy NP oraz że jest NP-trudny.
+Aby wykazać że problem naprawiania częściowego DFA \ref{def:fixpartialdfa} jest NP-zupełny, musimy udowodnić, że należy do klasy NP oraz że jest NP-trudny.
 
 
-\subsection{Przynależność do NP}
+\begin{lemma}
+[Problem naprawienia częściowego DFA należy do klasy NP] 
+\end{lemma}
 
+\vspace{-0.8cm}
+
+\begin{proof}
 Problem naprawienia częściowego DFA należy do klasy NP, ponieważ dla danej instancji problemu możemy w czasie wielomianowym zweryfikować poprawność podanego rozwiązania. \\
-Weryfikacja polega na sprawdzeniu, czy uzupełniony automat jest deterministyczny oraz czy akceptuje i odrzuca odpowiednie próbki. Sprawdzenie deterministyczności automatu wymaga przejrzenia wszystkich stanów i liter alfabetu, co zajmuje czas $O(|Q| \cdot |\Sigma|)$. Sprawdzenie klasyfikacji próbek wymaga przejścia przez każdą próbkę i symulacji jej działania na automacie, co zajmuje czas $O((|S^+| + |S^-|) \cdot M)$, gdzie $M$ to maksymalna długość próbki. Ponieważ oba te kroki można wykonać w czasie wielomianowym względem rozmiaru wejścia, problem naprawienia częściowego DFA należy do klasy NP.
 
-\subsection{NP-trudność}
+Weryfikacja polega na sprawdzeniu, czy uzupełniony automat jest deterministyczny oraz czy akceptuje i odrzuca odpowiednie próbki. Sprawdzenie deterministyczności automatu wymaga przejrzenia wszystkich stanów i liter alfabetu, co zajmuje czas $O(|Q| \cdot |\Sigma|)$. Sprawdzenie klasyfikacji próbek wymaga przejścia przez każdą próbkę i symulacji jej działania na automacie, co zajmuje czas $O((|S^+| + |S^-|) \cdot M)$, gdzie $M$ to maksymalna długość próbki. Ponieważ oba te kroki można wykonać w czasie wielomianowym względem rozmiaru wejścia, problem naprawienia częściowego DFA należy do klasy NP.
+\end{proof}
+
 
 \begin{fact}
-Poniższy problem \textit{najmniejszego zgodnego automatu} \ref{def:minimal_consistent_dfa} jest NP-zupełny \cite{grammatical_inference}:
+Problem \textit{najmniejszego zgodnego automatu} jest NP-zupełny \cite{grammatical_inference}:
 \end{fact}
 
 \begin{definition}[Problem najmniejszego zgodnego automatu]   
-Otrzymujemy liczbę natrualną $n \in \mathbb{N}$ oraz dwa zbiory słów nad alfabetem $\Sigma$: zbiór słów akceptowanych $S^+ \subseteq \Sigma^{*}$ oraz zbiór słów odrzucanych $S^{-} \subseteq \Sigma^{*}$. 
-Należy odpowiedzieć na pytanie, czy istnieje deterministyczny automat skończony (DFA) $\mathcal{A}$, z co najwyżej $n$ stanami, taki że wszystkie słowa z $S^+$ są akceptowane przez $\mathcal{A}$, a wszystkie słowa z $S^-$ są odrzucane przez $\mathcal{A}$.
+% Otrzymujemy liczbę natrualną $n \in \mathbb{N}$ oraz dwa zbiory słów nad alfabetem $\Sigma$: zbiór słów akceptowanych $S^+ \subseteq \Sigma^{*}$ oraz zbiór słów odrzucanych $S^{-} \subseteq \Sigma^{*}$. 
+% Należy odpowiedzieć na pytanie, czy istnieje deterministyczny automat skończony (DFA) $\mathcal{A}$, z co najwyżej $n$ stanami, taki że wszystkie słowa z $S^+$ są akceptowane przez $\mathcal{A}$, a wszystkie słowa z $S^-$ są odrzucane przez $\mathcal{A}$.
+
+\textbf{Wejście:} liczba naturalna $n \in \mathbb{N}$ oraz dwa zbiory słów nad alfabetem $\Sigma$: zbiór słów akceptowanych $S^+ \subseteq \Sigma^{*}$ oraz zbiór słów odrzucanych $S^{-} \subseteq \Sigma^{*}$.
+
+\vspace{0.5cm}
+
+\textbf{Wyjście:} odpowiedź, czy istnieje deterministyczny automat skończony (DFA) $\mathcal{A}$, z co najwyżej $n$ stanami, taki że wszystkie słowa z $S^+$ są akceptowane przez $\mathcal{A}$, a wszystkie słowa z $S^-$ są odrzucane przez $\mathcal{A}$.
+
 \label{def:minimal_consistent_dfa}
 \end{definition}
 
 
-Możemy przeprowadzić redukcję z problemu \textit{najmniejszego zgodnego automatu} do naszego problemu \textit{naprawienia częściowego DFA}. \\
-Weźmy instancję problemu \textit{najmniejszego zgodnego automatu} - liczbę naturalną $n$ oraz zbiory słów $S^+$ oraz $S^-$. Stwórzmy częściowy automat DFA $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
+\begin{lemma}
+[Problem naprawienia częściowego DFA jest NP-trudny]
+\end{lemma}
 
-$$\forall q \in Q \ \forall a \in \Sigma \ \delta(q, a) \text{ jest nieokreślone}$$
+\vspace{-0.8cm}
 
-natomiast zbiory próbek są takie same jak w oryginalnym problemie.\\
-Wtedy odpowiedź na problem \textit{naprawienia częściowego DFA} dla automatu $A$ oraz próbek $S^+$ i $S^-$ jest pozytywna wtedy i tylko wtedy gdy odpowiedź na problem \textit{najmniejszego zgodnego automatu} dla liczby $n$ oraz próbek $S^+$ i $S^-$ jest pozytywna. \\
+\begin{proof}
+    Możemy przeprowadzić redukcję z problemu \textit{najmniejszego zgodnego automatu} do naszego problemu \textit{naprawienia częściowego DFA}. \\
+    Weźmy instancję problemu \textit{najmniejszego zgodnego automatu} - liczbę naturalną $n$ oraz zbiory słów $S^+$ oraz $S^-$. Stwórzmy częściowy automat DFA $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie $|Q| = n$ oraz
+    dla wszystkich stanów $q \in Q$ oraz liter $a \in \Sigma$ przejście $\delta(q, a)$ jest nieokreślone,
+    natomiast zbiory próbek są takie same jak w oryginalnym problemie.\\
+    Wtedy odpowiedź na problem \textit{naprawienia częściowego DFA} dla automatu $A$ oraz próbek $S^+$ i $S^-$ jest pozytywna wtedy i tylko wtedy gdy odpowiedź na problem \textit{najmniejszego zgodnego automatu} dla liczby $n$ oraz próbek $S^+$ i $S^-$ jest pozytywna. \\
+\end{proof}
