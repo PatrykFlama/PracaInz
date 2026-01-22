@@ -1,3 +1,11 @@
+W niniejszym rozdziale przedstawiono algorytmy służące do naprawy niekompletnego automatu deterministycznego na podstawie zbioru przykładów pozytywnych i negatywnych. Celem jest uzupełnienie brakujących przejść w taki sposób, aby otrzymany automat poprawnie klasyfikował wszystkie próbki wejściowe.
+
+Jako punkt odniesienia omówiono algorytm brute force, który iteruje sie po wszystkich możliwych konfiguracjach brakujących przejść i weryfikuje każdą z nich poprzez symulację próbek na automacie. Następnie wprowadzono algorytm ze skokami (jump tables), który przyspiesza etap walidacji poprzez wstępne przetwarzanie próbek i pomijanie fragmentów odpowiadających znanym przejściom.
+
+Dalej przedstawiono podejście heurystyczne oparte na algorytmie hill climbing z losowymi restartami, umożliwiające szybkie znalezienie przybliżonych rozwiązań bez gwarancji optymalności. Na końcu opisano mechanizm pruning, który ogranicza przestrzeń przeszukiwań poprzez odcinanie gałęzi, które nie mogą prowadzić do poprawnego rozwiązania.
+
+Opisane metody różnią się złożonością, czasem działania oraz gwarancjami poprawności i mogą być stosowane zależnie od rozmiaru problemu oraz dostępnych zasobów obliczeniowych.
+
 \section{Podejście Brute Force}
 
 Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwych sposobów uzupełnienia brakujących przejść w automacie. Algorytm generuje kolejne warianty automatu poprzez przypisywanie stanów brakującym przejściom dla poszczególnych symboli alfabetu.
@@ -16,7 +24,7 @@ Algorytm ze skokami stanowi optymalizację symulacji przechodzenia próbką po a
 Możemy zaobserwować, że przechodzenie po \textit{znanych} krawędziach - czyli takich przejściach które dostaliśmy na wejściu - może często prowadzić do redundantnych obliczeń, ponieważ występują one często w automacie, a utworzone z nich ścieżki są jednoznacznie określone dla dowolnej wersji naprawionego automatu.
 
 Dlatego też konstrukcja algorytmu opiera się na stworzeniu struktury, która dla każdego możliwego sufiksu próbek oraz każdego stanu automatu, pozwala na natychmiastowe wyznaczenie stanu docelowego - osiągalnego przy użyciu wyłącznie znanych krawędzi, przeskakując przy tym możliwie najdłuższy fragment podanego sufiksu. \\
-Do algorytmu wprowadzany jest etap wstępnego przetwarzania, gdzieopisana struktura jest wyliczana w postaci tablic skoków. Następnie, podczas walidacji automatu, przechodząc próbką po automacie korzystamy z tablicy skoków, aby przeskoczyć fragmenty składające się ze \textit{znanych} krawędzi. 
+Do algorytmu wprowadzany jest etap wstępnego przetwarzania, gdzie opisana struktura jest wyliczana w postaci tablic skoków. Następnie, podczas walidacji automatu, przechodząc próbką po automacie korzystamy z tablicy skoków, aby przeskoczyć fragmenty składające się ze \textit{znanych} krawędzi. 
 
 W efekcie wykonamy jedynie tyle kroków, ile jest \textit{brakujących} krawędzi na ścieżce odpowiadającej danej próbce w automacie.
 
@@ -130,58 +138,3 @@ wszystkie przejścia zostały jeszcze ustalone.
 Zastosowanie pruningu pozwala uniknąć dalszego rozpatrywania konfiguracji,
 które z góry nie mogą prowadzić do poprawnego rozwiązania, co znacząco
 redukuje liczbę analizowanych przypadków.
-
-\section{Wykorzystanie struktury trie}
-
-W celu ograniczenia wielokrotnego przetwarzania tych samych prefiksów
-próbek zastosowano strukturę drzewa trie. Wszystkie próbki wejściowe
-zostały przekształcone do postaci jednego drzewa, w którym każda krawędź
-odpowiada pojedynczemu symbolowi alfabetu, a ścieżki od korzenia do węzłów
-reprezentują prefiksy próbek.
-
-Dzięki takiej reprezentacji wspólne prefiksy próbek są przetwarzane tylko
-raz. Zamiast wielokrotnego przechodzenia tych samych przejść automatu dla
-każdej próbki osobno, algorytm wykonuje jedno przejście dla danego
-prefiksu, a następnie kontynuuje przetwarzanie dla wszystkich próbek,
-które ten prefiks współdzielą.
-
-Algorytm nie symuluje więc każdej próbki niezależnie, lecz eksploruje
-strukturę drzewa trie, odwiedzając kolejne węzły i odpowiadające im
-przejścia automatu. W ten sposób eliminowane jest powtarzające się
-przechodzenie tych samych krawędzi automatu, co prowadzi do istotnej
-redukcji liczby wykonywanych operacji, szczególnie w przypadku dużej
-liczby próbek o wspólnych prefiksach.
-
-\section{Backtracking z wykorzystaniem skoków}
-
-Backtracking jest metodą przeszukiwania polegającą na stopniowym
-konstruowaniu rozwiązania poprzez podejmowanie kolejnych decyzji oraz
-cofanie się do wcześniejszych kroków w momencie, gdy dalsza eksploracja
-danego kierunku nie może prowadzić do poprawnego rozwiązania. Podejście
-to umożliwia systematyczne badanie możliwych uzupełnień automatu przy
-jednoczesnym odrzucaniu nieperspektywicznych konfiguracji na możliwie
-wczesnym etapie.
-
-W rozważanym algorytmie backtracking wykorzystywany jest w połączeniu z
-mechanizmem skoków pomiędzy zapamiętanymi przejściami automatu. Dzięki
-temu algorytm nie rozpoczyna symulacji próbek od początku po każdej
-modyfikacji, lecz kontynuuje przetwarzanie od ostatniego poprawnie
-zdefiniowanego przejścia, co znacząco redukuje liczbę powtarzanych
-operacji.
-
-Algorytm analizuje próbki pojedynczo i dla aktualnie rozpatrywanej
-próbki identyfikuje pierwsze brakujące przejście napotkane podczas jej
-symulacji. Wybrane przejście staje się kolejną decyzją do ustalenia, a
-algorytm przypisuje mu kolejno możliwe stany docelowe. Po każdej
-modyfikacji kontynuowana jest symulacja próbki z wykorzystaniem
-mechanizmu skoków.
-
-Jeżeli w trakcie dalszego przetwarzania okaże się, że aktualna
-konfiguracja automatu nie pozwala doprowadzić próbki do stanu zgodnego z
-danymi wejściowymi, algorytm cofa ostatnią decyzję i próbuje kolejnego
-możliwego przypisania. Proces ten jest powtarzany aż do znalezienia
-poprawnej konfiguracji automatu lub wyczerpania wszystkich możliwych
-kombinacji, co skutkuje powrotem do wcześniejszych etapów przeszukiwania.
-
-
-
