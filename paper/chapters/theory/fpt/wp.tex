@@ -17,7 +17,7 @@ $W[P]$ jest klasą wszystkich problemów parametryzowanych $(Q, \kappa)$, które
 
     Niech $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$ będzie częściowym automatem deterministycznym, a $S^+ \subseteq \Sigma^*$ i $S^- \subseteq \Sigma^*$ zbiorem słów pozytywnych i negatywnych. Oznaczmy przez $k$ liczbę brakujących przejść w $\delta$.  
 
-    Maszyna turinga zgaduje $k$ stanów docelowych $q \in Q$ wybrakowanych przejść w $O(k \cdot \log |Q|)$ krokach niedeterministycznych. Następnie deterministycznie weryfikuje, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów z $S^+$ i odrzucenie wszystkich słów z $S^-$. Tą weryfikację wykonuje w czasie wielomianowym względem rozmiaru wejścia - dla przykładu symulując działanie automatu.
+    Maszyna turinga zgaduje $k$ stanów docelowych wybrakowanych przejść, w $O(k \cdot \log |Q|)$ krokach niedeterministycznych. Następnie deterministycznie weryfikuje, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów z $S^+$ i odrzucenie wszystkich słów z $S^-$. Tą weryfikację wykonuje w czasie wielomianowym względem rozmiaru wejścia - dla przykładu symulując działanie automatu.
 
     Cała niedeterministyczna maszyna Turinga wykonuje liczbę kroków niedeterministycznych zależną tylko od parametru $k$ i sprawdza poprawność w czasie wielomianowym względem rozmiaru wejścia. Stąd problem naprawienia częściowego DFA należy do klasy $\text{W[P]}$.
 \end{proof}
