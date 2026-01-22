@@ -15,3 +15,19 @@
 \begin{theorem}
     $\text{W[P]}$ jest klasą wszystkich problemów parametryzowanych $(Q, \kappa)$, które mogą być rozwiązane przez $\kappa$-ograniczoną niedeterministyczną maszynę Turinga.
 \end{theorem}  
+
+\begin{theorem}
+    Problem naprawienia częściowego DFA należy do $\text{W[P]}$.
+\end{theorem} 
+
+\begin{proof}
+    Aby pokazać, że problem naprawienia częściowego DFA należy do klasy $\text{W[P]}$, konstruujemy niedeterministyczną maszynę Turinga działającą w następujący sposób: 
+
+    Niech $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$ będzie częściowym automatem deterministycznym, a $S^+ \subseteq \Sigma^*$ i $S^- \subseteq \Sigma^*$ zbiorem słów pozytywnych i negatywnych. Oznaczmy przez $k$ liczbę brakujących przejść w $\delta$.  
+
+    W każdym kroku niedeterministycznym maszyna Turinga zgaduje brakujące przejście lub klasyfikację stanu (czy stan należy do $\mathbb{F_A}$ lub $\mathbb{F_R}$). Liczba możliwych opcji dla pojedynczego brakującego przejścia jest ograniczona przez liczbę stanów i symboli, więc dla wszystkich $k$ brakujących przejść liczba bitów potrzebnych do zgadnięcia wszystkich uzupełnień wynosi $O(k \cdot \log |Q|)$.  
+
+    Następnie maszyna deterministycznie symuluje działanie automatu na wszystkich słowach z $S^+$ i $S^-$, aby sprawdzić, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów pozytywnych i odrzucenie wszystkich słów negatywnych.  
+
+    Cała niedeterministyczna maszyna Turinga wykonuje liczbę kroków niedeterministycznych zależną tylko od parametru $k$ i sprawdza poprawność w czasie wielomianowym względem rozmiaru wejścia. Stąd problem naprawienia częściowego DFA należy do klasy $\text{W[P]}$.
+\end{proof}
