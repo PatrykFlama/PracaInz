@@ -6,3 +6,12 @@
 \begin{center}
 \colorbox{red}{\textcolor{white}{\textbf{Przynależność do W[P] jeszcze będzie uzupełniona (prawdopodobnie)}}}
 \end{center}
+
+\begin{definition}[$\kappa$-ograniczona niedeterministyczna maszyna Turinga]
+    Niech $\Sigma$ będzie alfabetem, a $\kappa : \Sigma^* \to \mathbb{N}$ niech będzie parametryzacją. Niedeterministyczna maszyna Turinga $M$ z alfabetem wejściowym $\Sigma$ nazywana jest \emph{$\kappa$-ograniczoną}, jeśli istnieją obliczalne funkcje $f, h : \mathbb{N} \to \mathbb{N}$ oraz wielomian $p \in \mathbb{N}_0[X]$ taki, że przy każdym przebiegu z wejściem $x \in \Sigma^*$ maszyna $M$ wykonuje co najwyżej $f(k) \cdot p(n)$ kroków, z czego co najwyżej $h(k) \cdot \log n$ kroków jest niedeterministycznych.  
+    Tutaj $n := |x|$, a $k := \kappa(x)$.
+\end{definition}
+
+\begin{theorem}
+    $\text{W[P]}$ jest klasą wszystkich problemów parametryzowanych $(Q, \kappa)$, które mogą być rozwiązane przez $\kappa$-ograniczoną niedeterministyczną maszynę Turinga.
+\end{theorem}  
