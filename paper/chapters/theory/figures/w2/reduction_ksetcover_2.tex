@@ -1,0 +1,85 @@
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+    scale=0.8,
+    ->,
+    >=Stealth,
+    node distance=14mm,
+    state/.style={circle, draw, minimum size=8mm},
+    small/.style={circle, draw, minimum size=5mm},
+    accept/.style={circle, draw, double, minimum size=8mm},
+    reject/.style={circle, draw, minimum size=8mm},
+    tostart/.style={state, dashed, thick},
+    every label/.style={font=\small}
+]
+    % start
+    \node[draw,state,inner sep=2pt] (s) at (0,0) {$q_{\lambda}$};
+
+    % sinki
+    \node[draw,accept,inner sep=1.5pt] (sinkp) at (0,-3) {$\text{sink}_+$};
+    \draw[->,thick] (s) -- (sinkp) node[midway,right] {$1$};
+    \node[draw,reject,inner sep=1.5pt] (sinkn) at (0,-5) {$\text{sink}_-$};
+
+    % wyliczanie krawędzi p
+    \node[draw,state,inner sep=2pt] (p1) at (2,0) {$p_1$};
+    \draw[->,thick] (s) -- (p1) node[midway,above] {$0$};
+    \node[draw,state,inner sep=2pt] (p2) at (4,0) {$p_2$};
+    \draw[->,thick] (p1) -- (p2) node[midway,above] {$0$};
+    \node (pdots) at (6,0) {$\dots$};
+    \draw[->,thick] (p2) -- (pdots) node[midway,above] {$0$};
+    \node[draw,state,inner sep=2pt] (pk) at (8,0) {$p_k$};
+    \draw[->,thick] (pdots) -- (pk) node[midway,above] {$0$};
+
+    % przejścia wyboru indeksu v
+    \coordinate (t1) at (2,-1.5);
+    \draw[->,dashed,thick] (p1) -- (t1) node[midway,right] {$1$};
+    \coordinate (t2) at (4,-1.5);
+    \draw[->,dashed,thick] (p2) -- (t2) node[midway,right] {$1$};
+    \coordinate (tk) at (8,-1.5);
+    \draw[->,dashed,thick] (pk) -- (tk) node[midway,right] {$1$};
+
+    % wierzchołki v
+    \node[draw,state,inner sep=1.5pt] (v1) at (2,-3) {$v_{1}$};
+    \node (vdots1) at (3,-3) {$\dots$};
+    \node[draw,state,inner sep=1.5pt] (vi) at (4,-3) {$v_{i}$};
+    \node (vdots2) at (5,-3) {$\dots$};
+    \node[draw,state,inner sep=1.5pt] (vn) at (6,-3) {$v_{n}$};
+
+
+    % krawędź testowa 
+    \node[draw,state,inner sep=2pt] (test_edge) at (4,-5) {$ $};
+    \draw[->,thick] (vi) -- (test_edge) node[midway,right] {$10*1$};
+
+    % wyliczanie krawędzi e_j
+    \node[draw,state,inner sep=2pt] (u1) at (6,-5) {$e_1$};
+    \node (udots1) at (8,-5) {$\dots$};
+    \node[draw,state,inner sep=2pt] (uj) at (10,-5) {$e_j$};
+    \node (udots2) at (12,-5) {$\dots$};
+    \node[draw,state,inner sep=2pt] (un) at (14,-5) {$e_n$};
+
+    \draw[->,thick] (test_edge) -- (u1) node[midway,above] {$0$};
+    \draw[->,thick] (u1) -- (udots1) node[midway,above] {$0$};
+    \draw[->,thick] (udots1) -- (uj) node[midway,above] {$0$};
+    \draw[->,thick] (uj) -- (udots2) node[midway,above] {$0$};
+    \draw[->,thick] (udots2) -- (un) node[midway,above] {$0$};
+
+    % sprawdzanie czy element jest w zbiorze
+    \node[draw,accept,inner sep=2pt] (inset) at (9,-7) {$ $};
+    \node[draw,reject,inner sep=2pt] (outset) at (11,-7) {$ $};
+
+    \draw[->,thick] (uj) -- (inset) node[midway,left] {$j \in S_i$};
+    \draw[->,thick] (uj) -- (outset) node[midway,right] {$j \notin S_i$};
+
+    % % ramka zielona: gadget per s_i
+    % \node[
+    %     draw=green!60!black,
+    %     thick,
+    %     rounded corners,
+    %     fit=(si)(u0)(n1)(nj)(nn)(acc)(back),
+    %     label={[green!60!black]above:dla każdego $s_i$}
+    % ] {};
+
+\end{tikzpicture}
+\caption{Konstrukcja automatu dla redukcji z $k$-Set Cover, korzystająca z alfabetu o rozmiarze 2}
+\label{fig:ksetcover2}
+\end{figure}
