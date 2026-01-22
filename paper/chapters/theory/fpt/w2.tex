@@ -1,0 +1,50 @@
+
+\begin{definition}[Problem k-zbioru pokrywającego (k-set cover)]
+Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie k-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
+
+\noindent Problem k-zbioru pokrywającego należy do klasy W[2]-zupełnych problemów \cite{parametrized_algorithms}.
+\end{definition}
+
+Pokażemy redukcję z problemu k-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu k-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem k-zbioru pokrywającego. 
+
+Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go w analogiczny sposób jak w przypadku redukcji z k-klik zmniejszyć do stałego rozmiaru alfabetu. \\
+Przyjmijmy też, że $n = |\mathcal{F}|$. \\
+
+\noindent Idea konstrukcji: \\
+Każdy stan $s_i$ odpowiada zbiorowi $S_i \in \mathcal{F}$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
+Jeżeli brakująca krawędź $p_x$ prowadzi do stanu $s_i$, to interpretujemy to jako wybranie zbioru $S_i$ jako $x$-tego zbioru w pokryciu. \\
+Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (odrzucającego) $q_{\lambda}$, jeżeli dany zbiór $S_i$ nie zawiera elementu $u_j$. W przeciwnym wypadku prowadzi do stanu akceptującego $\text{sink}_+$. Konstrukcja ta reprezentuje elementu z uniwersum $U$, które znajdują się w zbiorze $S_i$.
+
+\import{theory/figures}{reduction_ksetcover}
+
+W tym problemie nie musimy gwarantować wyboru różnych stanów $s_i$ dla różnych krawędzi $p_x$, ponieważ wybór tego samego zbioru wielokrotnie nie ma wpływu na pokrycie uniwersum.
+
+\noindent \textbf{Gwarancja pokrycia uniwersum}
+
+Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą do każdego, wybranego przez krawędź $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w przeciwnym wypadku odrzucana. \\
+
+\begin{equation}
+\forall j \in \{1..|U|\} \ {[p_1 \ t \ e_j \ p_2 \ t \ e_j \ ... \ p_k \ t \ e_j] \in S^+}
+\label{eq:kcover-cover}
+\end{equation}
+
+Dodatkowo, w analogiczny sposób jak w przypadku redukcji z k-klik, tworzymy próbki wymuszające prowadzenie brakujących krawędzi do stanów $s_i$ oraz wybór różnych stanów dla różnych krawędzi $p_x$.
+
+
+\noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do stanów $s_i$}
+
+Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub $\text{sink}_+$ doprowadzi do $\text{sink}_-$ po przejściu następną literą $t$.\\
+Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
+
+\begin{equation}
+\forall x\in\{1..k\} \ {[p_x] \in S^-}
+\label{eq:kcover-si}
+\end{equation}
+
+
+\noindent \textbf{Złożoność konstrukcji}
+
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru danych wejściowych - posiada on $O(n^2)$ stanów oraz $n$-krotnie więcej krawędzi. \\
+Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
+
+Liczba próbek jest wielomianowa i wynosi $O(k + |U|)$, a ich łączna długość wynosi $O(k)$.
