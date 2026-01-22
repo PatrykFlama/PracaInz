@@ -1,20 +1,12 @@
-% TODO
-
-% Póki co tylko nan bazie luźnej definicji z wikipedii - nasz prolem jest w klacie problemów gdzie mamy zbiór S n elementów (wszystkie możliwe naprawienia przejść), a my chcemy wybrać podzbiór z k - tak aby jakaś własność została utrzymana (być zgodnym z próbkami). Chcemy móc zapisać nasz wybór jako k intów zapisanych binarnie. \\
-% Wg tej lużnej definicji, możemy mieć podejrzenia że nasz problem przynależy do W[P].
-
-\begin{center}
-\colorbox{red}{\textcolor{white}{\textbf{Przynależność do W[P] jeszcze będzie uzupełniona (prawdopodobnie)}}}
-\end{center}
-
 \begin{definition}[$\kappa$-ograniczona niedeterministyczna maszyna Turinga]
     Niech $\Sigma$ będzie alfabetem, a $\kappa : \Sigma^* \to \mathbb{N}$ niech będzie parametryzacją. Niedeterministyczna maszyna Turinga $M$ z alfabetem wejściowym $\Sigma$ nazywana jest \emph{$\kappa$-ograniczoną}, jeśli istnieją obliczalne funkcje $f, h : \mathbb{N} \to \mathbb{N}$ oraz wielomian $p \in \mathbb{N}_0[X]$ taki, że przy każdym przebiegu z wejściem $x \in \Sigma^*$ maszyna $M$ wykonuje co najwyżej $f(k) \cdot p(n)$ kroków, z czego co najwyżej $h(k) \cdot \log n$ kroków jest niedeterministycznych.  
     Tutaj $n := |x|$, a $k := \kappa(x)$.
 \end{definition}
 
-\begin{theorem}
-    $\text{W[P]}$ jest klasą wszystkich problemów parametryzowanych $(Q, \kappa)$, które mogą być rozwiązane przez $\kappa$-ograniczoną niedeterministyczną maszynę Turinga.
-\end{theorem}  
+\begin{definition}[Klasa $W \lbrack P \rbrack$]
+$W[P]$ jest klasą wszystkich problemów parametryzowanych $(Q, \kappa)$, które mogą być rozwiązane przez $\kappa$-ograniczoną niedeterministyczną maszynę Turinga.
+\end{definition}
+  
 
 \begin{theorem}
     Problem naprawienia częściowego DFA należy do $\text{W[P]}$.
@@ -25,9 +17,7 @@
 
     Niech $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$ będzie częściowym automatem deterministycznym, a $S^+ \subseteq \Sigma^*$ i $S^- \subseteq \Sigma^*$ zbiorem słów pozytywnych i negatywnych. Oznaczmy przez $k$ liczbę brakujących przejść w $\delta$.  
 
-    W każdym kroku niedeterministycznym maszyna Turinga zgaduje brakujące przejście lub klasyfikację stanu (czy stan należy do $\mathbb{F_A}$ lub $\mathbb{F_R}$). Liczba możliwych opcji dla pojedynczego brakującego przejścia jest ograniczona przez liczbę stanów i symboli, więc dla wszystkich $k$ brakujących przejść liczba bitów potrzebnych do zgadnięcia wszystkich uzupełnień wynosi $O(k \cdot \log |Q|)$.  
-
-    Następnie maszyna deterministycznie symuluje działanie automatu na wszystkich słowach z $S^+$ i $S^-$, aby sprawdzić, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów pozytywnych i odrzucenie wszystkich słów negatywnych.  
+    Maszyna turinga zgaduje $k$ stanów docelowych $q \in Q$ wybrakowanych przejść w $O(k \cdot \log |Q|)$ krokach niedeterministycznych. Następnie deterministycznie weryfikuje, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów z $S^+$ i odrzucenie wszystkich słów z $S^-$. Tą weryfikację wykonuje w czasie wielomianowym względem rozmiaru wejścia - dla przykładu symulując działanie automatu.
 
     Cała niedeterministyczna maszyna Turinga wykonuje liczbę kroków niedeterministycznych zależną tylko od parametru $k$ i sprawdza poprawność w czasie wielomianowym względem rozmiaru wejścia. Stąd problem naprawienia częściowego DFA należy do klasy $\text{W[P]}$.
 \end{proof}
