@@ -73,14 +73,45 @@ k-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawianie k-częściowego automatu
 
 \begin{proof}
 
+W konstrukcji z resunku \ref{fig:ksetcover2} zamieniamy krawędzie $p_x$ na unarne ciągi stanów, gdzie każdy stan jest połączony przejściem etykietowanym $0$ do następnego stanu w ciągu. Dla i-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowaną krawędzią prowadzącą (którą będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$). Długość ciągu wynosi $k$, bo i-ty stan w ciągu odpowiada krawędzi $p_i$ z poprzedniej konstrukcji, a takich krawędzi jest $k$.
+
+Następnie z każdego stanu $s_i$ wychodzi ciąg $10$ krawędzi $1$, odpowiadających krawędzi testowej (taki ciąg nie wystąpuje nigdzie indziej w automacie, poza stanem $\text{sink}_+$). 
+
+Po krawędzi testowej ponownie mamy unarne odliczanie $n$ możliwych stanów, odpowiadajcym krawędziom $e_j$ z poprzedniej konstrukcji. Z każdego stanu w tym ciągu wychodzi krawędź etykietowana $1$, prowadząca do stanu odrzucającego $q_{\lambda}$ lub akceptującego $\text{sink}_+$ - zależnie od tego, czy dany element $u_j$ należy do zbioru $S_i$.
+
+
 \import{theory/figures/w2}{reduction_ksetcover_2}
+
+
+\noindent \textbf{Gwarancja pokrycia uniwersum}
+
+Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą przez unarne odliczanie do każdego, wybranego przez krawędź w ciągu odpowiadającym $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w przeciwnym wypadku odrzucana. \\
+Powtórzenie danej litery $a$ $c$-krotnie będziemy zapisywać jako $a^{c}$.
+
+\begin{equation}
+\forall j \in \{1..|U|\} \ {[0^{1} \ 1^{11} \ 0^{j} \ 1 \ 0^{2} \ 1^{11} \ 0^{j} \ 1 \ \dots \ 0^{k} \ 1^{11} \ 0^{j} \ 1] \in S^+}
+\label{eq:kcover-cover-binary}
+\end{equation}
+
+
+\noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do stanów $s_i$}
+
+Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub $\text{sink}_+$ doprowadzi do $\text{sink}_-$ po przejściu następującym ciągiem liter $1^{10}$.\\
+Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
+
+\begin{equation}
+\forall x\in\{1..k\} \ {[0^{x}1] \in S^-}
+\label{eq:kcover-si-binary}
+\end{equation}
+
 
 \end{proof}
 
 
+\noindent \textbf{Złożoność konstrukcji}
 
-
-
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru danych wejściowych - posiada on $O(n^2)$ stanów oraz $2$-krotnie więcej krawędzi. \\
+Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
 
 
 
