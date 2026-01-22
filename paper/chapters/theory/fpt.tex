@@ -33,15 +33,15 @@ Klasa FPT składa się z problemów, dla których istnieje algorytm rozwiązują
 
 
 \begin{definition}[Klasy W-hierarchii]
-W-hierarchia to zbiór klas złożoności, oznaczonych jako W[i].
-Zparametryzowany problem znajduje się w klasie W[i], jeśli można go zredukować do problemu \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do i \cite{parametrized_complexity_theory}. \\
-Wierzy się że jeżeli problem jest W[1]-trudny, to nie należy do klasy FPT.
+W-hierarchia to zbiór klas złożoności, oznaczonych jako $W[i]$.
+Zparametryzowany problem znajduje się w klasie $W[i]$, jeśli można go zredukować do problemu \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do i \cite{parametrized_complexity_theory}. \\
+Wierzy się że jeżeli problem jest $W[1]$-trudny, to nie należy do klasy FPT.
 \label{def:whierarchy}
 \end{definition}
 
 \begin{definition}[Redukcja parametryczna]
 Niech $(Q,\kappa)$ oraz $(Q',\kappa')$ będą zparametryzowanymi problemami decyzyjnymi, gdzie $\kappa$ i $\kappa'$ są funkcjami parametru.
-Mówimy, że $(Q,\kappa)$ \emph{redukuje się parametrycznie} do $(Q',\kappa')$,
+Mówimy, że $(Q,\kappa)$ \emph{redukuje się parametrycznie} do $(Q',\kappa')$ (ozn. $(Q,\kappa)\leq_{\mathrm{fpt}}(Q',\kappa')$),
 jeżeli istnieje funkcja obliczalna $R$ oraz funkcje obliczalne $f,g$, takie że dla każdego wejścia $x$ zachodzą warunki:
 \begin{enumerate}
     \item $x \in Q \iff R(x) \in Q'$,
@@ -50,11 +50,11 @@ jeżeli istnieje funkcja obliczalna $R$ oraz funkcje obliczalne $f,g$, takie że
 \end{enumerate}
 \end{definition}
 
-\subsection{W[1]-trudność}
-\import{theory/fpt}{w1}
+% \subsection{$W[1]$-trudność}
+% \import{theory/fpt}{w1}
 
-\subsection{W[2]-trudność}
+\subsection{$W[2]$-trudność}
 \import{theory/fpt}{w2}
 
-\subsection{Przynależność do W[P]}
+\subsection{Przynależność do $W[P]$}
 \import{theory/fpt}{wp}

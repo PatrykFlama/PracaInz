@@ -1,10 +1,17 @@
+W tym rozdziale pokażemy, że problem naprawienia częściowego automatu jest $W[2]$-trudny. Do tego celu zredukujemy następujący problem $W[2]$ zupełny.
 
 \begin{definition}[Problem k-zbioru pokrywającego (k-set cover)]
 Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie k-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
 
-\noindent Problem k-zbioru pokrywającego należy do klasy W[2]-zupełnych problemów \cite{parametrized_algorithms}.
+\noindent Problem k-zbioru pokrywającego należy do klasy $W[2]$-zupełnych problemów \cite{parametrized_algorithms}.
 \end{definition}
 
+
+\begin{theorem}
+k-zbiór pokrywający $\leq_{\mathrm{fpt}}$ naprawienie k-częściowego DFA
+\end{theorem}
+
+\begin{proof}
 Pokażemy redukcję z problemu k-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu k-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem k-zbioru pokrywającego. 
 
 Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go w analogiczny sposób jak w przypadku redukcji z k-klik zmniejszyć do stałego rozmiaru alfabetu. \\
@@ -40,6 +47,8 @@ Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodaje
 \forall x\in\{1..k\} \ {[p_x] \in S^-}
 \label{eq:kcover-si}
 \end{equation}
+
+\end{proof}
 
 
 \noindent \textbf{Złożoność konstrukcji}
