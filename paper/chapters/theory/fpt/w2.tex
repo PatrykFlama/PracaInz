@@ -1,20 +1,20 @@
 W tym rozdziale pokażemy, że problem naprawienia częściowego automatu jest $W[2]$-trudny. Do tego celu zredukujemy następujący problem $W[2]$ zupełny.
 
-\begin{definition}[Problem k-zbioru pokrywającego (k-set cover)]
-Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie k-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
+\begin{definition}[Problem $k$-zbioru pokrywającego ($k$-set cover)]
+Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie $k$-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
 
-\noindent Problem k-zbioru pokrywającego należy do klasy $W[2]$-zupełnych problemów \cite{parametrized_algorithms}.
+\noindent Problem $k$-zbioru pokrywającego należy do klasy $W[2]$-zupełnych problemów \cite{parametrized_algorithms}.
 \end{definition}
 
 
 \begin{theorem}
-k-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawienie k-częściowego DFA
+$k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawienie $k$-częściowego DFA
 \end{theorem}
 
 \begin{proof}
-Pokażemy redukcję z problemu k-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu k-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem k-zbioru pokrywającego. 
+Pokażemy redukcję z problemu $k$-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu $k$-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem $k$-zbioru pokrywającego. 
 
-Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go w analogiczny sposób jak w przypadku redukcji z k-klik zmniejszyć do stałego rozmiaru alfabetu. \\
+Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go zmniejszyć do stałego rozmiaru alfabetu. \\
 Przyjmijmy też, że $n = |\mathcal{F}|$. \\
 
 \noindent Idea konstrukcji: \\
@@ -35,7 +35,7 @@ Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego 
 \label{eq:kcover-cover}
 \end{equation}
 
-Dodatkowo, w analogiczny sposób jak w przypadku redukcji z k-klik, tworzymy próbki wymuszające prowadzenie brakujących krawędzi do stanów $s_i$ oraz wybór różnych stanów dla różnych krawędzi $p_x$.
+Dodatkowo, tworzymy próbki wymuszające prowadzenie brakujących krawędzi do stanów $s_i$ oraz wybór różnych stanów dla różnych krawędzi $p_x$.
 
 
 \noindent \textbf{Gwarancja prowadzenia brakujących krawędzi do stanów $s_i$}
@@ -59,26 +59,28 @@ Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru kon
 Liczba próbek jest wielomianowa i wynosi $O(k + |U|)$, a ich łączna długość wynosi $O(k)$.
 
 
+\vspace{0.5cm}
 
 
 Powyższy dowód wymaga użycia alfabetu o arności liniowej względem $k$. Poniżej pokażemy jednak, że rozmiar alfabetu nie ma znaczenia, dostosowując redukcję do alfabetu rozmiaru $2$.
 
-Automat nazwiemy binarnym, jeśli jest nad alfabetem ${0, 1}$.
+Automat nazwiemy binarnym, jeśli jest nad alfabetem $\{0, 1\}$.
 
 
 
 \begin{theorem}
-k-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawianie k-częściowego automatu binarnego
+$k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawianie $k$-częściowego automatu binarnego
 \end{theorem}
 
 \begin{proof}
 
-W konstrukcji z resunku \ref{fig:ksetcover2} zamieniamy krawędzie $p_x$ na unarne ciągi stanów, gdzie każdy stan jest połączony przejściem etykietowanym $0$ do następnego stanu w ciągu. Dla i-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowaną krawędzią prowadzącą (którą będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$). Długość ciągu wynosi $k$, bo i-ty stan w ciągu odpowiada krawędzi $p_i$ z poprzedniej konstrukcji, a takich krawędzi jest $k$.
+W konstrukcji z resunku \ref{fig:ksetcover2} zamieniamy krawędzie $p_x$ na unarne ciągi stanów, gdzie każdy stan jest połączony przejściem etykietowanym $0$ do następnego stanu w ciągu. Dla $i$-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowaną krawędzią prowadzącą (którą będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$). Długość ciągu wynosi $k$, bo $i$-ty stan w ciągu odpowiada krawędzi $p_i$ z poprzedniej konstrukcji, a takich krawędzi jest $k$.
 
 Następnie z każdego stanu $s_i$ wychodzi ciąg $10$ krawędzi $1$, odpowiadających krawędzi testowej (taki ciąg nie wystąpuje nigdzie indziej w automacie, poza stanem $\text{sink}_+$). 
 
 Po krawędzi testowej ponownie mamy unarne odliczanie $n$ możliwych stanów, odpowiadajcym krawędziom $e_j$ z poprzedniej konstrukcji. Z każdego stanu w tym ciągu wychodzi krawędź etykietowana $1$, prowadząca do stanu odrzucającego $q_{\lambda}$ lub akceptującego $\text{sink}_+$ - zależnie od tego, czy dany element $u_j$ należy do zbioru $S_i$.
 
+Powtórzenie danej litery $a$ $c$-krotnie będziemy zapisywać jako $a^{c}$.
 
 \import{theory/figures/w2}{reduction_ksetcover_2}
 
@@ -86,7 +88,6 @@ Po krawędzi testowej ponownie mamy unarne odliczanie $n$ możliwych stanów, od
 \noindent \textbf{Gwarancja pokrycia uniwersum}
 
 Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą przez unarne odliczanie do każdego, wybranego przez krawędź w ciągu odpowiadającym $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w przeciwnym wypadku odrzucana. \\
-Powtórzenie danej litery $a$ $c$-krotnie będziemy zapisywać jako $a^{c}$.
 
 \begin{equation}
 \forall j \in \{1..|U|\} \ {[0^{1} \ 1^{11} \ 0^{j} \ 1 \ 0^{2} \ 1^{11} \ 0^{j} \ 1 \ \dots \ 0^{k} \ 1^{11} \ 0^{j} \ 1] \in S^+}
