@@ -14,7 +14,7 @@ $k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawienie $k$-częściowego DFA
 \begin{proof}
 Pokażemy redukcję z problemu $k$-zbioru pokrywającego do problemu naprawienia $k$-częściowego DFA. Dla dowolnego wejścia do problemu $k$-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia $k$-częściowego DFA, tak aby rozwiązanie problemu naprawienia $k$-częściowego DFA rozwiązywało problem $k$-zbioru pokrywającego. 
 
-Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go zmniejszyć do stałego rozmiaru alfabetu. \\
+Automat z rysunku \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go zmniejszyć do stałego rozmiaru alfabetu. \\
 Przyjmijmy też, że $n = |\mathcal{F}|$. \\
 
 W poniższych automatach stan startowy oznaczony jest jako $q_{\lambda}$, stany akceptujące zaznaczone są podwójną linią, a stan odrzucający pojedynczą. \\
@@ -23,13 +23,13 @@ Część automatu zaznaczona w ramce jest powtórzona dla każdego elementu $u_j
 Każda krawędź, która nie jest zaznaczona na rysunku, prowadzi do stanu odrzucającego $\text{sink}_-$. \\
 
 \noindent \textbf{Idea konstrukcji:} \\
-Każdy stan $s_i$ odpowiada zbiorowi $S_i \in \mathcal{F}$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
+Każdy stan $s_i$, w automacie z rysunku \ref{fig:ksetcover}, odpowiada zbiorowi $S_i \in \mathcal{F}$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
 Jeżeli brakująca krawędź $p_x$ prowadzi do stanu $s_i$, to interpretujemy to jako wybranie zbioru $S_i$ jako $x$-tego zbioru w pokryciu. \\
 Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (odrzucającego) $q_{\lambda}$, jeżeli dany zbiór $S_i$ nie zawiera elementu $u_j$. W przeciwnym wypadku prowadzi do stanu akceptującego $\text{sink}_+$. Konstrukcja ta reprezentuje elementu z uniwersum $U$, które znajdują się w zbiorze $S_i$.
 
 \import{theory/figures/w2}{reduction_ksetcover_n}
 
-W tym problemie nie musimy gwarantować wyboru różnych stanów $s_i$ dla różnych krawędzi $p_x$, ponieważ wybór tego samego zbioru wielokrotnie nie ma wpływu na pokrycie uniwersum.
+Możemy zaobserwować, że w tym problemie nie musimy gwarantować wyboru różnych stanów $s_i$ dla różnych krawędzi $p_x$, ponieważ wybór tego samego zbioru wielokrotnie nie ma wpływu na pokrycie uniwersum.
 
 \noindent \textbf{Gwarancja pokrycia uniwersum}
 
@@ -72,6 +72,8 @@ Powyższy dowód wymaga użycia alfabetu o arności liniowej względem $k$. Poni
 Automat nazwiemy binarnym, jeśli jest nad alfabetem $\{0, 1\}$.
 
 
+\vspace{0.5cm}
+
 
 \begin{theorem}
 $k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawianie $k$-częściowego automatu binarnego
@@ -79,11 +81,15 @@ $k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawianie $k$-częściowego auto
 
 \begin{proof}
 
-W konstrukcji z resunku \ref{fig:ksetcover2} zamieniamy krawędzie $p_x$ na unarne ciągi stanów, gdzie każdy stan jest połączony przejściem etykietowanym $0$ do następnego stanu w ciągu. Dla $i$-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowaną krawędzią prowadzącą (którą będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$). Długość ciągu wynosi $k$, bo $i$-ty stan w ciągu odpowiada krawędzi $p_i$ z poprzedniej konstrukcji, a takich krawędzi jest $k$.
+W konstrukcji z rysunku \ref{fig:ksetcover} zamieniamy krawędzie $p_x$ na unarne ciągi stanów, gdzie każdy stan jest połączony przejściem etykietowanym $0$ do następnego stanu w ciągu (rysunek \ref{fig:ksetcover2}). 
+Dla $i$-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowanym przejściem w automaciem - które będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$. 
+Długość ciągu wynosi $k$, bo $i$-ty stan w ciągu odpowiada krawędzi $p_i$ z poprzedniej konstrukcji, a takich krawędzi jest $k$.
 
-Następnie z każdego stanu $s_i$ wychodzi ciąg $10$ krawędzi $1$, odpowiadających krawędzi testowej (taki ciąg nie wystąpuje nigdzie indziej w automacie, poza stanem $\text{sink}_+$). 
+Następnie z każdego stanu $s_i$ wychodzi ciąg $10$ krawędzi z etykietą $1$, łączących stany, które odpowiadających krawędzi testowej $t$ (taki ciąg nie wystąpuje nigdzie indziej w automacie, poza stanem $\text{sink}_+$). 
 
 Po krawędzi testowej ponownie mamy unarne odliczanie $n$ możliwych stanów, odpowiadajcym krawędziom $e_j$ z poprzedniej konstrukcji. Z każdego stanu w tym ciągu wychodzi krawędź etykietowana $1$, prowadząca do stanu odrzucającego $q_{\lambda}$ lub akceptującego $\text{sink}_+$ - zależnie od tego, czy dany element $u_j$ należy do zbioru $S_i$.
+
+Analogicznie jak w poprzedniej konstrukcji, każda krawędź nie pokazana na rysunku prowadzi do stanu odrzucającego $\text{sink}_-$. 
 
 Powtórzenie danej litery $a$ $c$-krotnie będziemy zapisywać jako $a^{c}$.
 
