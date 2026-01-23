@@ -64,7 +64,7 @@ W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś
 
 Jedynym wyjątkiem jest stan $\text{sink}_+$. 
 Wychodząca z niego krawędź $t$ musi też prowadzić do $\text{sink}_+$ - w przeciwnym wypadku próbki \eqref{eq:kclique-n-clique} zostaną odrzucone gdy $p_x, p_y, v_i, v_j$ takich, że $(i, j) \notin E \implies \exists z \in \{1..n\} v_z = \delta(q_{\lambda}, p_x) \land z \neq i$, ponieważ ze stanu $v_z$ przejdziemy wtedy w automacie krawędzią $t$ a następnie $e_i$, a $z \neq i \implies \delta(\delta(v_z, t), e_i) = \text{sink}_+$. Ta próbka nie oznacza niepoprawnego przypisana krawędzi (więc powinna zostać zaakceptowana), a wiemy że w naszej próbce występuje jeszcze jedno przejście krawędzią $t$, więc musi ono prowadzić do stanu $\text{sink}_+$. \\
-Możemy ten problem rozwiązać na 2 sposoby. Korzystając z faktu, że w próbce \eqref{eq:kclique-n-clique} są dokładnie 2 wystąpienia krawędzi $t$, możemy stworzyć alternatywny $\text{sink}_+$ (składający się z 2 stanów), który po pierwszym przejściu krawędzią $t$ prowadzi do drugiego stanu $\text{sink}_+$, a po drugim przejściu krawędzią $t$ prowadzi do stanu odrzucajcego $\text{sink}_-$. \\
+Możemy ten problem rozwiązać na 2 sposoby. Korzystając z faktu, że w próbce \eqref{eq:kclique-n-clique} są dokładnie 2 wystąpienia krawędzi $t$, możemy stworzyć alternatywny $\text{sink}_+$ (składający się z 2 stanów), który po pierwszym przejściu krawędzią $t$ prowadzi do drugiego stanu $\text{sink}_+$, a po drugim przejściu krawędzią $t$ prowadzi do stanu odrzucającego $\text{sink}_-$. \\
 Alternatywną metodą jest odrzucenie prowadzenie krawędzi $p_x$ do stanu $\text{sink}_+$ poprzez dodanie próbek odrzucających, które wymuszają prowadzenie krawędzi $p_x$ do stanu odrzucajcego:
 
 \begin{equation}
@@ -113,7 +113,7 @@ Liczba próbek jest wielomianowa i wynosi $O(k^2 n^2)$, a ich łączna długoś�
 
 \subsubsection{Redukcja dla alfabetu o rozmiarze 3}
 
-Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu użejemy kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$. \\
+Aby zredukować liczbę potrzebnych liter z $|\Sigma|=O(n)$ do $|\Sigma|=3$, możemy zakodować każdą literę z oryginalnego alfabetu jako unikalny ciąg liter z alfabetu 2-literowego (rysunek \ref{fig:kclique3}). W tym celu użyjemy kodowania binarnego, gdzie każda litera z oryginalnego alfabetu jest reprezentowana jako ciąg liter '0' i '1' o długości $\lceil \log_2(n) \rceil$. \\
 Ustalimy więc konwencję zapisu, w której dla danego $a$ krawędź z etykietą $bin(a)$ reprezentuje ciąg stanów połączonych krawędziami o etykietach odpowiadających kolejnym bitom w kodzie binarnym $bin(a)$. Jeżeli mamy wiele krawędzi $bin$ wychodzących z tego samego wierzchołka, to ich krawędzie o tych samych etykietach stanowią tą samą krawędź. Na przykład, jeżeli mamy litery $a$ oraz $b$ reprezentowane przez $101$ oraz $100$, reprezentują one 4 krawędzie - najpierw ciąg dwóch, gdzie pierwsza ma etykietę $1$, a druga $0$ - następnie krawędzie $1$ oraz $0$ wychodzące z ostatniego wierzchołka (tak jak na rysunku \ref{fig:kclique-bin-example}).
 
 \import{theory/figures/w1}{reduction_kclique_bin_example}
@@ -173,7 +173,7 @@ Konstrukcja próbek dla zagwarantowania wyboru różnych stanów $v_i$ oraz zagw
 \import{theory/figures/w1}{reduction_kclique_2}
 
 Nowa idea automatu (rysunek \ref{fig:kclique2}) opiera się na przypisywaniu literom wartości od 1 do $n$, a następnie kodowaniu ich w systemie unarnym. W ten sposób każda litera jest reprezentowana jako ciąg liter $0$. \\
-W poniższym zapisie $un(a)$ oznacza reprezentację litery $a$ w kodzie unarnym. Aby rozróżniać przejścia literą $1$, będziemy je składać z różnych wielokrotności $1$. Dlategu ustalamy zapis $d * a$ jako powtórzenie litery $a$ dokładnie $d$ razy.
+W poniższym zapisie $un(a)$ oznacza reprezentację litery $a$ w kodzie unarnym. Aby rozróżniać przejścia literą $1$, będziemy je składać z różnych wielokrotności $1$. Dlatego ustalamy zapis $d * a$ jako powtórzenie litery $a$ dokładnie $d$ razy.
 
 
 \vspace{0.3cm}
@@ -192,7 +192,7 @@ Nie mamy już litery testowej $t$, więc musimy zmodyfikować automat oraz prób
 
 Weźmy dowolną próbkę \eqref{eq:kclique-2-clique}, oraz odpowiadające jej $x, y, i, j$. Jeżeli brakująca krawędź odpowiadająca stanowi $p_y$ nie prowadzi do żadnego ze stanów $v_.$, to nie istnieje żaden inny stan do którego mogłaby ona prowadzić - musi prowadzić do stanu, po którym następuje przejście $11*1$, jedyne takie przejścia to $v_.$ oraz $\text{sink}_+$. Jednak przejście do $\text{sink}_+$ zostało wykluczone próbką \eqref{eq:kclique-2-sink}, więc pozostaje tylko przejście do któregoś ze stanów $v_.$.
 
-Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadnego ze stanów $v_.$, to może prowadzić tylko do stanów po których następuje przejście $10*1$. Jedynymi takimi stanami są stany $v_.$, $\delta(v_., 1)$ oraz $\text{sink}_+$ (który został wykluczony próbką \eqref{eq:kclique-2-sink}). Przejście do stanu $\delta(v_., 1)$, a następnie kolejnymi literami z próbik - $un(i)$ doprowadzi nas do krawędzi $3*1$ lub $4*1$, natomiast w próbce występuje $2*1$, a po nim $un(y)$ - czyli litera $0$. To przejście zostanie więc zawszez odrzucone. Pozostaje więc tylko przejście do któregoś ze stanów $v_.$. 
+Jeżeli brakująca krawędzi odpowiadająca stanowi $p_x$ nie prowadzi do żadnego ze stanów $v_.$, to może prowadzić tylko do stanów po których następuje przejście $10*1$. Jedynymi takimi stanami są stany $v_.$, $\delta(v_., 1)$ oraz $\text{sink}_+$ (który został wykluczony próbką \eqref{eq:kclique-2-sink}). Przejście do stanu $\delta(v_., 1)$, a następnie kolejnymi literami z próbki - $un(i)$ doprowadzi nas do krawędzi $3*1$ lub $4*1$, natomiast w próbce występuje $2*1$, a po nim $un(y)$ - czyli litera $0$. To przejście zostanie więc zawsze odrzucone. Pozostaje więc tylko przejście do któregoś ze stanów $v_.$. 
 
 Pozostaje jeszcze przypadek, w którym brakująca krawędź prowadzi do stanu startowego $q_\lambda$. Aby odrzucić taki przypadek, dodajemy próbki odrzucające:
 
