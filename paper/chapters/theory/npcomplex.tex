@@ -8,7 +8,7 @@ Aby wykazać że problem naprawiania częściowego DFA \ref{def:fixpartialdfa} j
 \vspace{-0.8cm}
 
 \begin{proof}
-Problem naprawienia częściowego DFA należy do klasy $\mathbb{NP}$, ponieważ dla danej instancji problemu możemy w czasie wielomianowym zweryfikować poprawność podanego rozwiązania. \\
+Problem naprawienia częściowego DFA należy do klasy $\mathbb{NP}$, ponieważ dla danej instancji problemu możemy w czasie wielomianowym zweryfikować poprawność podanego rozwiązania, a samo rozwiązanie ma rozmiar wielomianowy względem rozmiaru wejścia. 
 
 Weryfikacja polega na sprawdzeniu, czy uzupełniony automat jest deterministyczny oraz czy akceptuje i odrzuca odpowiednie próbki. Sprawdzenie deterministyczności automatu wymaga przejrzenia wszystkich stanów i liter alfabetu, co zajmuje czas $O(|Q| \cdot |\Sigma|)$. Sprawdzenie klasyfikacji próbek wymaga przejścia przez każdą próbkę i symulacji jej działania na automacie, co zajmuje czas $O((|S^+| + |S^-|) \cdot M)$, gdzie $M$ to maksymalna długość próbki. Ponieważ oba te kroki można wykonać w czasie wielomianowym względem rozmiaru wejścia, problem naprawienia częściowego DFA należy do klasy $\mathbb{NP}$.
 

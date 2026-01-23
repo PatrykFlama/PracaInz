@@ -1,4 +1,4 @@
-W tym rozdziale pokażemy, że problem naprawienia częściowego automatu jest $W[2]$-trudny. Do tego celu zredukujemy następujący problem $W[2]$ zupełny.
+W tym rozdziale pokażemy, że problem naprawienia $k$-częściowego automatu jest $W[2]$-trudny. Do tego celu zredukujemy następujący problem $W[2]$ zupełny.
 
 \begin{definition}[Problem $k$-zbioru pokrywającego ($k$-set cover)]
 Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie $k$-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
@@ -12,12 +12,17 @@ $k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawienie $k$-częściowego DFA
 \end{theorem}
 
 \begin{proof}
-Pokażemy redukcję z problemu $k$-zbioru pokrywającego do problemu naprawienia częściowego DFA. Dla dowolnego wejścia do problemu $k$-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia częściowego DFA, tak aby rozwiązanie problemu naprawienia częściowego DFA rozwiązywało problem $k$-zbioru pokrywającego. 
+Pokażemy redukcję z problemu $k$-zbioru pokrywającego do problemu naprawienia $k$-częściowego DFA. Dla dowolnego wejścia do problemu $k$-zbioru pokrywającego skonstruujemy automat oraz próbki, będące wejściem do problemu naprawienia $k$-częściowego DFA, tak aby rozwiązanie problemu naprawienia $k$-częściowego DFA rozwiązywało problem $k$-zbioru pokrywającego. 
 
 Automat \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - można go zmniejszyć do stałego rozmiaru alfabetu. \\
 Przyjmijmy też, że $n = |\mathcal{F}|$. \\
 
-\noindent Idea konstrukcji: \\
+W poniższych automatach stan startowy oznaczony jest jako $q_{\lambda}$, stany akceptujące zaznaczone są podwójną linią, a stan odrzucający pojedynczą. \\
+Wybrakowane krawędzie zaznaczone są przerywaną linią (i opisane jako $p_x$), natomiast stany $q_\lambda$ zaznaczone przerywaną linią reprezentują ten sam stan startowy automatu. \\
+Część automatu zaznaczona w ramce jest powtórzona dla każdego elementu $u_j \in U$. \\
+Każda krawędź, która nie jest zaznaczona na rysunku, prowadzi do stanu odrzucającego $\text{sink}_-$. \\
+
+\noindent \textbf{Idea konstrukcji:} \\
 Każdy stan $s_i$ odpowiada zbiorowi $S_i \in \mathcal{F}$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
 Jeżeli brakująca krawędź $p_x$ prowadzi do stanu $s_i$, to interpretujemy to jako wybranie zbioru $S_i$ jako $x$-tego zbioru w pokryciu. \\
 Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (odrzucającego) $q_{\lambda}$, jeżeli dany zbiór $S_i$ nie zawiera elementu $u_j$. W przeciwnym wypadku prowadzi do stanu akceptującego $\text{sink}_+$. Konstrukcja ta reprezentuje elementu z uniwersum $U$, które znajdują się w zbiorze $S_i$.
