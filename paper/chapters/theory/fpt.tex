@@ -27,10 +27,32 @@ Z Twierdzenia \ref{th:ptime} można wywnioskować, że parametryczna wersja prob
 
 Nas interesuje dogłębniejsze zbadanie parametrycznej złożoności tego problemu, a w szczególności ustalenie, czy problem ten należy do klasy FPT, która jest parametrycznym odpowiednikiem klasy $\mathbb{P}$. 
 
+Sparametryzowany problem to para $(Q, \kappa)$, gdzie $\kappa$ jest funkcją, która dla każdej instancji problemu ustala wartość parametru.
+
 \begin{definition}[Klasa FPT]
-Klasa FPT składa się z problemów, dla których istnieje algorytm rozwiązujący je w czasie $f(k) \cdot n^c$, gdzie $n$ to rozmiar wejścia, $f$ to dowolna funkcja obliczalna, a $c$ to stała niezależna od $k$. 
+% Klasa FPT składa się z problemów, dla których istnieje algorytm rozwiązujący je w czasie $f(k) \cdot n^c$, gdzie $n$ to rozmiar wejścia, $f$ to dowolna funkcja obliczalna, a $c$ to stała niezależna od $k$. 
+
+Klasa FPT (ang. \textit{Fixed-Parameter Tractable}) składa się z problemów, dla których istnieje algorytm, który dla wejścia $x$ działa w czasie:
+$$f(\kappa(x)) \cdot |x|^c$$
+gdzie $|x|$ oznacza rozmiar wejścia, $f$ to dowolna funkcja obliczalna, a $c$ to stała niezależna od parametru $\kappa(x)$.
+
+Odpowiednikiem redukcji wielomianowych w świecie złożoności parametrycznych są redukcje parametryczne.
+
 \end{definition}
 
+
+\begin{definition}[Redukcja parametryczna]
+Niech $(Q,\kappa)$ oraz $(Q'`',\kappa')$ będą sparametryzowanymi problemami decyzyjnymi, gdzie $\kappa$ i $\kappa'$ są funkcjami parametru.
+Mówimy, że $(Q,\kappa)$ \textbf{redukuje się parametrycznie} do $(Q',\kappa')$ (ozn. $(Q,\kappa)\leq_{\mathrm{FPT}}(Q',\kappa')$),
+jeżeli istnieje funkcja obliczalna $R$ (transformacja instancji) oraz funkcje obliczalne $f$ i $g$, takie że dla każdego wejścia $x$ zachodzą warunki:
+\begin{enumerate}
+    \item $x \in Q \iff R(x) \in Q'$,
+    \item $R(x)$ można obliczyć w czasie $f(\kappa(x)) \cdot |x|^{O(1)}$,
+    \item $\kappa'(R(x)) \leq g(\kappa(x))$.
+\end{enumerate}
+\end{definition}
+
+Dla porządku przywołamy tutaj definicję W-hierarchii.
 
 \begin{definition}[Klasy $W$-hierarchii]
 W-hierarchia to zbiór klas złożoności, oznaczonych jako $W[i]$.
@@ -39,16 +61,6 @@ Wierzy się że jeżeli problem jest $W[1]$-trudny, to nie należy do klasy FPT.
 \label{def:whierarchy}
 \end{definition}
 
-\begin{definition}[Redukcja parametryczna]
-Niech $(Q,\kappa)$ oraz $(Q',\kappa')$ będą zparametryzowanymi problemami decyzyjnymi, gdzie $\kappa$ i $\kappa'$ są funkcjami parametru.
-Mówimy, że $(Q,\kappa)$ \emph{redukuje się parametrycznie} do $(Q',\kappa')$ (ozn. $(Q,\kappa)\leq_{\mathrm{FPT}}(Q',\kappa')$),
-jeżeli istnieje funkcja obliczalna $R$ oraz funkcje obliczalne $f,g$, takie że dla każdego wejścia $x$ zachodzą warunki:
-\begin{enumerate}
-    \item $x \in Q \iff R(x) \in Q'$,
-    \item $R(x)$ można obliczyć w czasie $f(\kappa(x)) \cdot |x|^{O(1)}$,
-    \item $\kappa'(R(x)) \leq g(\kappa(x))$.
-\end{enumerate}
-\end{definition}
 
 % \subsection{$W[1]$-trudność}
 % \import{theory/fpt}{w1}
