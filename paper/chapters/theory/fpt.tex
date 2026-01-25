@@ -42,7 +42,7 @@ Odpowiednikiem redukcji wielomianowych w świecie złożoności parametrycznych 
 
 
 \begin{definition}[Redukcja parametryczna]
-Niech $(Q,\kappa)$ oraz $(Q'`',\kappa')$ będą sparametryzowanymi problemami decyzyjnymi, gdzie $\kappa$ i $\kappa'$ są funkcjami parametru.
+Niech $(Q,\kappa)$ oraz $(Q',\kappa')$ będą sparametryzowanymi problemami decyzyjnymi, gdzie $\kappa$ i $\kappa'$ są funkcjami parametru.
 Mówimy, że $(Q,\kappa)$ \textbf{redukuje się parametrycznie} do $(Q',\kappa')$ (ozn. $(Q,\kappa)\leq_{\mathrm{FPT}}(Q',\kappa')$),
 jeżeli istnieje funkcja obliczalna $R$ (transformacja instancji) oraz funkcje obliczalne $f$ i $g$, takie że dla każdego wejścia $x$ zachodzą warunki:
 \begin{enumerate}
@@ -55,9 +55,11 @@ jeżeli istnieje funkcja obliczalna $R$ (transformacja instancji) oraz funkcje o
 Dla porządku przywołamy tutaj definicję W-hierarchii.
 
 \begin{definition}[Klasy $W$-hierarchii]
-W-hierarchia to zbiór klas złożoności, oznaczonych jako $W[i]$.
-Zparametryzowany problem znajduje się w klasie $W[i]$, jeśli można go zredukować do problemu \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do $i$ \cite{parametrized_complexity_theory}. \\
-Wierzy się że jeżeli problem jest $W[1]$-trudny, to nie należy do klasy FPT.
+W-hierarchia to zbiór klas złożoności, oznaczonych jako $W[i]$ dla $i \geq 1$.
+Sparametryzowany problem znajduje się w klasie $W[i]$, jeśli można go zredukować do problemu \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do $i$ \cite{parametrized_complexity_theory}. \\
+Sparametryzowany problem jest $W[i]$-trudny, jeśli można zredukować problem \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do $i$, do tego problemu.
+
+Dokładnej definicji problemu Weighted Circuit Satisfiability tu nie podajemy, gdyż nie będziemy z niej korzystać. Z definicji wprost wynika, że dla każdego $i$ zachodzi $W[i] \subseteq W[i+1]$. Zawierania w druga stronę są problemami otwartymi. Wierzy się, że jeżeli problem jest $W[1]$-trudny, to nie należy on do klasy FPT (analogicznie do relacji $\mathbb{P} \neq \mathbb{NP}$).
 \label{def:whierarchy}
 \end{definition}
 
