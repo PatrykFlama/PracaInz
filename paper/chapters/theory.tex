@@ -1,4 +1,4 @@
-W tym rozdziale przedstawimy dokładną definicję problemu naprawy częściowego DFA. Pokażemy, w jaki sposób problem można sprowadzić wyłącznie do brakujących krawędzi, wprowadzimy potrzebne oznaczenia oraz wykażemy $\mathbb{NP}$-zupełność tego problemu. Ponadto omówimy jego trudność w kontekście klas parametryzowanych, ze szczególnym uwzględnieniem hierarchii $W$ oraz klas $W[2]$ i $W[P]$.
+W tym rozdziale przedstawimy dokładną definicję problemu naprawy częściowego DFA. Pokażemy, w~jaki sposób problem można sprowadzić wyłącznie do brakujących krawędzi, wprowadzimy potrzebne oznaczenia oraz wykażemy $\mathbb{NP}$-zupełność tego problemu. Ponadto omówimy jego trudność w~kontekście klas parametryzowanych, ze szczególnym uwzględnieniem hierarchii $W$ oraz klas $W[2]$ i $W[P]$.
 
 \section{Definicja problemu, framework}
 
@@ -21,7 +21,7 @@ Deterministyczny automat skończony (DFA) to krotka $(Q, \Sigma, \delta, q_\lamb
     
     \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w~którym:
 \begin{itemize}
-    \item niektóre krawędzie w automacie mogły zostać usunięte, więc dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
+    \item niektóre krawędzie w~automacie mogły zostać usunięte, więc dla niektórych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona,
     \item niektóre stany mogły zostać usunięte z automatu (brakujące stany), więc nie należą one ani do $\mathbb{F_A}$, ani do $\mathbb{F_R}$,
 \end{itemize}
 oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \subseteq \Sigma^{*}$ (słowa odrzucane).
@@ -34,7 +34,7 @@ oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \su
 
 
 \subsection{Redukcja przypadku brakujących stanów}
-W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to wystarczy poprowadzić każde brakujące przejście do drzewa prefiksowego, zbudowanego z~sufiksów próbek przechodzących po tym przejściu. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w~zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany złożoności. 
+W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Możemy ograniczyć maksymalną liczbę stanów w~automacie do liczby stanów w~automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to wystarczy poprowadzić każde brakujące przejście do drzewa prefiksowego, zbudowanego z~sufiksów próbek przechodzących po tym przejściu. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w~zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany złożoności. 
 W dalszej części pracy zakładamy, że liczba stanów jest ustalona i~nie rozważamy dodawania nowych.
 
 \subsection{Definicja problemu z określoną liczbą stanów}
@@ -47,7 +47,7 @@ W pozostałej części tego rozdziału zajmiemy się złożonością następują
 
 \noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść  tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. 
 
-\noindent Zauważamy, że w tym problemie nie możemy dodawać nowych stanów do automatu.
+\noindent Zauważamy, że w~tym problemie nie możemy dodawać nowych stanów do automatu.
 
 \label{def:fixpartialdfa}
 \end{definition}

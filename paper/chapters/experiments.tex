@@ -1,11 +1,11 @@
 \section{Implementacja}
-Program został zaimplementowany w C++ 15. Kod jest gotowy do pobrania z publicznego repozytorium na github:
+Program został zaimplementowany w~C++ 15. Kod jest gotowy do pobrania z publicznego repozytorium na github:
 
 \begin{itemize}
   \item \url{https://github.com/PatrykFlama/PracaInz}
 \end{itemize}
 
-Kod jest w folderze programy, w pliku main.cpp można konfigurować liczbę stanów, rozmiar alfabetu, liczbę próbek oraz ich długość, wariancję długości próbek, liczbę brakujących krawędzi, typ automatu oraz liczbę testów i wybrać algorytmy do testowania. Kod można uruchamiać za pomocą Makefile.
+Kod jest w~folderze programy, w~pliku main.cpp można konfigurować liczbę stanów, rozmiar alfabetu, liczbę próbek oraz ich długość, wariancję długości próbek, liczbę brakujących krawędzi, typ automatu oraz liczbę testów i wybrać algorytmy do testowania. Kod można uruchamiać za pomocą Makefile.
 
 \section{Środowisko}
 Testy zostały wykonane na środowisku o poniższych parametrach:
@@ -16,13 +16,13 @@ Testy zostały wykonane na środowisku o poniższych parametrach:
 \end{itemize}
 
 \section{Sposób testowania}
-Testy przeprowadzaliśmy na stałych parametrach, jedynie badany parametr jest zmieniany. Automat oraz próbki przygotowywaliśmy w podany sposób:
+Testy przeprowadzaliśmy na stałych parametrach, jedynie badany parametr jest zmieniany. Automat oraz próbki przygotowywaliśmy w~podany sposób:
 \begin{itemize}
-  \item generowaliśmy losowy automat pełny(posiadający przejście dla każdego symbolu alfabetu w każdym stanie),
+  \item generowaliśmy losowy automat pełny(posiadający przejście dla każdego symbolu alfabetu w~każdym stanie),
   \item na podstawie tak wygenerowanego automatu generowaliśmy losowe próbki,
-  \item losowo usuwaliśmy ustaloną liczbę przejść z automatu, które są zawarte w próbce lub próbkach.
+  \item losowo usuwaliśmy ustaloną liczbę przejść z automatu, które są zawarte w~próbce lub próbkach.
 \end{itemize}
-Dzięki temu automatycznie wykluczamy wszystkie przypadki niezdefiniowanych przejść w~automacie, które mogą zostać poprowadzone w dowolny sposób. Takim sposobem eliminujemy trywialne przypadki, w których dowolny przebieg przejścia algorytmu prowadzi do poprawnego rozwiązania, koncentrując testy na trudniejszych instancjach problemu.
+Dzięki temu automatycznie wykluczamy wszystkie przypadki niezdefiniowanych przejść w~automacie, które mogą zostać poprowadzone w~dowolny sposób. Takim sposobem eliminujemy trywialne przypadki, w~których dowolny przebieg przejścia algorytmu prowadzi do poprawnego rozwiązania, koncentrując testy na trudniejszych instancjach problemu.
 
 Przy rysowaniu wykresów średni czas wykonania obliczano z wykorzystaniem okna przesuwnego. Dane zostały posortowane względem badanego parametru, a następnie dla kolejnych fragmentów danych o stałej liczbie obserwacji wyznaczano średnią arytmetyczną wartości parametru oraz odpowiadających mu czasów wykonania. Okno przesuwne było centrowane, co oznacza, że każda wartość na wykresie reprezentuje średnią obliczoną z obserwacji znajdujących się symetrycznie wokół danego punktu. Zastosowanie okna przesuwnego pozwoliło na wygładzenie przebiegu wykresów oraz uwidocznienie ich tendencji.
 
@@ -41,20 +41,20 @@ Na podstawie przeprowadzonych testów można stwierdzić, że algorytm ze skokam
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{charts/sample_length.pdf}
-  \caption{Średni czas wykonania algorytmu w zależności od długości próbek, liczony na oknie przesuwnym 500. Parametry: 20 stanów, 30 próbek, alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek : 0,2, długość próbek z zakresu [30,1000].}
+  \caption{Średni czas wykonania algorytmu w~zależności od długości próbek, liczony na oknie przesuwnym 500. Parametry: 20 stanów, 30 próbek, alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek : 0,2, długość próbek z zakresu [30,1000].}
   \label{fig:sample_length}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{charts/num_samples.pdf}
-  \caption{Średni czas wykonania algorytmu w zależności od liczby próbek, liczony na oknie przesuwnym 10000. Parametry: 20 stanów, liczba próbek z zakresu [10,1000], alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek: 0,2, długość próbek: 30.}
+  \caption{Średni czas wykonania algorytmu w~zależności od liczby próbek, liczony na oknie przesuwnym 10000. Parametry: 20 stanów, liczba próbek z zakresu [10,1000], alfabet 5-symbolowy, 4 brakujące krawędzie, wariancja długości próbek: 0,2, długość próbek: 30.}
   \label{fig:num_samples}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{charts/missing_edges.pdf}
-  \caption{Średni czas wykonania algorytmu w zależności od liczby brakujących przejść, liczony na oknie przesuwnym 300. Parametry: 20 stanów, 30 próbek, alfabet 5-symbolowy, brakujące krawędzie z zakresu [1,10], wariancja długości próbek: 0,2, długość próbek: 30.}
+  \caption{Średni czas wykonania algorytmu w~zależności od liczby brakujących przejść, liczony na oknie przesuwnym 300. Parametry: 20 stanów, 30 próbek, alfabet 5-symbolowy, brakujące krawędzie z zakresu [1,10], wariancja długości próbek: 0,2, długość próbek: 30.}
   \label{fig:missing_edges}
 \end{figure}

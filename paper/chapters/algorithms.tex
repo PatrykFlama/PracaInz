@@ -1,4 +1,4 @@
-W niniejszym rozdziale przedstawiono algorytmy służące do naprawy niekompletnego automatu deterministycznego na podstawie zbioru przykładów pozytywnych i negatywnych. Celem jest uzupełnienie brakujących przejść w taki sposób, aby otrzymany automat poprawnie klasyfikował wszystkie próbki wejściowe.
+W niniejszym rozdziale przedstawiono algorytmy służące do naprawy niekompletnego automatu deterministycznego na podstawie zbioru przykładów pozytywnych i negatywnych. Celem jest uzupełnienie brakujących przejść w~taki sposób, aby otrzymany automat poprawnie klasyfikował wszystkie próbki wejściowe.
 
 Jako punkt odniesienia omówiono algorytm brute force, który iteruje się po wszystkich możliwych konfiguracjach brakujących przejść i weryfikuje każdą z nich poprzez symulację próbek na automacie. Następnie wprowadzono algorytm ze skokami (jump tables), który przyspiesza etap walidacji poprzez wstępne przetwarzanie próbek i pomijanie fragmentów odpowiadających znanym przejściom.
 
@@ -8,9 +8,9 @@ Opisane metody różnią się złożonością, czasem działania oraz gwarancjam
 
 \section{Podejście Brute Force}
 
-Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwych sposobów uzupełnienia brakujących przejść w automacie. Algorytm generuje kolejne warianty automatu poprzez przypisywanie stanów brakującym przejściom dla poszczególnych symboli alfabetu.
+Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwych sposobów uzupełnienia brakujących przejść w~automacie. Algorytm generuje kolejne warianty automatu poprzez przypisywanie stanów brakującym przejściom dla poszczególnych symboli alfabetu.
 
-Każdy taki wariant traktowany jest jako osobny kandydat rozwiązania problemu. Dla wygenerowanego automatu algorytm symuluje następnie przetwarzanie wszystkich próbek, przechodząc krok po kroku przez kolejne stany zgodnie z symbolami próbek. Po zakończeniu symulacji sprawdzane jest, czy każda z próbek kończy się w stanie zgodnym z danymi wejściowymi.
+Każdy taki wariant traktowany jest jako osobny kandydat rozwiązania problemu. Dla wygenerowanego automatu algorytm symuluje następnie przetwarzanie wszystkich próbek, przechodząc krok po kroku przez kolejne stany zgodnie z symbolami próbek. Po zakończeniu symulacji sprawdzane jest, czy każda z próbek kończy się w~stanie zgodnym z danymi wejściowymi.
 
 Jeżeli dla danego wariantu automatu warunek ten nie jest spełniony, algorytm odrzuca go i przechodzi do analizy kolejnej kombinacji uzupełnień. Proces ten jest powtarzany aż do momentu znalezienia pierwszego wariantu, dla którego wszystkie próbki są poprawnie obsługiwane. W tym momencie algorytm kończy działanie.
 
@@ -21,17 +21,17 @@ Czas algorytmu wynosi $\mathcal{O}(N^k \cdot M \cdot |S|)$, gdzie $N$ to liczba 
 \section{Algorytm ze skokami (Jump Tables)}
 
 Algorytm ze skokami stanowi optymalizację symulacji przechodzenia próbką po automacie, z algorytmu Brute Force. Jego głównym celem jest zredukowanie liczby krawędzi, które muszą być przetworzone podczas weryfikacji próbki z automatem. \\
-Możemy zaobserwować, że przechodzenie po \textit{znanych} krawędziach - czyli takich przejściach które dostaliśmy na wejściu - może często prowadzić do redundantnych obliczeń, ponieważ występują one często w automacie, a utworzone z nich ścieżki są jednoznacznie określone dla dowolnej wersji naprawionego automatu.
+Możemy zaobserwować, że przechodzenie po \textit{znanych} krawędziach - czyli takich przejściach które dostaliśmy na wejściu - może często prowadzić do redundantnych obliczeń, ponieważ występują one często w~automacie, a utworzone z nich ścieżki są jednoznacznie określone dla dowolnej wersji naprawionego automatu.
 
 Dlatego też konstrukcja algorytmu opiera się na stworzeniu struktury, która dla każdego możliwego sufiksu próbek oraz każdego stanu automatu, pozwala na natychmiastowe wyznaczenie stanu docelowego - osiągalnego przy użyciu wyłącznie znanych krawędzi, przeskakując przy tym możliwie najdłuższy fragment podanego sufiksu. \\
-Do algorytmu wprowadzany jest etap wstępnego przetwarzania, gdzie opisana struktura jest wyliczana w postaci tablic skoków. Następnie, podczas walidacji automatu, przechodząc próbką po automacie korzystamy z tablicy skoków, aby przeskoczyć fragmenty składające się ze \textit{znanych} krawędzi. 
+Do algorytmu wprowadzany jest etap wstępnego przetwarzania, gdzie opisana struktura jest wyliczana w~postaci tablic skoków. Następnie, podczas walidacji automatu, przechodząc próbką po automacie korzystamy z tablicy skoków, aby przeskoczyć fragmenty składające się ze \textit{znanych} krawędzi. 
 
-W efekcie wykonamy jedynie tyle kroków, ile jest \textit{brakujących} krawędzi na ścieżce odpowiadającej danej próbce w automacie.
+W efekcie wykonamy jedynie tyle kroków, ile jest \textit{brakujących} krawędzi na ścieżce odpowiadającej danej próbce w~automacie.
 
 \subsubsection{Budowa tablic skoków}
 
-Tablice skoków budowane są niezależnie dla zbioru przykładów pozytywnych oraz negatywnych. Dla każdej próbki $w$ o długości maksymalnie $L$ konstruowana jest tablica $DP$, w której wpis $DP[i][q]$ opisuje efekt przetworzenia najdłuższego możliwego fragmentu 
-próbki $w$, zaczynając od pozycji $i$ w stanie $q$, bez użycia brakujących przejść.
+Tablice skoków budowane są niezależnie dla zbioru przykładów pozytywnych oraz negatywnych. Dla każdej próbki $w$ o długości maksymalnie $L$ konstruowana jest tablica $DP$, w~której wpis $DP[i][q]$ opisuje efekt przetworzenia najdłuższego możliwego fragmentu 
+próbki $w$, zaczynając od pozycji $i$ w~stanie $q$, bez użycia brakujących przejść.
 
 
 \begin{algorithm}[H]
@@ -70,7 +70,7 @@ Po skonstruowaniu tablic skoków algorytm wykorzystuje je podczas walidacji każ
 \begin{algorithm}[H]
 \caption{Walidacja automatu z wykorzystaniem tablic skoków}
 \KwIn{Automat $A$, próbki $S$, tablica skoków $JT$, oczekiwany wynik $b$}
-\KwOut{true jeśli automat jest zgodny z próbkami, false w przeciwnym razie}
+\KwOut{true jeśli automat jest zgodny z próbkami, false w~przeciwnym razie}
 
 \ForEach{próbka $w_i \in S$}{
     $q \leftarrow q_0$, $pos \leftarrow 0$\;
@@ -96,23 +96,23 @@ Po skonstruowaniu tablic skoków algorytm wykorzystuje je podczas walidacji każ
 
 \subsubsection{Integracja z algorytmem pełnego przeszukiwania}
 % TODO integracja z (prawie) dowolnym algorytmem
-% tą optymalizację możemy potraktować jako przekształcenie automatu w taki, który nadal jest w stanie chodzić po wszystkich próbkach zadanych na wejściu, ale teraz dodatkowo posiada krawędzie etykietowane podsłowami, którymi moze przejść w O(1)
+% tą optymalizację możemy potraktować jako przekształcenie automatu w~taki, który nadal jest w~stanie chodzić po wszystkich próbkach zadanych na wejściu, ale teraz dodatkowo posiada krawędzie etykietowane podsłowami, którymi moze przejść w~O(1)
 
-Algorytm ze skokami nie modyfikuje samej strategii przeszukiwania przestrzeni możliwych uzupełnień brakujących przejść. Zastępuje on jedynie klasyczną procedurę walidacji automatu zoptymalizowaną wersją wykorzystującą tablice skoków. Dzięki temu zachowana zostaje pełna poprawność algorytmu brute force, przy jednoczesnym istotnym zmniejszeniu czasu weryfikacji pojedynczego kandydata w praktyce.
+Algorytm ze skokami nie modyfikuje samej strategii przeszukiwania przestrzeni możliwych uzupełnień brakujących przejść. Zastępuje on jedynie klasyczną procedurę walidacji automatu zoptymalizowaną wersją wykorzystującą tablice skoków. Dzięki temu zachowana zostaje pełna poprawność algorytmu brute force, przy jednoczesnym istotnym zmniejszeniu czasu weryfikacji pojedynczego kandydata w~praktyce.
 
 
 \subsubsection{Analiza wydajności}
 Czas budowy tablic skoków wynosi $\mathcal{O}(|S| \cdot M \cdot N)$, gdzie $|S|$ to liczba próbek, $M$ to maksymalna długość próbki, a $N$ to liczba stanów automatu.
 
 % TODO - elaborate; maybe drawing of example problematic case?
-Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w automacie. W najgorszym przypadku, gdy wszystkie przejścia są brakujące lub co drugie przejście jest brakujące, czas walidacji pozostaje $\mathcal{O}(M)$.
+Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w~automacie. W najgorszym przypadku, gdy wszystkie przejścia są brakujące lub co drugie przejście jest brakujące, czas walidacji pozostaje $\mathcal{O}(M)$.
 W praktyce jednak, dla automatu z niewielką liczbą brakujących przejść, czas ten może być znacznie mniejszy.
 
 \section{Heurystyka naprawy automatu z losowymi restartami}
 
-Algorytm hill climbing \cite{hill_climbing} jest algorytmem, który rozpoczyna działanie od pewnego początkowego rozwiązania, a następnie iteracyjnie wprowadza niewielkie modyfikacje, dążąc do poprawy wartości funkcji celu. W każdej iteracji rozważane są rozwiązania sąsiednie, różniące się od aktualnego jedynie pojedynczą zmianą, w tym przypadku: przypisaniem innego stanu docelowego do jednego przejścia automatu. Jeżeli taka modyfikacja prowadzi do poprawy wartości funkcji celu, w tym przypadku: więcej próbek osiąga docelowy stan zgodny z danymi wejściowymi, jest ona akceptowana jako nowe rozwiązanie bieżące.
+Algorytm hill climbing \cite{hill_climbing} jest algorytmem, który rozpoczyna działanie od pewnego początkowego rozwiązania, a następnie iteracyjnie wprowadza niewielkie modyfikacje, dążąc do poprawy wartości funkcji celu. W każdej iteracji rozważane są rozwiązania sąsiednie, różniące się od aktualnego jedynie pojedynczą zmianą, w~tym przypadku: przypisaniem innego stanu docelowego do jednego przejścia automatu. Jeżeli taka modyfikacja prowadzi do poprawy wartości funkcji celu, w~tym przypadku: więcej próbek osiąga docelowy stan zgodny z danymi wejściowymi, jest ona akceptowana jako nowe rozwiązanie bieżące.
 
-Metoda ta jest podatna na zatrzymanie się w minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W celu ograniczenia tego problemu zastosowano losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejść automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
+Metoda ta jest podatna na zatrzymanie się w~minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W celu ograniczenia tego problemu zastosowano losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w~którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejść automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
 
 \section{Pruning przestrzeni rozwiązań}
 
@@ -131,7 +131,7 @@ nie spełniają nowo wprowadzonego ograniczenia.
 Jeżeli na pewnym etapie, przy częściowo ustalonym automacie, zbiór
 potencjalnych konfiguracji staje się pusty, oznacza to, że żadna
 kompletna konfiguracja automatu zgodna z danymi wejściowymi nie może
-powstać w danym kierunku dalszej eksploracji. W takiej sytuacji algorytm
+powstać w~danym kierunku dalszej eksploracji. W takiej sytuacji algorytm
 przerywa dalsze rozważanie tej gałęzi, niezależnie od tego, że nie
 wszystkie przejścia zostały jeszcze ustalone.
 
