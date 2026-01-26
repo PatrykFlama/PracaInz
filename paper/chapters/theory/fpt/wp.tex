@@ -1,4 +1,4 @@
-W tym podrozdziale pokażemy, że problem naprawienia $k$-częściowego DFA należy do klasy złożoności parametrycznej $W[P]$. W tym celu skonstruujemy $\kappa$-ograniczoną niedeterministyczną maszynę Turinga, która w ograniczonej liczbie kroków niedeterministycznych zgaduje brakujące przejścia automatu, a następnie w czasie wielomianowym weryfikuje poprawność otrzymanego uzupełnienia względem zadanych przykładów pozytywnych i negatywnych.
+W tym podrozdziale pokażemy, że problem naprawienia $k$-częściowego DFA należy do klasy złożoności parametrycznej $W[P]$. W tym celu skonstruujemy $\kappa$-ograniczoną niedeterministyczną maszynę Turinga, która w ograniczonej liczbie kroków niedeterministycznych zgaduje brakujące przejścia automatu, a następnie w czasie wielomianowym weryfikuje poprawność otrzymanego uzupełnienia względem zadanych przykładów pozytywnych i~negatywnych.
 
 \begin{definition}[Zbiór $\mathbb{N}_0\lbrack X \rbrack$]
     Przez $\mathbb{N}_0[X]$ oznaczamy zbiór wielomianów w zmiennej $X$
@@ -29,7 +29,7 @@ $W[P]$ jest klasą wszystkich problemów parametryzowanych $(Q, \kappa)$, które
 
     Niech $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$ będzie częściowym automatem deterministycznym, a~$S^+ \subseteq \Sigma^*$ i $S^- \subseteq \Sigma^*$ zbiorem słów pozytywnych i negatywnych. Oznaczmy przez $k$ liczbę brakujących przejść w $\delta$.  
 
-    Maszyna Turinga zgaduje $k$ stanów docelowych wybrakowanych przejść, w $O(k \cdot \log |Q|)$ krokach niedeterministycznych. Następnie deterministycznie weryfikuje, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów z $S^+$ i odrzucenie wszystkich słów z $S^-$. Tę weryfikację wykonuje w czasie wielomianowym względem rozmiaru wejścia - dla przykładu symulując działanie automatu.
+    Maszyna Turinga zgaduje $k$ stanów docelowych wybrakowanych przejść, w $O(k \cdot \log |Q|)$ krokach niedeterministycznych. Następnie deterministycznie weryfikuje, czy zgadnięte uzupełnienie powoduje akceptację wszystkich słów z~$S^+$ i odrzucenie wszystkich słów z $S^-$. Tę weryfikację wykonuje w czasie wielomianowym względem rozmiaru wejścia - dla przykładu symulując działanie automatu.
 
     Cała niedeterministyczna maszyna Turinga wykonuje liczbę kroków niedeterministycznych zależną tylko od parametru $k$ i sprawdza poprawność w czasie wielomianowym względem rozmiaru wejścia. Stąd problem naprawienia częściowego DFA należy do klasy $W[P]$.
 
