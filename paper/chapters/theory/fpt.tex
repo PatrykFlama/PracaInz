@@ -9,7 +9,7 @@ do automatów z co najwyżej $k$ brakującymi krawędziami (problem $k$-części
 \begin{proof}
 Niech dany będzie częściowy automat deterministyczny $A$ o $n$ stanach z co najwyżej $k$ brakującymi krawędziami. Algorytm polega na wyliczeniu wszystkich możliwych uzupełnień automatu poprzez dodanie brakujących krawędzi.
 
-Liczba wszystkich możliwych krawędzi w automacie to co najwyżej $n \cdot |\Sigma|$, gdzie $|\Sigma|$ to rozmiar alfabetu. Każda brakująca krawędź może być skierowana do dowolnego spośród $n$ stanów, zatem liczba możliwych uzupełnień to co najwyżej $n^k$.
+Każda brakująca krawędź może być skierowana do dowolnego spośród $n$ stanów, zatem liczba możliwych uzupełnień to co najwyżej $n^k$.
 
 Dla każdego z tych uzupełnień sprawdzamy w czasie wielomianowym (zależnym od rozmiaru automatu), czy powstały automat spełnia warunki specyfikacji. Ta weryfikacja wykonywana jest w czasie $O(n^c)$ dla pewnej stałej $c$.
 
@@ -18,8 +18,8 @@ Całkowita złożoność wynosi $O(n^k \cdot n^c) = O(n^{k+c})$, co jest wielomi
 \end{proof}
 
 
-Złożoność parametryczna (ang. \textit{parameterized complexity}) to framework do analizy problemów obliczeniowych, w których oprócz rozmiaru wejścia istnieje dodatkowy parametr. 
-Zamiast klasyfikacji problemów jedynie jako $\mathbb{P}$ lub $\mathbb{NP}$-zupełne, badamy zależność złożoności od tego parametru.
+Złożoność parametryczna (ang. \textit{parameterized complexity}) to framework do analizy problemów obliczeniowych, w którym oprócz rozmiaru wejścia istnieje dodatkowy parametr. 
+Zamiast klasyfikacji problemów jedynie jako należące do klasy $\mathbb{P}$ lub $\mathbb{NP}$-zupełnych, badamy zależność złożoności od tego parametru.
 
 \vspace{0.5cm}
 
@@ -34,7 +34,7 @@ Sparametryzowany problem to para $(Q, \kappa)$, gdzie $\kappa$ jest funkcją, kt
 
 Klasa FPT (ang. \textit{Fixed-Parameter Tractable}) składa się z problemów, dla których istnieje algorytm, który dla wejścia $x$ działa w czasie:
 $$f(\kappa(x)) \cdot |x|^c$$
-gdzie $|x|$ oznacza rozmiar wejścia, $f$ to dowolna funkcja obliczalna, a $c$ to stała niezależna od parametru $x$.
+gdzie $|x|$ oznacza rozmiar wejścia, $f$ to dowolna funkcja obliczalna, a $c$ to stała niezależna od $x$.
 
 Odpowiednikiem redukcji wielomianowych w świecie złożoności parametrycznych są redukcje parametryczne.
 
@@ -55,7 +55,7 @@ jeżeli istnieje funkcja obliczalna $R$ (transformacja instancji) oraz funkcje o
 Dla porządku przywołamy tutaj definicję W-hierarchii.
 
 \begin{definition}[Klasy $W$-hierarchii]
-W-hierarchia to zbiór klas złożoności, oznaczonych jako $W[i]$ dla $i \geq 1$.
+$W$-hierarchia to zbiór klas złożoności, oznaczonych jako $W[i]$ dla $i \geq 1$.
 Sparametryzowany problem znajduje się w klasie $W[i]$, jeśli można go zredukować do problemu \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do $i$ \cite{parametrized_complexity_theory}. \\
 Sparametryzowany problem jest $W[i]$-trudny, jeśli można zredukować problem \textit{Weighted Circuit Satisfiability} dla obwodów o głębokości ograniczonej do $i$, do tego problemu.
 
@@ -63,6 +63,16 @@ Dokładnej definicji problemu Weighted Circuit Satisfiability tu nie podajemy, g
 \label{def:whierarchy}
 \end{definition}
 
+
+\begin{definition}[Problem naprawiania $k$-częściowego DFA]
+Problem naprawiania $k$-częściowego DFA to sparametryzowana wersja problemu naprawiania częściowego DFA, w której parametrem jest liczba brakujących krawędzi w automacie.
+
+\noindent \textbf{Wejście:} parametr $k$, częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym dla dokładnie $k$ par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, zbiory próbek $S^+ \subseteq \Sigma^{*}$ i $S^{-} \subseteq \Sigma^{*}$.
+\vspace{0.3cm}
+
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść  tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$.
+
+\end{definition}
 
 % \subsection{$W[1]$-trudność}
 % \import{theory/fpt}{w1}

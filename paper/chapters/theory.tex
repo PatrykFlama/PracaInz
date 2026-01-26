@@ -34,17 +34,18 @@ oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \su
 
 
 \subsection{Redukcja przypadku brakujących stanów}
-W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to będzie to automat rozwiązujący problem. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany (i tak wykładniczej) złożoności. 
-Tą weryfikację
-Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
+W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to wystarczy uzupełnić każde brakujące przejście drzewem prefiksowym, zbudowanym z sufiksów próbek przechodzących po tym przejściu. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany złożoności. 
+W dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
 
 \subsection{Definicja problemu z określoną liczbą stanów}
+
+W pozostałej części tego rozdziału zajmiemy się złożonością następującego problemu.
 
 \begin{definition}[Problem naprawienia częściowego DFA]
 \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i $S^{-} \subseteq \Sigma^{*}$.
 \vspace{0.3cm}
 
-\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść i klasyfikacji stanów tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. W przypadku istnienia należy podać takie uzupełnienie. \\
+\noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść  tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. 
 
 \noindent Zauważamy, że w tym problemie nie możemy dodawać nowych stanów do automatu.
 
@@ -54,5 +55,5 @@ Dlatego w dalszej części pracy zakładamy, że liczba stanów jest ustalona i 
 \section{$\mathbb{NP}$-zupełność}
 \import{theory}{npcomplex}
 
-\section{Złożoność parametryzowana}
+\section{Złożoność parametryczna}
 \import{theory}{fpt}
