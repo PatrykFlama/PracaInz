@@ -34,7 +34,7 @@ oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ (słowa akceptowane) i $S^{-} \su
 
 
 \subsection{Redukcja przypadku brakujących stanów}
-W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to wystarczy uzupełnić każde brakujące przejście drzewem prefiksowym, zbudowanym z~sufiksów próbek przechodzących po tym przejściu. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany złożoności. 
+W rozważanej wersji problemu dopuszczamy dodawanie brakujących stanów. Możemy ograniczyć maksymalną liczbę stanów w automacie do liczby stanów w automacie, opartym na drzewie prefiksowym zbudowanym z próbek. Jeżeli automat jest naprawialny, to wystarczy poprowadzić każde brakujące przejście do drzewa prefiksowego, zbudowanego z~sufiksów próbek przechodzących po tym przejściu. Rozmiar takiego drzewa możemy ograniczyć przez $N = |S^+ \cup S^-| \cdot \max_{w \in S^+ \cup S^-} |w|$. Możemy więc dla każdej liczby stanów $n$ w zakresie $[1, N]$ sprawdzać, czy istnieje naprawa automatu z dokładnie $n$ stanami; od pewnej wartości $n$ odpowiedź staje się pozytywna, co pozwala użyć wyszukiwania binarnego bez istotnej zmiany złożoności. 
 W dalszej części pracy zakładamy, że liczba stanów jest ustalona i nie rozważamy dodawania nowych.
 
 \subsection{Definicja problemu z określoną liczbą stanów}
