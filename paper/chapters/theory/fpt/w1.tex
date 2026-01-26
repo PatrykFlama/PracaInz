@@ -65,7 +65,7 @@ W takim przypadku, aby zagwarantować przejście krawędzią $p_x$ do któregoś
 Jedynym wyjątkiem jest stan $\text{sink}_+$. 
 Wychodząca z niego krawędź $t$ musi też prowadzić do $\text{sink}_+$ - w przeciwnym wypadku próbki \eqref{eq:kclique-n-clique} zostaną odrzucone gdy $p_x, p_y, v_i, v_j$ takich, że $(i, j) \notin E \implies \exists z \in \{1..n\} v_z = \delta(q_{\lambda}, p_x) \land z \neq i$, ponieważ ze stanu $v_z$ przejdziemy wtedy w automacie krawędzią $t$ a następnie $e_i$, a $z \neq i \implies \delta(\delta(v_z, t), e_i) = \text{sink}_+$. Ta próbka nie oznacza niepoprawnego przypisana krawędzi (więc powinna zostać zaakceptowana), a wiemy że w naszej próbce występuje jeszcze jedno przejście krawędzią $t$, więc musi ono prowadzić do stanu $\text{sink}_+$. \\
 Możemy ten problem rozwiązać na 2 sposoby. Korzystając z faktu, że w próbce \eqref{eq:kclique-n-clique} są dokładnie 2 wystąpienia krawędzi $t$, możemy stworzyć alternatywny $\text{sink}_+$ (składający się z 2 stanów), który po pierwszym przejściu krawędzią $t$ prowadzi do drugiego stanu $\text{sink}_+$, a po drugim przejściu krawędzią $t$ prowadzi do stanu odrzucającego $\text{sink}_-$. \\
-Alternatywną metodą jest odrzucenie prowadzenie krawędzi $p_x$ do stanu $\text{sink}_+$ poprzez dodanie próbek odrzucających, które wymuszają prowadzenie krawędzi $p_x$ do stanu odrzucajcego:
+Alternatywną metodą jest odrzucenie prowadzenie krawędzi $p_x$ do stanu $\text{sink}_+$ poprzez dodanie próbek odrzucających, które wymuszają prowadzenie krawędzi $p_x$ do stanu odrzucającego:
 
 \begin{equation}
 \forall x\in\{1..k\} \ {[p_x] \in S^-}
@@ -82,7 +82,7 @@ Aby uniemożliwić wybór tego samego $v_i$ dla różnych przejść $p_x$ oraz $
 \label{eq:kclique-n-diff}
 \end{equation}
 
-W ten sposób, jeżeli oba przejścia $p_x$ i $p_y$ prowadziłyby do tego samego stanu $v_i$, to po pierwszym przejściu krawędziami $t \ e_i c_1$ trafilibyśmy do stanu $q_{\lambda}$, a następnie po drugim przejściu krawędziami $t \ e_i$ trafilibyśmy do stanu odrzucajcego $q_{\lambda}$, więc próbka zostałaby odrzucona. \\
+W ten sposób, jeżeli oba przejścia $p_x$ i $p_y$ prowadziłyby do tego samego stanu $v_i$, to po pierwszym przejściu krawędziami $t \ e_i c_1$ trafilibyśmy do stanu $q_{\lambda}$, a następnie po drugim przejściu krawędziami $t \ e_i$ trafilibyśmy do stanu odrzucającego $q_{\lambda}$, więc próbka zostałaby odrzucona. \\
 Jeżeli jednak przejścia $p_x$ i $p_y$ prowadzą do różnych stanów $v_i$ i $v_j$, to pierwsze lub drugie przejście krawędziami $t \ e_i$ doprowadzi do stanu $q_{\lambda}$, a następnie przejście krawędzią $c_1$ doprowadzi do stanu akceptującego $\text{sink}_+$, więc próbka zostanie zaakceptowana.
 
 \vspace{0.3cm}
