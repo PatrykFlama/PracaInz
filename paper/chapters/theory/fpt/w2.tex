@@ -16,7 +16,6 @@ Pokażemy redukcję z problemu $k$-zbioru pokrywającego do problemu naprawienia
 
 Idea konstrukcji jest przedstawiona na rysunku \ref{fig:ksetcover}. Na tym rysunku $n$ oznacza moc rodziny $\mathcal{F}$, a $k$ parametr problemu. \\
 Automat z rysunku \ref{fig:ksetcover} z redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - w dalszej części pracy udowodnimy, że można go zmniejszyć do stałego rozmiaru alfabetu. \\
-Przyjmijmy też, że $n = |\mathcal{F}|$. \\
 
 W poniższych automatach stan startowy oznaczony jest jako $q_{\lambda}$, stany akceptujące zaznaczone są podwójną linią, a stan odrzucający pojedynczą. \\
 Wybrakowane krawędzie zaznaczone są przerywaną linią (i opisane jako $p_x$), natomiast stany $q_\lambda$ zaznaczone przerywaną linią reprezentują ten sam stan startowy automatu. \\
@@ -30,7 +29,7 @@ Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (od
 
 \import{theory/figures/w2}{reduction_ksetcover_n}
 
-Możemy zaobserwować, że w tym problemie nie musimy gwarantować wyboru różnych stanów $s_i$ dla różnych krawędzi $p_x$, ponieważ wybór tego samego zbioru wielokrotnie nie ma wpływu na pokrycie uniwersum.
+Możemy zaobserwować, że w tym problemie nie musimy gwarantować wyboru różnych stanów $s_i$ dla różnych krawędzi $p_x$, ponieważ wybór tego samego zbioru wielokrotnie nie ma wpływu na pokrycie uniwersum. Redukcja nie zmienia wartości $k$.
 
 
 \vspace{0.3cm}
@@ -82,7 +81,7 @@ Próbki \ref{eq:kcover-si} będą odrzucane, ponieważ każda brakująca krawęd
 
 \noindent \textbf{Istnieje rozwiązanie naprawienia $k$-częściowego DFA $\implies$ istnieje rozwiązanie $k$-zbioru pokrywającego}
 
-Załóżmy, że istnieje rozwiązanie problemu naprawienia $k$-częściowego DFA, czyli istnieje przypisanie brakujących krawędzi w automacie z rysunku \ref{fig:ksetcover}, takie że powstał poprawny pełny automat deterministyczny oraz aby $\text{każde } s \in S^+$ było akceptowane, a $\text{każde } s \in S^-$ odrzucane.
+Załóżmy, że istnieje rozwiązanie problemu naprawienia $k$-częściowego DFA, czyli istnieje przypisanie brakujących krawędzi w automacie z rysunku \ref{fig:ksetcover}, takie że powstał poprawny pełny automat deterministyczny oraz aby $\text{każde } s \in S^+$ było akceptowane, a~$\text{każde } s \in S^-$ odrzucane.
 
 Zauważmy, że z próbek \ref{eq:kcover-si} wynika, że każda brakująca krawędź $p_x$ musi prowadzić do pewnego stanu odrzucającego, więc nie możemy prowadzić żadnej brakującej krawędzi do stanu $\text{sink}_+$. \\ 
 Ponadto, z próbek \ref{eq:kcover-cover} wynika, że krawędź $p_x$ nie może prowadzić do stanu $q_\lambda$, ani $\text{dla każdego } i \in \{1..n\}$ do stanu $\delta(s_i, t)$, ponieważ w obu przypadkach zawsze następna litera to $t$, która prowadzi do stanu odrzucającego $\text{sink}_-$. \\
