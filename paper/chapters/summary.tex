@@ -2,8 +2,8 @@ W niniejszej pracy wykazano, że rozważany problem jest $W[2]$-trudny oraz nale
 
 Przeprowadzone testy wskazują, że zaproponowany algorytm ze skokami stwarza potencjalne możliwości dalszej optymalizacji, w szczególności w zakresie zapotrzebowania na pamięć.
 
-Dodatkowym kierunkiem optymalizacji jest wykorzystanie struktury trie do wspólnego przetwarzania prefiksów próbek. Podejście to pozwala ograniczyć liczbę powtarzanych przejść automatu w przypadku zbiorów danych zawierających wiele próbek o wspólnych początkach. W praktyce może ono znacząco zmniejszyć liczbę operacji symulacji, zwłaszcza dla dużych zbiorów uczących.
+Dodatkowym kierunkiem optymalizacji jest wykorzystanie struktury trie do wspólnego przetwarzania prefiksów próbek. Podejście to pozwala ograniczyć liczbę powtarzanych przejść automatu w przypadku zbiorów danych zawierających wiele próbek o wspólnych początkach. W~praktyce może ono znacząco zmniejszyć liczbę operacji symulacji, zwłaszcza dla dużych zbiorów uczących.
 
 Obiecującym rozszerzeniem algorytmu pełnego przeszukiwania jest również zastosowanie backtrackingu w połączeniu z mechanizmem skoków. Takie podejście umożliwia wczesne odrzucanie nieperspektywicznych częściowych konfiguracji automatu oraz kontynuowanie symulacji próbek od ostatniego poprawnie zdefiniowanego przejścia. W~efekcie zmniejsza to zarówno liczbę analizowanych kombinacji uzupełnień, jak i koszt ich weryfikacji.
 
-Istotnym kierunkiem dalszych badań jest również analiza wpływu struktury automatu na czas wykonania algorytmów. W szczególności interesujące wydaje się badanie automatów z różną liczbą spójnych składowych.
+Istotnym kierunkiem dalszych badań jest również analiza wpływu struktury automatu na czas wykonania algorytmów. W~szczególności interesujące wydaje się badanie automatów z różną liczbą spójnych składowych.

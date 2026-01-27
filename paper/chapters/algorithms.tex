@@ -12,7 +12,7 @@ Podejście brute force polega na systematycznym sprawdzaniu wszystkich możliwyc
 
 Każdy taki wariant traktowany jest jako osobny kandydat rozwiązania problemu. Dla wygenerowanego automatu algorytm symuluje następnie przetwarzanie wszystkich próbek, przechodząc krok po kroku przez kolejne stany zgodnie z symbolami próbek. Po zakończeniu symulacji sprawdzane jest, czy każda z próbek kończy się w~stanie zgodnym z danymi wejściowymi.
 
-Jeżeli dla danego wariantu automatu warunek ten nie jest spełniony, algorytm odrzuca go i przechodzi do analizy kolejnej kombinacji uzupełnień. Proces ten jest powtarzany aż do momentu znalezienia pierwszego wariantu, dla którego wszystkie próbki są poprawnie obsługiwane. W tym momencie algorytm kończy działanie.
+Jeżeli dla danego wariantu automatu warunek ten nie jest spełniony, algorytm odrzuca go i przechodzi do analizy kolejnej kombinacji uzupełnień. Proces ten jest powtarzany aż do momentu znalezienia pierwszego wariantu, dla którego wszystkie próbki są poprawnie obsługiwane. W~tym momencie algorytm kończy działanie.
 
 
 \subsubsection{Złożoność obliczeniowa}
@@ -105,14 +105,14 @@ Algorytm ze skokami nie modyfikuje samej strategii przeszukiwania przestrzeni mo
 Czas budowy tablic skoków wynosi $\mathcal{O}(|S| \cdot M \cdot N)$, gdzie $|S|$ to liczba próbek, $M$ to maksymalna długość próbki, a $N$ to liczba stanów automatu.
 
 % TODO - elaborate; maybe drawing of example problematic case?
-Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w~automacie. W najgorszym przypadku, gdy wszystkie przejścia są brakujące lub co drugie przejście jest brakujące, czas walidacji pozostaje $\mathcal{O}(M)$.
+Z założeń wynika, że przy walidacji próbki wykonamy tyle kroków, ile jest brakujących przejść na ścieżce odpowiadającej danej próbce w~automacie. W~najgorszym przypadku, gdy wszystkie przejścia są brakujące lub co drugie przejście jest brakujące, czas walidacji pozostaje $\mathcal{O}(M)$.
 W praktyce jednak, dla automatu z niewielką liczbą brakujących przejść, czas ten może być znacznie mniejszy.
 
 \section{Heurystyka naprawy automatu z losowymi restartami}
 
-Algorytm hill climbing \cite{hill_climbing} jest algorytmem, który rozpoczyna działanie od pewnego początkowego rozwiązania, a następnie iteracyjnie wprowadza niewielkie modyfikacje, dążąc do poprawy wartości funkcji celu. W każdej iteracji rozważane są rozwiązania sąsiednie, różniące się od aktualnego jedynie pojedynczą zmianą, w~tym przypadku: przypisaniem innego stanu docelowego do jednego przejścia automatu. Jeżeli taka modyfikacja prowadzi do poprawy wartości funkcji celu, w~tym przypadku: więcej próbek osiąga docelowy stan zgodny z danymi wejściowymi, jest ona akceptowana jako nowe rozwiązanie bieżące.
+Algorytm hill climbing \cite{hill_climbing} jest algorytmem, który rozpoczyna działanie od pewnego początkowego rozwiązania, a następnie iteracyjnie wprowadza niewielkie modyfikacje, dążąc do poprawy wartości funkcji celu. W~każdej iteracji rozważane są rozwiązania sąsiednie, różniące się od aktualnego jedynie pojedynczą zmianą, w~tym przypadku: przypisaniem innego stanu docelowego do jednego przejścia automatu. Jeżeli taka modyfikacja prowadzi do poprawy wartości funkcji celu, w~tym przypadku: więcej próbek osiąga docelowy stan zgodny z danymi wejściowymi, jest ona akceptowana jako nowe rozwiązanie bieżące.
 
-Metoda ta jest podatna na zatrzymanie się w~minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W celu ograniczenia tego problemu zastosowano losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w~którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejść automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
+Metoda ta jest podatna na zatrzymanie się w~minimach lokalnych, ponieważ algorytm akceptuje jedynie zmiany prowadzące do poprawy rozwiązania. W~celu ograniczenia tego problemu zastosowano losowe restarty algorytmu. Po osiągnięciu minimum lokalnego, w~którym nie istnieje żadna poprawiająca modyfikacja, algorytm rozpoczyna działanie od nowej, losowo wygenerowanej konfiguracji niezidentyfikowanych przejść automatu. Proces ten jest powtarzany wielokrotnie, co zwiększa prawdopodobieństwo odnalezienia rozwiązania.
 
 \section{Pruning przestrzeni rozwiązań}
 
@@ -131,7 +131,7 @@ nie spełniają nowo wprowadzonego ograniczenia.
 Jeżeli na pewnym etapie, przy częściowo ustalonym automacie, zbiór
 potencjalnych konfiguracji staje się pusty, oznacza to, że żadna
 kompletna konfiguracja automatu zgodna z danymi wejściowymi nie może
-powstać w~danym kierunku dalszej eksploracji. W takiej sytuacji algorytm
+powstać w~danym kierunku dalszej eksploracji. W~takiej sytuacji algorytm
 przerywa dalsze rozważanie tej gałęzi, niezależnie od tego, że nie
 wszystkie przejścia zostały jeszcze ustalone.
 

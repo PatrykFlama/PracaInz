@@ -1,7 +1,7 @@
 W tym rozdziale pokażemy, że problem naprawienia $k$-częściowego automatu jest $W[2]$-trudny. Do tego celu zredukujemy następujący problem $W[2]$ zupełny.
 
 \begin{definition}[Problem $k$-zbioru pokrywającego ($k$-set cover)]
-Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W problemie $k$-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
+Weźmy rodzinę zbiorów $\mathcal{F}$ stworzoną na uniwersum $U$. Dla podrodziny $\mathcal{F}' \subset \mathcal{F}$ oraz podzbioru $U' \subset U$ mówimy, że $\mathcal{F}'$ pokrywa $U'$, jeżeli $\bigcup_{S \in \mathcal{F}'} S \supseteq U'$. W~problemie $k$-zbioru pokrywającego dane jest uniwersum $U$, rodzina zbiorów $\mathcal{F}$ stworzona na $U$ oraz liczba naturalna $k$. Celem jest znalezienie podrodziny $\mathcal{F}' \subseteq \mathcal{F}$, takiej że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$.
 
 \noindent Problem $k$-zbioru pokrywającego należy do klasy $W[2]$-zupełnych problemów \cite{parametrized_algorithms}.
 \end{definition}
@@ -25,7 +25,7 @@ Każda krawędź, która nie jest zaznaczona na rysunku, prowadzi do stanu odrzu
 \noindent \textbf{Idea konstrukcji:} \\
 Każdy stan $s_i$, w automacie z~rysunku \ref{fig:ksetcover}, odpowiada zbiorowi $S_i \in \mathcal{F}$. Krawędzie $e_j$ odpowiadają elementom $u_j \in U$. \\
 Jeżeli brakująca krawędź $p_x$ prowadzi do stanu $s_i$, to interpretujemy to jako wybranie zbioru $S_i$ jako $x$-tego zbioru w pokryciu. \\
-Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (odrzucającego) $q_{\lambda}$, jeżeli dany zbiór $S_i$ nie zawiera elementu $u_j$. W przeciwnym wypadku prowadzi do stanu akceptującego $\text{sink}_+$. Konstrukcja ta reprezentuje elementu z~uniwersum $U$, które znajdują się w zbiorze $S_i$.
+Sekcja znajdująca się za wierzchołkami $s_i$ prowadzi do stanu startowego (odrzucającego) $q_{\lambda}$, jeżeli dany zbiór $S_i$ nie zawiera elementu $u_j$. W~przeciwnym wypadku prowadzi do stanu akceptującego $\text{sink}_+$. Konstrukcja ta reprezentuje elementu z~uniwersum $U$, które znajdują się w zbiorze $S_i$.
 
 \import{theory/figures/w2}{reduction_ksetcover_n}
 
