@@ -16,7 +16,7 @@ Pokażemy redukcję z~problemu $k$-zbioru pokrywającego do problemu naprawienia
 
 Idea konstrukcji jest przedstawiona na rysunku \ref{fig:ksetcover}. Na tym rysunku $n$ oznacza moc rodziny $\mathcal{F}$, a $k$ parametr problemu. 
 
-Automat z~rysunku \ref{fig:ksetcover} z~redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ - w dalszej części pracy udowodnimy, że rozmiar alfabetu można zmniejszyć do $2$.
+Automat z~rysunku \ref{fig:ksetcover} z~redukcji posiada rozmiar alfabetu zależny od rozmiaru uniwersum $U$ --- w dalszej części pracy udowodnimy, że rozmiar alfabetu można zmniejszyć do $2$.
 
 W poniższych automatach stan startowy oznaczony jest jako $q_{\lambda}$, stany akceptujące zaznaczone są podwójną linią, a stan odrzucający pojedynczą. 
 Wybrakowane krawędzie zaznaczone są przerywaną linią (i opisane jako $p_x$), natomiast stany $q_\lambda$ zaznaczone przerywaną linią reprezentują ten sam stan startowy automatu. 
@@ -87,7 +87,7 @@ Załóżmy, że istnieje rozwiązanie problemu naprawienia $k$-częściowego DFA
 
 Zauważmy, że z~próbek \ref{eq:kcover-si} wynika, że każda brakująca krawędź $p_x$ musi prowadzić do pewnego stanu odrzucającego, więc nie możemy prowadzić żadnej brakującej krawędzi do stanu $\text{sink}_+$. 
 Ponadto, z~próbek \ref{eq:kcover-cover} wynika, że krawędź $p_x$ nie może prowadzić do stanu $q_\lambda$, ani $\text{dla każdego } i \in \{1,\dots,n\}$ do stanu $\delta(s_i, t)$, ponieważ w obu przypadkach zawsze następna litera to $t$, która prowadzi do stanu odrzucającego $\text{sink}_-$. 
-Dodatkowo, prowadzenie krawędzi $p_x$ do stanu $\text{sink}_-$ prowadzi do odrzucenia próbek \ref{eq:kcover-cover}, ponieważ przejście każdą krawędzią $p_x$ występuje w każdej próbce - więc każda próbka zostanie odrzucona. 
+Dodatkowo, prowadzenie krawędzi $p_x$ do stanu $\text{sink}_-$ prowadzi do odrzucenia próbek \ref{eq:kcover-cover}, ponieważ przejście każdą krawędzią $p_x$ występuje w każdej próbce --- więc każda próbka zostanie odrzucona. 
 Zatem każda brakująca krawędź $p_x$ musi prowadzić do pewnego stanu $s_i$.
 
 Stwórzmy teraz podrodzinę $\mathcal{F}' \subseteq \mathcal{F}$, wybierając zbiory $S_i$ odpowiadające stanom $s_i$, do których prowadzą brakujące krawędzie $p_x$. 
@@ -96,14 +96,14 @@ Zauważmy, że z~powyższych obserwacji wynika, że $|\mathcal{F}'| \leq k$, pon
 
 Weźmy dowolny element $u_j \in U$. Odpowiadająca mu próbka \ref{eq:kcover-cover} musi być akceptowana przez automat. Oznacza to, że istnieje krawędź $p_x$ prowadząca do stanu $s_i$, takiego że $u_j \in S_i$ (ponieważ tylko w takim przypadku przejście następującą literą $t$ oraz $e_j$ doprowadzi do stanu akceptującego $\text{sink}_+$).
 
-Zatem każdy element $u_j \in U$ jest zawarty w pewnym zbiorze $S_i \in \mathcal{F}'$, więc $\mathcal{F}'$ pokrywa $U$ - skonstruowane rozwiązanie problemu $k$-zbioru pokrywającego jest poprawne.
+Zatem każdy element $u_j \in U$ jest zawarty w pewnym zbiorze $S_i \in \mathcal{F}'$, więc $\mathcal{F}'$ pokrywa $U$ --- skonstruowane rozwiązanie problemu $k$-zbioru pokrywającego jest poprawne.
 
 
 \vspace{0.5cm}
 
 \noindent \textbf{Złożoność konstrukcji}
 
-Rozmiar automatu jest wielomianowy w stosunku do rozmiaru danych wejściowych - posiada on $O(n^2)$ stanów oraz $n$-krotnie więcej krawędzi. 
+Rozmiar automatu jest wielomianowy w stosunku do rozmiaru danych wejściowych --- posiada on $O(n^2)$ stanów oraz $n$-krotnie więcej krawędzi. 
 Czas konstrukcji automatu jest również wielomianowy w stosunku do rozmiaru konstruowanego automatu.
 
 Liczba próbek jest wielomianowa i wynosi $O(k + |U|)$, a ich łączna długość wynosi $O(k \cdot |U|)$.
@@ -140,12 +140,12 @@ $k$-zbiór pokrywający $\leq_{\mathrm{FPT}}$ naprawianie $k$-częściowego auto
 \begin{proof}
 
 W konstrukcji z~rysunku \ref{fig:ksetcover} dodajemy ciąg stanów, gdzie każdy stan jest połączony przejściem etykietowanym $0$ do następnego stanu w ciągu (rysunek \ref{fig:ksetcover2}). 
-Dla $i$-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowanym przejściem w automacie - które będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$. 
+Dla $i$-tego stanu w ciągu, krawędź etykietowana $1$ jest wybrakowanym przejściem w automacie --- które będziemy chcieli prowadzić tylko i wyłącznie do stanów $s_i$. 
 Długość ciągu wynosi $k$, bo $i$-ty stan w ciągu odpowiada krawędzi $p_i$ z~poprzedniej konstrukcji, a takich krawędzi jest $k$.
 
-Z każdego stanu $s_i$ zamiast krawędzi etykietowanej $t$ wychodzi krawędź etykietowana $1$, która prowadzi do ciągu $10$ stanów połączonych szeregowo krawędzią etykietowaną $1$ (krawędź $0$ wychodząca z~tych stanów prowadzi do $\text{sink}_-$). Taki ciąg nie występuje nigdzie indziej w automacie, poza stanem $\text{sink}_+$ - czyli jedyne stany w automacie, z~których można przejść słowem $[1^{10}]$ to $s_i$ oraz $\text{sink}_+$.
+Z każdego stanu $s_i$ zamiast krawędzi etykietowanej $t$ wychodzi krawędź etykietowana $1$, która prowadzi do ciągu $10$ stanów połączonych szeregowo krawędzią etykietowaną $1$ (krawędź $0$ wychodząca z~tych stanów prowadzi do $\text{sink}_-$). Taki ciąg nie występuje nigdzie indziej w automacie, poza stanem $\text{sink}_+$ --- czyli jedyne stany w automacie, z~których można przejść słowem $[1^{10}]$ to $s_i$ oraz $\text{sink}_+$.
 
-Po krawędzi testowej ponownie mamy unarne odliczanie $n$ możliwych stanów, odpowiadającym krawędziom $e_j$ z~poprzedniej konstrukcji. Z każdego stanu w tym ciągu wychodzi krawędź etykietowana $1$, prowadząca do stanu odrzucającego $q_{\lambda}$ lub akceptującego $\text{sink}_+$ - zależnie od tego, czy dany element $u_j$ należy do zbioru $S_i$.
+Po krawędzi testowej ponownie mamy unarne odliczanie $n$ możliwych stanów, odpowiadającym krawędziom $e_j$ z~poprzedniej konstrukcji. Z każdego stanu w tym ciągu wychodzi krawędź etykietowana $1$, prowadząca do stanu odrzucającego $q_{\lambda}$ lub akceptującego $\text{sink}_+$ --- zależnie od tego, czy dany element $u_j$ należy do zbioru $S_i$.
 
 Analogicznie jak w poprzedniej konstrukcji, każda krawędź nie pokazana na rysunku prowadzi do stanu odrzucającego $\text{sink}_-$. 
 
@@ -208,13 +208,13 @@ Zauważmy, że z~powyższych obserwacji wynika, że $|\mathcal{F}'| \leq k$, pon
 
 Weźmy dowolny element $u_j \in U$. Odpowiadająca mu próbka \ref{eq:kcover-cover-binary} musi być akceptowana przez automat. Oznacza to, że istnieje brakująca krawędź w~ciągu odpowiadającym $p_x$ prowadząca do stanu $s_i$, takiego że $u_j \in S_i$ (ponieważ tylko w~takim przypadku przejście następującym ciągiem liter $1^{11} \ 0^{j} \ 1$ doprowadzi do stanu akceptującego $\text{sink}_+$).
 
-Zatem każdy element $u_j \in U$ jest zawarty w~pewnym zbiorze $S_i \in \mathcal{F}'$, więc $\mathcal{F}'$ pokrywa $U$ - skonstruowane rozwiązanie problemu $k$-zbioru pokrywającego jest poprawne.
+Zatem każdy element $u_j \in U$ jest zawarty w~pewnym zbiorze $S_i \in \mathcal{F}'$, więc $\mathcal{F}'$ pokrywa $U$ --- skonstruowane rozwiązanie problemu $k$-zbioru pokrywającego jest poprawne.
 
 \vspace{0.5cm}
 
 \noindent \textbf{Złożoność konstrukcji}
 
-Rozmiar automatu jest wielomianowy w~stosunku do rozmiaru danych wejściowych - posiada on $O(n^2 + k)$ stanów oraz $2$-krotnie więcej krawędzi. 
+Rozmiar automatu jest wielomianowy w~stosunku do rozmiaru danych wejściowych --- posiada on $O(n^2 + k)$ stanów oraz $2$-krotnie więcej krawędzi. 
 Czas konstrukcji automatu jest również wielomianowy w~stosunku do rozmiaru konstruowanego automatu.
 
 

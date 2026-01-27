@@ -41,7 +41,7 @@ Problem \textit{najmniejszego zgodnego automatu} jest $\mathbb{NP}$-zupełny \ci
 \begin{proof}
 Możemy przeprowadzić redukcję z problemu \textit{najmniejszego zgodnego automatu} do naszego problemu \textit{naprawienia częściowego DFA}. 
 
-Weźmy instancję problemu \textit{najmniejszego zgodnego automatu} - liczbę naturalną $n$ oraz zbiory słów $S^+$ oraz $S^-$. Stwórzmy częściowy automat DFA $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie $|Q| = n$ oraz
+Weźmy instancję problemu \textit{najmniejszego zgodnego automatu} --- liczbę naturalną $n$ oraz zbiory słów $S^+$ oraz $S^-$. Stwórzmy częściowy automat DFA $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie $|Q| = n$ oraz
 dla wszystkich stanów $q \in Q$ oraz liter $a \in \Sigma$ przejście $\delta(q, a)$ jest nieokreślone,
 natomiast zbiory próbek są takie same jak w oryginalnym problemie.
 Wtedy odpowiedź na problem \textit{naprawienia częściowego DFA} dla automatu $A$ oraz próbek $S^+$ i $S^-$ jest pozytywna wtedy i tylko wtedy gdy odpowiedź na problem \textit{najmniejszego zgodnego automatu} dla liczby $n$ oraz próbek $S^+$ i $S^-$ jest pozytywna.
