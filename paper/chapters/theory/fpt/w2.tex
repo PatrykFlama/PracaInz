@@ -41,7 +41,7 @@ Możemy zaobserwować, że w tym problemie nie musimy gwarantować wyboru różn
 Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą do każdego, wybranego przez krawędź $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w przeciwnym wypadku odrzucana. 
 
 \begin{equation}
-\text{dla każdego } j \in \{1..|U|\} \ {[p_1 \ t \ e_j \ p_2 \ t \ e_j \ ... \ p_k \ t \ e_j] \in S^+}
+\text{dla każdego } j \in \{1,\dots,|U|\} \ {[p_1 \ t \ e_j \ p_2 \ t \ e_j \ \dots \ p_k \ t \ e_j] \in S^+}
 \label{eq:kcover-cover}
 \end{equation}
 
@@ -56,7 +56,7 @@ Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub
 Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
 
 \begin{equation}
-\text{dla każdego } x\in\{1..k\} \ {[p_x] \in S^-}
+\text{dla każdego } x\in\{1,\dots,k\} \ {[p_x] \in S^-}
 \label{eq:kcover-si}
 \end{equation}
 
@@ -72,11 +72,11 @@ Załóżmy, że istnieje rozwiązanie problemu $k$-zbioru pokrywającego, czyli 
 
 Utworzymy teraz przypisanie brakujących krawędzi w automacie z~rysunku \ref{fig:ksetcover}, tak aby powstał poprawny pełny automat deterministyczny oraz aby $\text{każde } s \in S^+$ było akceptowane, a $\text{każde } s \in S^-$ odrzucane.
 
-Dla każdej brakującej krawędzi $p_x$, gdzie $x \in \{1..m\}$, poprowadźmy ją do stanu $s_{i_x}$, odpowiadającemu zbiorowi $S_{i_x}$ z~pokrycia. Dla pozostałych brakujących krawędzi $p_x$, gdzie $x \in \{m+1..k\}$, poprowadźmy je do dowolnego stanu $s_i$.
+Dla każdej brakującej krawędzi $p_x$, gdzie $x \in \{1,\dots,m\}$, poprowadźmy ją do stanu $s_{i_x}$, odpowiadającemu zbiorowi $S_{i_x}$ z~pokrycia. Dla pozostałych brakujących krawędzi $p_x$, gdzie $x \in \{m+1,\dots,k\}$, poprowadźmy je do dowolnego stanu $s_i$.
 
-Próbki \ref{eq:kcover-cover} będą akceptowane, ponieważ dla każdego elementu $u_j \in U$ istnieje zbiór $S_{i_x} \in \mathcal{F}'$ taki że $u_j \in S_{i_x}$, a zatem po pewnej liczbie przejść podsłowami $\text{dla } y \in \{1..x-1\} \ [p_y \ t \ e_j]$ prowadzącymi do stanu $q_{\lambda}$, przejdziemy podsłowem $[p_x \ t \ e_j]$, gdzie $p_x$ prowadzi do stanu $s_{i_x}$, więc następujące krawędzie $[t \ e_j]$ doprowadzą do stanu akceptującego $\text{sink}_+$ (ponieważ, z~konstrukcji automatu, $u_j \in S_{i_x} \implies \delta(\delta(s_{i_x}, t), e_j) = \text{sink}_+$).
+Próbki \ref{eq:kcover-cover} będą akceptowane, ponieważ dla każdego elementu $u_j \in U$ istnieje zbiór $S_{i_x} \in \mathcal{F}'$ taki że $u_j \in S_{i_x}$, a zatem po pewnej liczbie przejść podsłowami $\text{dla } y \in \{1,\dots,x-1\} \ [p_y \ t \ e_j]$ prowadzącymi do stanu $q_{\lambda}$, przejdziemy podsłowem $[p_x \ t \ e_j]$, gdzie $p_x$ prowadzi do stanu $s_{i_x}$, więc następujące krawędzie $[t \ e_j]$ doprowadzą do stanu akceptującego $\text{sink}_+$ (ponieważ, z~konstrukcji automatu, $u_j \in S_{i_x} \implies \delta(\delta(s_{i_x}, t), e_j) = \text{sink}_+$).
 
-Próbki \ref{eq:kcover-si} będą odrzucane, ponieważ każda brakująca krawędź $p_x$ prowadzi do stanu $s_i$ dla pewnego $i \in \{1..n\}$, a z~konstrukcji automatu $s_i \in \mathbb{F_R}$.
+Próbki \ref{eq:kcover-si} będą odrzucane, ponieważ każda brakująca krawędź $p_x$ prowadzi do stanu $s_i$ dla pewnego $i \in \{1,\dots,n\}$, a z~konstrukcji automatu $s_i \in \mathbb{F_R}$.
 
 
 \vspace{0.5cm}
@@ -86,7 +86,7 @@ Próbki \ref{eq:kcover-si} będą odrzucane, ponieważ każda brakująca krawęd
 Załóżmy, że istnieje rozwiązanie problemu naprawienia $k$-częściowego DFA, czyli istnieje przypisanie brakujących krawędzi w automacie z~rysunku \ref{fig:ksetcover}, takie że powstał poprawny pełny automat deterministyczny oraz aby $\text{każde } s \in S^+$ było akceptowane, a~$\text{każde } s \in S^-$ odrzucane.
 
 Zauważmy, że z~próbek \ref{eq:kcover-si} wynika, że każda brakująca krawędź $p_x$ musi prowadzić do pewnego stanu odrzucającego, więc nie możemy prowadzić żadnej brakującej krawędzi do stanu $\text{sink}_+$. 
-Ponadto, z~próbek \ref{eq:kcover-cover} wynika, że krawędź $p_x$ nie może prowadzić do stanu $q_\lambda$, ani $\text{dla każdego } i \in \{1..n\}$ do stanu $\delta(s_i, t)$, ponieważ w obu przypadkach zawsze następna litera to $t$, która prowadzi do stanu odrzucającego $\text{sink}_-$. 
+Ponadto, z~próbek \ref{eq:kcover-cover} wynika, że krawędź $p_x$ nie może prowadzić do stanu $q_\lambda$, ani $\text{dla każdego } i \in \{1,\dots,n\}$ do stanu $\delta(s_i, t)$, ponieważ w obu przypadkach zawsze następna litera to $t$, która prowadzi do stanu odrzucającego $\text{sink}_-$. 
 Dodatkowo, prowadzenie krawędzi $p_x$ do stanu $\text{sink}_-$ prowadzi do odrzucenia próbek \ref{eq:kcover-cover}, ponieważ przejście każdą krawędzią $p_x$ występuje w każdej próbce - więc każda próbka zostanie odrzucona. 
 Zatem każda brakująca krawędź $p_x$ musi prowadzić do pewnego stanu $s_i$.
 
@@ -159,7 +159,7 @@ Powtórzenie danej litery $a$ $c$-krotnie będziemy zapisywać jako $a^{c}$.
 Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego elementu $u_j \in U$ tworzymy próbkę przechodzącą przez unarne odliczanie do każdego, wybranego przez krawędź w ciągu odpowiadającym $p_x$, stanu $s_i$ oraz sprawdzającą czy dany element $u_j$ znajduje się w zbiorze $S_i$. Jeżeli tak, próbka jest akceptowana, w~przeciwnym wypadku odrzucana. 
 
 \begin{equation}
-\text{dla każdego } j \in \{1..|U|\} \ {[0^{1} \ 1^{11} \ 0^{j} \ 1 \ 0^{2} \ 1^{11} \ 0^{j} \ 1 \ \dots \ 0^{k} \ 1^{11} \ 0^{j} \ 1] \in S^+}
+\text{dla każdego } j \in \{1,\dots,|U|\} \ {[0^{1} \ 1^{11} \ 0^{j} \ 1 \ 0^{2} \ 1^{11} \ 0^{j} \ 1 \ \dots \ 0^{k} \ 1^{11} \ 0^{j} \ 1] \in S^+}
 \label{eq:kcover-cover-binary}
 \end{equation}
 
@@ -170,7 +170,7 @@ Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub
 Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
 
 \begin{equation}
-\text{dla każdego } x\in\{1..k\} \ {[0^{x}1] \in S^-}
+\text{dla każdego } x\in\{1,\dots,k\} \ {[0^{x}1] \in S^-}
 \label{eq:kcover-si-binary}
 \end{equation}
 
@@ -181,11 +181,11 @@ Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodaje
 
 Załóżmy, że istnieje rozwiązanie problemu $k$-zbioru pokrywającego, czyli istnieje podrodzina $\mathcal{F}' \subseteq \mathcal{F}$, taka że $|\mathcal{F}'| \leq k$ oraz $\mathcal{F}'$ pokrywa $U$. Wybierzmy dowolne uporządkowanie zbiorów w $\mathcal{F}'$ jako $S_{i_1}, S_{i_2}, \dots, S_{i_m}$, gdzie $m \leq k$.
 
-Dla każdej brakującej krawędzi w ciągu odpowiadającym $p_x$, gdzie $x \in \{1..m\}$, poprowadźmy ją do stanu $s_{i_x}$, odpowiadającemu zbiorowi $S_{i_x}$ z~pokrycia. Dla pozostałych brakujących krawędzi w ciągu odpowiadającym $p_x$, gdzie $x \in \{m+1..k\}$, poprowadźmy je do dowolnego stanu $s_i$.
+Dla każdej brakującej krawędzi w ciągu odpowiadającym $p_x$, gdzie $x \in \{1,\dots,m\}$, poprowadźmy ją do stanu $s_{i_x}$, odpowiadającemu zbiorowi $S_{i_x}$ z~pokrycia. Dla pozostałych brakujących krawędzi w ciągu odpowiadającym $p_x$, gdzie $x \in \{m+1,\dots,k\}$, poprowadźmy je do dowolnego stanu $s_i$.
 
-Próbki \ref{eq:kcover-cover-binary} będą akceptowane, ponieważ dla każdego elementu $u_j \in U$ istnieje zbiór $S_{i_x} \in \mathcal{F}'$ taki że $u_j \in S_{i_x}$, a zatem po pewnej liczbie przejść podsłowami   $\text{dla każdego } y \in \{1..k\} \ [0^{y} \ 1^{11} \ 0^{j} \ 1]$  prowadzącymi do stanu $q_{\lambda}$, przejdziemy podsłowem $[0^{x} \ 1^{11} \ 0^{j} \ 1]$, gdzie $0^{x}$ prowadzi do stanu $s_{i_x}$, więc następujące krawędzie $[1^{11} \ 0^{j} \ 1]$ doprowadzą do stanu akceptującego $\text{sink}_+$ (ponieważ, z~konstrukcji automatu, $u_j \in S_{i_x} \implies \delta(\delta(s_{i_x}, 1^{11}), 0^{j}) = \text{sink}_+$).
+Próbki \ref{eq:kcover-cover-binary} będą akceptowane, ponieważ dla każdego elementu $u_j \in U$ istnieje zbiór $S_{i_x} \in \mathcal{F}'$ taki że $u_j \in S_{i_x}$, a zatem po pewnej liczbie przejść podsłowami   $\text{dla każdego } y \in \{1,\dots,k\} \ [0^{y} \ 1^{11} \ 0^{j} \ 1]$  prowadzącymi do stanu $q_{\lambda}$, przejdziemy podsłowem $[0^{x} \ 1^{11} \ 0^{j} \ 1]$, gdzie $0^{x}$ prowadzi do stanu $s_{i_x}$, więc następujące krawędzie $[1^{11} \ 0^{j} \ 1]$ doprowadzą do stanu akceptującego $\text{sink}_+$ (ponieważ, z~konstrukcji automatu, $u_j \in S_{i_x} \implies \delta(\delta(s_{i_x}, 1^{11}), 0^{j}) = \text{sink}_+$).
 
-Próbki \ref{eq:kcover-si-binary} będą odrzucane, ponieważ każda brakująca krawędź w~ciągu odpowiadającym $p_x$ prowadzi do stanu $s_i$ dla pewnego $i \in \{1..n\}$, a z~konstrukcji automatu $s_i \in \mathbb{F_R}$.
+Próbki \ref{eq:kcover-si-binary} będą odrzucane, ponieważ każda brakująca krawędź w~ciągu odpowiadającym $p_x$ prowadzi do stanu $s_i$ dla pewnego $i \in \{1,\dots,n\}$, a z~konstrukcji automatu $s_i \in \mathbb{F_R}$.
 
 
 \vspace{0.5cm}
@@ -196,9 +196,9 @@ Załóżmy, że istnieje rozwiązanie problemu naprawienia $k$-częściowego aut
 
 Zauważmy, że z~próbek \ref{eq:kcover-si-binary} wynika, że każda brakująca krawędź wychodząca ze stanu $p_x$ musi prowadzić do pewnego stanu odrzucającego, więc nie możemy prowadzić żadnej brakującej krawędzi do stanu $\text{sink}_+$. 
 Ponadto, z~próbek \ref{eq:kcover-cover-binary} wynika, że brakująca krawędź nie może prowadzić do stanu $q_\lambda$, ponieważ następna litera w~próbce to $1$, która w~konstrukcji automatu prowadzi do stanu odrzucającego $\text{sink}_-$. 
-Dodatkowo, nie może ona prowadzić do żadnego stanu $\text{dla } i \in \{1..n\} \ e_i$, ponieważ następna litera w~próbce to $1$, która w~konstrukcji automatu prowadzi do stanu odrzucającego $\text{sink}_-$. 
-Jeżeli brakująca krawędź prowadzi do stanu $\text{dla } i \in \{1..n\} \ \text{dla } j \in \{1..10\} \ \delta(s_i, 1^{j})$, to w~próbce następuje po niej ciąg liter $[1^{10} \ 0]$, który będzie prowadzić do stanu odrzucającego $\text{sink}_-$. 
-Oznacza to też, że nie może ona prowadzić do żadnego stanu $\text{dla } i \in \{1..k\} \ p_i$, ponieważ zawsze następujący ciąg liter to $[ 1^{10} \ 0]$, który zawsze prowadzi do stanu odrzucającego $\text{sink}_-$.
+Dodatkowo, nie może ona prowadzić do żadnego stanu $\text{dla } i \in \{1,\dots,n\} \ e_i$, ponieważ następna litera w~próbce to $1$, która w~konstrukcji automatu prowadzi do stanu odrzucającego $\text{sink}_-$. 
+Jeżeli brakująca krawędź prowadzi do stanu $\text{dla } i \in \{1,\dots,n\} \ \text{dla } j \in \{1,\dots,10\} \ \delta(s_i, 1^{j})$, to w~próbce następuje po niej ciąg liter $[1^{10} \ 0]$, który będzie prowadzić do stanu odrzucającego $\text{sink}_-$. 
+Oznacza to też, że nie może ona prowadzić do żadnego stanu $\text{dla } i \in \{1,\dots,k\} \ p_i$, ponieważ zawsze następujący ciąg liter to $[ 1^{10} \ 0]$, który zawsze prowadzi do stanu odrzucającego $\text{sink}_-$.
 
 Zatem każda brakująca krawędź w~ciągu odpowiadającym $p_x$ musi prowadzić do pewnego stanu $s_i$.
 
