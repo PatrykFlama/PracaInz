@@ -169,8 +169,16 @@ Aby zagwarantować, że wybrane zbiory pokrywają całe uniwersum, dla każdego 
 Poprowadzenie brakującej krawędzi do dowolnego stanu który nie jest $s_i$ lub $\text{sink}_+$ doprowadzi do $\text{sink}_-$ po przejściu następującym ciągiem liter $1^{10}$.
 Aby zapobiec prowadzeniu brakujących krawędzi do stanu $\text{sink}_+$, dodajemy próbki odrzucające:
 
+% Analogicznie do litery $t$ w konstrukcji z rysunku \ref{fig:ksetcover}, korzystamy z ciągu liter $1^{10}$, aby wymusić prowadzenie brakujących krawędzi do stanów $s_i$.
+% Musimy dodać próbki, które wymuszą prowadzenie brakujących krawędzi do początku ciągu liter $1^{10}$ oraz próbki, które wymuszą przejście przez cały ciąg liter $1^{10}$ - w szczególności przez ostatni stan w tym ciągu.
+
+% \begin{equation}
+% \text{dla każdego } x\in\{1,\dots,k\} \ {[0^{x}1] \in S^-}
+% \label{eq:kcover-si-binary}
+% \end{equation}
+
 \begin{equation}
-\text{dla każdego } x\in\{1,\dots,k\} \ {[0^{x}1] \in S^-}
+\text{dla każdego } x\in\{1,\dots,k\} \ {[0^{x} \ 1^{11}] \in S^-}
 \label{eq:kcover-si-binary}
 \end{equation}
 
