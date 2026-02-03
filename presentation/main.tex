@@ -38,13 +38,32 @@
 
 \section{Definicja problemu}
 \begin{frame}{Definicja problemu}
-  \begin{block}{Blok 1}
-    lorem ipsum dolor sit amet
+
+\only<1>{
+  \begin{block}{Deterministyczny Automat Skończony - DFA}
+    Deterministyczny automat skończony (DFA) to krotka $(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
+      \begin{itemize}
+          \item $Q$ to skończony zbiór stanów,
+          \item $\Sigma$ to skończony alfabet wejściowy,
+          \item $\delta: Q \times \Sigma \to Q$ to funkcja przejścia,
+          \item $q_\lambda \in Q$ to stan początkowy,
+          \item $\mathbb{F_A} \subseteq Q$ to zbiór stanów akceptujących,
+          \item $\mathbb{F_R} \subseteq Q$ to zbiór stanów odrzucających.
+      \end{itemize}
   \end{block}
-  \vspace{0.4em}
-  \begin{block}{Definicja 2}
-    abcd
+}
+
+\only<2>{
+  \begin{block}{Problem naprawienia częściowego DFA}
+    \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w~którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i~$S^{-} \subseteq \Sigma^{*}$.
+    \vspace{0.3cm}
+
+    \noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść i klasyfikacji stanów tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. 
+
+    \noindent Zauważamy, że w~tym problemie nie możemy dodawać nowych stanów do automatu.
   \end{block}
+}
+
 \end{frame}
 
 \end{document}
