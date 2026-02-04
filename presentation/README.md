@@ -71,7 +71,7 @@ Alfabet ma rozmiar zależny od |U| — to słaby punkt redukcji.
 
 ### Podejście praktyczne
 Dlaczego sie tym zajmujemy?
--> Mimo trudności tego problemu, chcieliśmy znaleźć empirycznie szybszy algorytm. 
+- Mimo trudności tego problemu, chcieliśmy znaleźć empirycznie szybszy algorytm. 
 
 Brute force jako punkt odniesienia. Dla kazdej wygenerowanej kombinacji przejsc, symulujemy próbki i sprawdzamy czy sa poprawne z danymi wejsciowymi. Jesli tak, to konczymy algorytm.
 
@@ -94,10 +94,10 @@ Myslelismy o roznych mozliwosciach funkcji celu. Powstanowilismy oprzec sie o pr
 opowiedziec o algorytmie
 
 Co osiągamy?
--> algorytm wykazuje poprawe w stosunku do naiwnego dla malych danych, niestety przy wiekszych mamy duza czestotliwosc timeoutow
+- algorytm wykazuje poprawe w stosunku do naiwnego dla malych danych, niestety przy wiekszych mamy duza czestotliwosc timeoutow
 
 Dlaczego tak jest?
--> Poprawa liczby błędnych probek wcale nie musi przyblizac nas do rozwiazania: utykamy na minimach lokalnych.
+- Poprawa liczby błędnych probek wcale nie musi przyblizac nas do rozwiazania: utykamy na minimach lokalnych.
 
 ### Pruning 
 Idea: chcemy wiedziec szybciej o sensie eksploracji
@@ -107,9 +107,9 @@ Robimy filtrowanie automatow za pomoca zestawu probek. Wiemy ile dana próbka Ch
 ### Wyniki
 
 Sposob testowania:
--> parametry, poza badanym, mialy stale wartosci
--> automat generowany jako pelny, na tej podstawie probki, potem losowe usuwanie przejsc (ustalona liczba i te ktore korzystaja z probek)
--> rolling mean: chcielismy uwidocznic trend, dlatego nie ma slupkowych
+- parametry, poza badanym, mialy stale wartosci
+- automat generowany jako pelny, na tej podstawie probki, potem losowe usuwanie przejsc (ustalona liczba i te ktore korzystaja z probek)
+- rolling mean: chcielismy uwidocznic trend, dlatego nie ma slupkowych
 
 
 
