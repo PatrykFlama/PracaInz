@@ -133,4 +133,61 @@
 
 \end{frame}
 
+% TODO: fajny pomysł na slajd, ale content słaby
+\begin{frame}{Dlaczego ten problem jest ważny?}
+  \begin{block}{Znany trudny problem}
+    Problem \textit{DFA-consistency} (najmniejszy zgodny automat):
+    \begin{itemize}
+      \item \textbf{Wejście:} liczba $n$, zbiory $S^+$, $S^-$
+      \item \textbf{Wyjście:} Czy istnieje DFA z $\leq n$ stanami akceptujący $S^+$ i odrzucający $S^-$?
+      \item \textbf{Znany wynik:} $\mathbb{NP}$-zupełny
+    \end{itemize}
+  \end{block}
+  
+  \vspace{0.3cm}
+  
+  \begin{block}{Nasz problem}
+    \begin{itemize}
+      \item Generalnie co najmniej tak trudny co DFA-consistency
+      \item Można pokazać redukcję z DFA-consistency
+      \item Silnie motywuje teoretyczną analizę naszego problemu
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+% TODO: też jakiś refactor - za dużo słów + jakiś wstęp po co rozważać złożoność
+%* dodatkowo fajnie powiedzieć że:
+%* - problem z nieograniczoną liczbą stanów jest trudniejszy
+%* - problem z nieograniczoną liczbą stanów potrafimy zredukować liniowo do problemu z ograniczoną liczbą stanów (w zależności od rozmiaru próbek wejściowych)
+%* - dlatego wystarczy nam rozważać problem z ograniczoną liczbą stanów
+\section{Złożoność obliczeniowa}
+\begin{frame}{NP-zupełność}
+  \begin{block}{Cel: wykazać, że problem jest NP-zupełny}
+    Trzeba pokazać dwie rzeczy:
+    \begin{enumerate}
+      \item Problem jest w $\mathbb{NP}$ (certyfikat istnieje)
+      \item Problem jest $\mathbb{NP}$-trudny (nie ma algorytmu wielomianowego)
+    \end{enumerate}
+  \end{block}
+  
+  \vspace{0.1cm}
+  
+  \begin{block}{Problem jest w $\mathbb{NP}$}
+    Dla danego rozwiązania (uzupełnienia automatu) weryfikacja zajmuje czas wielomianowy:
+    \begin{itemize}
+      \small
+      \item Determinizm automatu: $O(|Q| \cdot |\Sigma|)$
+      \item Sprawdzenie próbek: $O((|S^+| + |S^-|) \cdot M)$ gdzie $M$ to max długość
+    \end{itemize}
+  \end{block}
+  
+  \vspace{0.1cm}
+  
+  \begin{block}{Problem jest $\mathbb{NP}$-trudny}
+    \textbf{Redukcja z DFA-consistency:}
+    
+    Dla instancji $(n, S^+, S^-)$ tworzymy częściowy automat z $n$ stanami, wszystkimi przejściami oraz wartościowaniami stanów niezdefiniowanymi. Jeśli można go naprawić, to rozwiązuje DFA-consistency.
+  \end{block}
+\end{frame}
+
 \end{document}

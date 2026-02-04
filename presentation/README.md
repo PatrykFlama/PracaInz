@@ -23,3 +23,22 @@
   - podejście z pruningiem 'drzewa rekurencji'
 - wyniki eksperymentów (eksperymentu)
 
+
+## Sidenotes
+### Czym zajmujemy się w pracy?
+Problem:  
+Naprawianie uszkodzonych deterministycznych automatów skończonych (DFA) na podstawie próbek pozytywnych i negatywnych.
+
+- Automat może mieć brakujące krawędzie (przejścia niezdefiniowane)
+- Automat może mieć brakujące stany
+- Musimy uzupełnić automat, aby akceptował wszystkie słowa z S+ i odrzucał wszystkie słowa z S−
+
+
+### Dlaczego to jest ciekawe/ważne?
+
+> Praktyczne zastosowania:
+> - Odtwarzanie stanu systemu z logów
+> - Znamy część jakiegoś oprogramowania i chcemy je uzupełnić
+> - Klasyczne uczenie pasywne, ale z automatem wejściowym - np gdy mamy częściową wiedzę o rozwiązaniu
+
+
