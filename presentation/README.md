@@ -104,5 +104,12 @@ Idea: chcemy wiedziec szybciej o sensie eksploracji
 
 Robimy filtrowanie automatow za pomoca zestawu probek. Wiemy ile dana próbka Chcemy wiedziec czy dana konfiguracja krawedzi ma jeszcze jakis zestaw poprawnych autmatow.
 
+### Wyniki
+
+Sposob testowania:
+-> parametry, poza badanym, mialy stale wartosci
+-> automat generowany jako pelny, na tej podstawie probki, potem losowe usuwanie przejsc (ustalona liczba i te ktore korzystaja z probek)
+-> rolling mean: chcielismy uwidocznic trend, dlatego nie ma slupkowych
+
 
 
