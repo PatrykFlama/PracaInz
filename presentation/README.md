@@ -25,7 +25,8 @@
 
 
 ## Sidenotes
-### Czym zajmujemy się w pracy?
+### Definicje
+
 Problem:  
 Naprawianie uszkodzonych deterministycznych automatów skończonych (DFA) na podstawie próbek pozytywnych i negatywnych.
 
@@ -40,5 +41,32 @@ Naprawianie uszkodzonych deterministycznych automatów skończonych (DFA) na pod
 > - Odtwarzanie stanu systemu z logów
 > - Znamy część jakiegoś oprogramowania i chcemy je uzupełnić
 > - Klasyczne uczenie pasywne, ale z automatem wejściowym - np gdy mamy częściową wiedzę o rozwiązaniu
+
+
+### NP-zupełność
+dopowiedzieć że redukcja do NP-trudności jest z problemu najmniejszego zgodnego automatu
+
+### Złożoność parametryczna
+
+Obserwacja:  
+Jeśli automat ma tylko **1 brakującą krawędź**, to wystarczy sprawdzić |Q| opcji.   
+Jeśli ma **k brakujących krawędzi**, to wystarczy sprawdzić |Q|^k opcji.  
+Pytanie: Czy możemy **rozdzielić** trudność problemu od rozmiaru automatu?  
+
+**omówić klasy**
+
+
+### W[2]-trudność
+k-set cover:
+<!-- - uniwersum U, rodzina zbiorów F, liczba k
+- czy istnieje podzbiór F' który pokrywa U i jest mniejszy od k
+- W[2]-zupełny względem parametru k -->
+
+
+Alfabet ma rozmiar zależny od |U| — to słaby punkt redukcji.
+
+**Idea**: zamiast jednej litery ej dla każdego elementu, używamy bin. reprezentacji indeksu
+
+### W[P] przynależność
 
 

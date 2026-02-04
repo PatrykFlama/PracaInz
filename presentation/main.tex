@@ -12,7 +12,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{tikz}
-\usetikzlibrary{automata, positioning, arrows, arrows.meta}
+\usetikzlibrary{automata, positioning, arrows, arrows.meta, fit}
 
 \definecolor{bluekeywords}{rgb}{0,0,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
@@ -133,182 +133,108 @@
 
 \end{frame}
 
-% TODO: fajny pomysł na slajd, ale content słaby
-\begin{frame}{Dlaczego ten problem jest ważny?}
+\begin{frame}{Dlaczego ten problem jest ciekawy?}
   \begin{block}{Znany trudny problem}
     Problem \textit{DFA-consistency} (najmniejszy zgodny automat):
     \begin{itemize}
       \item \textbf{Wejście:} liczba $n$, zbiory $S^+$, $S^-$
       \item \textbf{Wyjście:} Czy istnieje DFA z $\leq n$ stanami akceptujący $S^+$ i odrzucający $S^-$?
-      \item \textbf{Znany wynik:} $\mathbb{NP}$-zupełny
     \end{itemize}
   \end{block}
   
   \vspace{0.3cm}
   
-  \begin{block}{Nasz problem}
+  \begin{block}{Przykłdy zastosowań}
     \begin{itemize}
-      \item Generalnie co najmniej tak trudny co DFA-consistency
-      \item Można pokazać redukcję z DFA-consistency
-      \item Silnie motywuje teoretyczną analizę naszego problemu
+      \item Rekonstrukcja systemu z logów
+      \item Uzupełnianie częściowego oprogramowania
+      \item Problemy uczenia pasywnego, w których mamy częściową wiedzę o rozwiązaniu
     \end{itemize}
   \end{block}
 \end{frame}
 
-% TODO: też jakiś refactor - za dużo słów + jakiś wstęp po co rozważać złożoność
-%* dodatkowo fajnie powiedzieć że:
-%* - problem z nieograniczoną liczbą stanów jest trudniejszy
-%* - problem z nieograniczoną liczbą stanów potrafimy zredukować liniowo do problemu z ograniczoną liczbą stanów (w zależności od rozmiaru próbek wejściowych)
-%* - dlatego wystarczy nam rozważać problem z ograniczoną liczbą stanów
 \section{Złożoność obliczeniowa}
-\begin{frame}{NP-zupełność}
-  \begin{block}{Cel: wykazać, że problem jest NP-zupełny}
-    Trzeba pokazać dwie rzeczy:
-    \begin{enumerate}
-      \item Problem jest w $\mathbb{NP}$ (certyfikat istnieje)
-      \item Problem jest $\mathbb{NP}$-trudny (nie ma algorytmu wielomianowego)
-    \end{enumerate}
+\begin{frame}{$\mathbb{NP}$-zupełność}
+  \begin{block}{Redukcja problemu}
+    Problem naprawienia DFA z nieznaną liczbą stanów można zredukować do problemu z określoną liczbą stanów.
   \end{block}
-  
-  \vspace{0.1cm}
-  
-  \begin{block}{Problem jest w $\mathbb{NP}$}
-    Dla danego rozwiązania (uzupełnienia automatu) weryfikacja zajmuje czas wielomianowy:
-    \begin{itemize}
-      \small
-      \item Determinizm automatu: $O(|Q| \cdot |\Sigma|)$
-      \item Sprawdzenie próbek: $O((|S^+| + |S^-|) \cdot M)$ gdzie $M$ to max długość
-    \end{itemize}
-  \end{block}
-  
-  \vspace{0.1cm}
-  
-  \begin{block}{Problem jest $\mathbb{NP}$-trudny}
-    \textbf{Redukcja z DFA-consistency:}
-    
-    Dla instancji $(n, S^+, S^-)$ tworzymy częściowy automat z $n$ stanami, wszystkimi przejściami oraz wartościowaniami stanów niezdefiniowanymi. Jeśli można go naprawić, to rozwiązuje DFA-consistency.
+
+  \begin{block}{$\mathbb{NP}$-zupełność}
+    Problem naprawienia częściowego DFA z określoną liczbą stanów jest $\mathbb{NP}$-zupełny.
+
   \end{block}
 \end{frame}
 
-\section{Złożoność parametryczna}
-\begin{frame}{Złożoność parametryczna - motywacja}
-  \begin{block}{Problem: nasz problem jest NP-zupełny}
-    To oznacza, że nie istnieje znany wielomianowy algorytm dla ogólnego przypadku.
-  \end{block}
-  
-  \vspace{0.2cm}
-  
-  \begin{block}{Obserwacja}
-    Jeśli automat ma tylko \textbf{1 brakującą krawędź}, to wystarczy sprawdzić $|Q|$ opcji.
-    
-    Jeśli ma \textbf{$k$ brakujących krawędzi}, to wystarczy sprawdzić $|Q|^k$ opcji.
-    
-    \textbf{Pytanie:} Czy możemy rozdzielić trudność problemu od rozmiaru automatu?
-  \end{block}
-  
-  \vspace{0.2cm}
-  
-  \begin{block}{Złożoność parametryczna}
-    Framework analizy, gdzie oprócz rozmiaru wejścia ($n$) mamy parametr $k$.
-    
-    \textbf{Cel:} Znaleźć algorytm działający w czasie $f(k) \cdot n^c$ zamiast $n^{k+c}$ (co należy do klasy XP).
-  \end{block}
-\end{frame}
-
-\begin{frame}{Hierarchia klas parametrycznych}
-  \vspace{-0.2cm}
+\begin{frame}{Złożoność parametryczna}
   \begin{center}
-    \includegraphics[width=0.6\textwidth]{images/para-class.png}
+    \begin{columns}
+      \column{0.5\textwidth}
+      \begin{block}{}
+        \textbf{Klasa FPT:}
+        Problemy rozwiązywalne w czasie $O(f(k) \cdot n^c)$ dla pewnej funkcji $f$.
+      \end{block}
+
+      \begin{block}{}
+        \textbf{Klasa $W[i]$:}
+        Problemy z klasy $W[i]$ mogą zostać zredukowane do problemu \textit{weighed circuit satisfiability} dla obwodów o głębokości ograniczonej do $i$.  
+      \end{block}
+
+      \begin{block}{}
+        \textbf{Klasa $W[P]$:}
+        Problemy rozwiązywalne w czasie $O(n^c)$ przez niedeterministyczną maszynę Turinga używającą $f(k) \cdot \log n$ bitów niedeterminizmu.
+      \end{block}
+
+      \begin{block}{}
+        \textbf{Klasa XP:}
+        Problemy rozwiązywalne w czasie $O(n^{f(k)})$ dla pewnej funkcji $f$.
+      \end{block}
+
+      \column{0.5\textwidth}
+      \vfill
+      \includegraphics[width=1\textwidth]{images/para-class.png}
+      \vfill
+
+    \end{columns}
   \end{center}
-
-  %? manualny rysunek
-  % \begin{center}
-  %   \begin{tikzpicture}[
-  %     ->,
-  %     >=Stealth,
-  %     node distance=1.5cm,
-  %     every node/.style={draw, rounded corners, minimum height=0.7cm}
-  %   ]
-  %     % Główna linia
-  %     \node[fill=green!20] (fpt) at (0,3) {FPT};
-  %     \node[fill=yellow!20] (w1) at (0,2) {$W[1]$};
-  %     \node[fill=yellow!20] (w2) at (0,1) {$W[2]$};
-  %     \node[fill=yellow!20] (wP) at (0,-1.5) {$W[P]$};
-  %     \node[fill=red!20] (xp) at (0,-2.5) {XP};
-      
-  %     \draw (fpt) -- (w1);
-  %     \draw (w1) -- (w2);
-  %     \draw (w2) -- (0,0.1);
-  %     \node at (0,-0.3) {$\vdots$};
-  %     \draw (0,-0.7) -- (wP);
-  %     \draw (wP) -- (xp);
-      
-  %     % Etykiety
-  %     \node[anchor=west, font=\small] at (1.5, 3) {$f(k) \cdot n^c$};
-  %     \node[anchor=west, font=\small] at (1.5, 2) {Trudny jak K-CLIQUE};
-  %     \node[anchor=west, font=\small] at (1.5, 1) {Trudny jak SET COVER};
-  %     \node[anchor=west, font=\small] at (1.5, -1.5) {Rozwiązywalny niedeterministyczną maszyną Turinga};
-  %     \node[anchor=west, font=\small] at (1.5, -2.5) {$n^{f(k)}$};
-  %   \end{tikzpicture}
-  % \end{center}
 \end{frame}
 
-% TODO: zamiast tego po prostu obrazek automatu+próbki
+% TODO instead of input use image
 \begin{frame}{$W[2]$-trudność: redukcja z $k$-set cover}
-  \begin{block}{Problem $k$-set cover (znany $W[2]$-zupełny)}
-    \small
-    \textbf{Wejście:} Uniwersum $U$, rodzina zbiorów $\mathcal{F}$, liczba $k$
-    
-    \textbf{Wyjście:} Czy $\leq k$ zbiorów z $\mathcal{F}$ pokrywa całe $U$?
-  \end{block}
-  
+  \begin{equation}
+  \text{dla każdego } j \in \{1,\dots,|U|\} \ {[p_1 \ t \ e_j \ p_2 \ t \ e_j \ \dots \ p_k \ t \ e_j] \in S^+}
+  \label{eq:kcover-cover}
+  \end{equation}
+
+  \begin{equation}
+  \text{dla każdego } x\in\{1,\dots,k\} \ {[p_x] \in S^-}
+  \label{eq:kcover-si}
+  \end{equation}
+
   \vspace{0.2cm}
-  
-  \begin{block}{Nasza redukcja}
-    Dla każdego zbioru $S_i \in \mathcal{F}$ tworzymy stan $s_i$ w automacie.
-    
-    Dla każdego elementu $u_j \in U$ tworzymy literę $e_j$.
-    
-    Brakujące krawędzie $p_1, \ldots, p_k$ reprezentują wybór zbiorów do pokrycia.
-  \end{block}
-  
-  \vspace{0.2cm}
-  
-  \begin{block}{Kluczowe próbki}
-    \small
-    \begin{itemize}
-      \item $p_1 t e_j p_2 t e_j \cdots p_k t e_j \in S^+$ dla każdego $u_j$
-      
-      (gwarantuje że każdy element jest pokryty przez wybrany zbiór)
-      
-      \item $p_x \in S^-$ dla każdego $x \in \{1, \ldots, k\}$
-      
-      (wymusza że każde $p_x$ prowadzi do stanu $s_i$, nie do stanu akceptującego)
-    \end{itemize}
-  \end{block}
+
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{images/redn.png}
+  \end{center}
 \end{frame}
 
-% TODO: zamiast tego obrazek automatu z binarnym alfabetem i jego próbki
-\begin{frame}{$W[2]$-trudność: rozmiar alfabetu}
-  \begin{block}{Problem z poprzedniej redukcji}
-    Alfabet ma rozmiar zależny od $|U|$ — to słaby punkt redukcji.
-  \end{block}
-  
-  \vspace{0.2cm}
-  
-  \begin{block}{Ulepszona redukcja: alfabet binarny}
-    Można pokazać redukcję do problemu z alfabetem $\Sigma = \{0, 1\}$.
-    
-    Idea: zamiast jednej litery $e_j$ dla każdego elementu, używamy bin. reprezentacji indeksu.
-    
-    \textbf{Wynik:} Problem jest $W[2]$-trudny nawet z alfabetem $|\Sigma| = 2$.
-  \end{block}
+\begin{frame}{$W[2]$-trudność: stały rozmiar alfabetu}
+  \begin{equation}
+  \text{dla każdego } j \in \{1,\dots,|U|\} \ {[0^{1} \ 1^{11} \ 0^{j} \ 1 \ 0^{2} \ 1^{11} \ 0^{j} \ 1 \ \dots \ 0^{k} \ 1^{11} \ 0^{j} \ 1] \in S^+}
+  \label{eq:kcover-cover-binary}
+  \end{equation}
+
+  \begin{equation}
+  \text{dla każdego } x\in\{1,\dots,k\} \ {[0^{x} \ 1^{11}] \in S^-}
+  \label{eq:kcover-si-binary}
+  \end{equation}
+
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{images/red2.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Przynależność do $W[P]$}
-  \begin{block}{Algorytm niedeterministyczny}
-    \small
-    Niedeterministyczna maszyna Turinga:
+  \begin{block}{Niedeterministyczna maszyna Turinga}
     \begin{enumerate}
       \item \textbf{Zgaduj:} $O(k \log |Q|)$ bitów niedeterminizmu
       
@@ -328,23 +254,25 @@
 \end{frame}
 
 \begin{frame}{Rezultat: złożoność naszego problemu}
-  \begin{block}{Twierdzenie}
+  \begin{block}{Co to oznacza?}
     Problem naprawienia $k$-częściowego DFA jest $W[2]$-trudny i należy do $W[P]$.
     
-    $$W[2] \subseteq \{\text{nasz problem}\} \subseteq W[P]$$
-  \end{block}
+    Nasz problem jest nie łatwiejszy niż każdy problem z $W[2]$ i nie trudniejszy niż każdy problem z $W[P]$.
   
-  \vspace{0.3cm}
-  
-  \begin{block}{Co to oznacza?}
-    \begin{itemize}
-      \item \textbf{Problem nie jest FPT} (chyba że FPT $= W[2]$, co jest problemem milenialnym)
-      \item \textbf{Problem nie jest XP} (bo wtedy byłby przynajmniej w $W[P]$ bez górnego ograniczenia)
-      \item \textbf{Problem jest trudny parametrycznie} — trudniej niż cokolwiek w FPT
-      \item \textbf{Ale mamy certyfikat w $W[P]$} — nie jest całkowicie bez nadziei
-    \end{itemize}
+    Problem nie jest FPT (chyba że FPT $= W[2]$) - jest trudny parametrycznie
   \end{block}
 \end{frame}
 
 
+
+
+
+
+
+
+
+
+
 \end{document}
+
+
