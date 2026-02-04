@@ -11,6 +11,8 @@
 
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning, arrows, arrows.meta}
 
 \definecolor{bluekeywords}{rgb}{0,0,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
@@ -31,37 +33,102 @@
   \titlepage
 \end{frame}
 
-% Spis treści
-\begin{frame}{Spis treści}
-  \tableofcontents
-\end{frame}
+% % Spis treści
+% \begin{frame}{Spis treści}
+%   \tableofcontents
+% \end{frame}
 
 \section{Definicja problemu}
 \begin{frame}{Definicja problemu}
 
 \only<1>{
-  \begin{block}{Deterministyczny Automat Skończony - DFA}
-    Deterministyczny automat skończony (DFA) to krotka $(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, gdzie:
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    \begin{block}{DFA}
+      Deterministyczny automat skończony to krotka:
+      $$(Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$$
+      gdzie:
       \begin{itemize}
-          \item $Q$ to skończony zbiór stanów,
-          \item $\Sigma$ to skończony alfabet wejściowy,
-          \item $\delta: Q \times \Sigma \to Q$ to funkcja przejścia,
-          \item $q_\lambda \in Q$ to stan początkowy,
-          \item $\mathbb{F_A} \subseteq Q$ to zbiór stanów akceptujących,
-          \item $\mathbb{F_R} \subseteq Q$ to zbiór stanów odrzucających.
+        \small
+        \item $Q$ - zbiór stanów
+        \item $\Sigma$ - alfabet
+        \item $\delta: Q \times \Sigma \to Q$ - przejścia
+        \item $q_\lambda$ - stan początkowy
+        \item $\mathbb{F_A}$ - stany akceptujące
+        \item $\mathbb{F_R}$ - stany odrzucające
       \end{itemize}
-  \end{block}
+    \end{block}
+    
+    \column{0.48\textwidth}
+    \vfill
+    \begin{center}
+      \begin{tikzpicture}[
+        node distance=2cm,
+        initial text=,
+        every state/.style={minimum size=0.8cm}
+      ]
+        \node[state] (q0) {$q_\lambda$};
+        \node[state, accepting, right of=q0] (q1) {$q_1$};
+        \node[state, right of=q1] (q2) {$q_2$};
+        
+        \path[->]
+          (q0) edge[above] node{$a$} (q1)
+          (q1) edge[above] node{$a,b$} (q2)
+          (q2) edge[loop right] node{$a,b$} (q2)
+          (q0) edge[bend right, below] node{$b$} (q2);
+      \end{tikzpicture}
+    \end{center}
+    \vfill
+  \end{columns}
 }
 
 \only<2>{
-  \begin{block}{Problem naprawienia częściowego DFA}
-    \textbf{Wejście:} częściowy automat deterministyczny $A = (Q, \Sigma, \delta, q_\lambda, \mathbb{F_A}, \mathbb{F_R})$, w~którym dla pewnych par $(q, a) \in Q \times \Sigma$ funkcja $\delta$ nie jest określona, oraz zbiory próbek $S^+ \subseteq \Sigma^{*}$ i~$S^{-} \subseteq \Sigma^{*}$.
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \begin{block}{Z nieokreśloną liczbą stanów}
+      \small
+      \textbf{Wejście:} Częściowy DFA $A$ z brakującymi krawędziami i stanami, zbiory $S^+$, $S^-$.
+      
+      \textbf{Wyjście:} Czy można uzupełnić przejścia, klasyfikacje stanów i dodać stany, aby automat był poprawny?
+    \end{block}
+    
     \vspace{0.3cm}
-
-    \noindent \textbf{Wyjście:} odpowiedź, czy istnieje uzupełnienie brakujących przejść i klasyfikacji stanów tak, aby otrzymany automat był deterministyczny, akceptował wszystkie słowa z $S^+$ i odrzucał wszystkie słowa z $S^-$. 
-
-    \noindent Zauważamy, że w~tym problemie nie możemy dodawać nowych stanów do automatu.
-  \end{block}
+    
+    \begin{block}{Z określoną liczbą stanów}
+      \small
+      \textbf{Wejście:} Częściowy DFA $A$ z brakującymi krawędziami, zbiory $S^+$, $S^-$.
+      
+      \textbf{Wyjście:} Czy można uzupełnić przejścia i klasyfikacje stanów, aby automat był poprawny?
+      
+      (Bez dodawania nowych stanów)
+    \end{block}
+    
+    \column{0.48\textwidth}
+    \vfill
+    \begin{center}
+      \begin{tikzpicture}[
+        ->,
+        >=Stealth,
+        node distance=2.2cm,
+        initial text=,
+        every state/.style={circle, draw, minimum size=0.9cm}
+      ]
+        \node[state] (q0) at (0,0) {$q_\lambda$};
+        \node[state] (q1) at (2.2,0) {$q_1$};
+        \node[state, accepting] (q2) at (4.4,0) {$q_2$};
+        
+        \coordinate (undef1) at (0,-1.5);
+        \coordinate (undef2) at (2.2,1.5);
+        
+        \draw[->,thick] (q0) -- (q1) node[midway,above] {$a$};
+        \draw[->,thick] (q1) -- (q2) node[midway,above] {$a,b$};
+        \draw[->,thick] (q2) edge[loop right] node{$a,b$} (q2);
+        \draw[->,dashed,thick] (q0) -- (undef1) node[midway,right] {$b$};
+        \draw[->,dashed,thick] (q1) -- (undef2) node[midway,right] {$a$};
+      \end{tikzpicture}
+    \end{center}
+    \vfill
+  \end{columns}
 }
 
 \end{frame}
