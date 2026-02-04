@@ -69,4 +69,40 @@ Alfabet ma rozmiar zależny od |U| — to słaby punkt redukcji.
 
 ### W[P] przynależność
 
+### Podejście praktyczne
+Dlaczego sie tym zajmujemy?
+-> Mimo trudności tego problemu, chcieliśmy znaleźć empirycznie szybszy algorytm. 
+
+Brute force jako punkt odniesienia. Dla kazdej wygenerowanej kombinacji przejsc, symulujemy próbki i sprawdzamy czy sa poprawne z danymi wejsciowymi. Jesli tak, to konczymy algorytm.
+
+### Algorytm ze skokami
+
+Na początku budujemy Jump Table, w której zapamiętujemy gdzie od danego stanu mozemy najdalej przeskoczyc.
+
+Te strukture wykorzytujemy przy walidacji probek dla wygenerowanych juz przejsc.
+
+Najbardziej zyskujemy przy dlugich ciagach, ktore mozemy w ten sposob przeskoczyc.
+
+Nasza struktura jest tablica, ale  podejrzewamy ze da sie zoptymalizowac pamiec.
+
+### Heurystyka
+
+Zauwazylismy, ze jest to przeszukiwanie przestrzeni co zainspirowalo nas do zinterpretowania problemu w kontekscie AI dla gier (wiadomo o co chodzi, albo nie).
+
+Myslelismy o roznych mozliwosciach funkcji celu. Powstanowilismy oprzec sie o probki.
+
+opowiedziec o algorytmie
+
+Co osiągamy?
+-> algorytm wykazuje poprawe w stosunku do naiwnego dla malych danych, niestety przy wiekszych mamy duza czestotliwosc timeoutow
+
+Dlaczego tak jest?
+-> Poprawa liczby błędnych probek wcale nie musi przyblizac nas do rozwiazania: utykamy na minimach lokalnych.
+
+### Pruning 
+Idea: chcemy wiedziec szybciej o sensie eksploracji
+
+Robimy filtrowanie automatow za pomoca zestawu probek. Wiemy ile dana próbka Chcemy wiedziec czy dana konfiguracja krawedzi ma jeszcze jakis zestaw poprawnych autmatow.
+
+
 

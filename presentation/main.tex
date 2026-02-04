@@ -263,6 +263,44 @@
   \end{block}
 \end{frame}
 
+\begin{frame}{Podejście praktyczne}
+  \begin{block}{Dlaczego się tym zajmujemy?}
+    Mimo trudności problemu, chcemy znaleźć empirycznie szybszy algorytm.
+  \end{block}
+
+  \begin{block}{Brute force}
+    Jako punkt odniesienia bierzemy algorytm naiwny, który dla kolejnych wygenerowanych wariantów automatu symuluje przetwarzanie wszystkich próbek i sprawdza czy każda z nich kończy się w stanie zgodnym z danymi wejściowymi
+  \end{block}
+\end{frame}
+
+\begin{frame}{Algorytm ze skokami (Jump Tables)}
+    \begin{block}{Idea}
+        W trakcie przechodzenia po automacie, przeskakujemy ciągi znanych krawędzi (podanych na wejściu).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Przeszukiwanie przestrzeni z heurystyką}
+    % inspirowane przeszukiwaniem gier w AI dla gier
+    \begin{block}{Idea}
+        Hill climbing z losowymi restartami:
+    
+        W każdej iteracji rozważamy sąsiednie pojedyncze zmiany: przypisanie innego stanu docelowego do jednego z nieznanych przejść automatu.
+        
+        Akceptujemy modyfikację, jeśli prowadzi ona do zmniejszenia liczby błędnych próbek.
+
+        Po pewnej liczbie iteracji, losujemy nowy punkt w przestrzeni.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Pruning przestrzeni rozwiązań}
+    \begin{block}{Idea}
+        Chcielibyśmy jak najszybciej wiedzieć, że dana gałąź przeszukiwań nie ma sensu dalszej eksploracji.
+    \end{block}
+\end{frame}
+
+% TODO: wyniki
+
+% TODO: podsumowanie
 
 
 
