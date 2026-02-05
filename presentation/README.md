@@ -1,5 +1,5 @@
 # Final presentation
-
+<!-- 
 ## Concept
 - co jest tematem pracy
 - definicje niezbędne do zrozumienia tematu
@@ -21,7 +21,7 @@
   - podejście z przeskakiwaniem ciągów znanych krawędzi
   - podejście z przeszukiwaniem przestrzeni rozwiązań z heurystyką (czemu nie działało to tak dobrze - lokalne minima)
   - podejście z pruningiem 'drzewa rekurencji'
-- wyniki eksperymentów (eksperymentu)
+- wyniki eksperymentów (eksperymentu) -->
 
 
 ## Sidenotes
