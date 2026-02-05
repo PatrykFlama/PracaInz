@@ -102,7 +102,11 @@ Dlaczego tak jest?
 ### Pruning 
 Idea: chcemy wiedziec szybciej o sensie eksploracji
 
-Robimy filtrowanie automatow za pomoca zestawu probek. Wiemy ile dana próbka Chcemy wiedziec czy dana konfiguracja krawedzi ma jeszcze jakis zestaw poprawnych autmatow.
+Robimy filtrowanie automatow za pomoca zestawu probek. Chcemy wiedziec czy dana konfiguracja krawedzi ma jeszcze jakis zestaw poprawnych autmatow.
+
+(Optional*: aka Nie mow dopoki nie zapytaja)
+Jak to robimy?
+- dla ulatwienia bierzemy losowo wybrany zestaw próbek i sprawdzamy na tych wybranych probkach sprawdzanie i dopiero poziej na reszcie.
 
 ### Wyniki
 
@@ -110,6 +114,9 @@ Sposob testowania:
 - parametry, poza badanym, mialy stale wartosci
 - automat generowany jako pelny, na tej podstawie probki, potem losowe usuwanie przejsc (ustalona liczba i te ktore korzystaja z probek)
 - rolling mean: chcielismy uwidocznic trend, dlatego nie ma slupkowych
+
+Rolling mean:
+- srednia (wazona) z okna o stalej dlugosci, dlatego mamy niecalkowite liczby przy krawedziach
 
 
 
