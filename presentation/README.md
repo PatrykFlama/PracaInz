@@ -1,5 +1,5 @@
 # Final presentation
-
+<!-- 
 ## Concept
 - co jest tematem pracy
 - definicje niezbędne do zrozumienia tematu
@@ -21,53 +21,66 @@
   - podejście z przeskakiwaniem ciągów znanych krawędzi
   - podejście z przeszukiwaniem przestrzeni rozwiązań z heurystyką (czemu nie działało to tak dobrze - lokalne minima)
   - podejście z pruningiem 'drzewa rekurencji'
-- wyniki eksperymentów (eksperymentu)
+- wyniki eksperymentów (eksperymentu) -->
 
 
 ## Sidenotes
 ### Definicje
 
 Problem:  
-Naprawianie uszkodzonych deterministycznych automatów skończonych (DFA) na podstawie próbek pozytywnych i negatywnych.
 
-- Automat może mieć brakujące krawędzie (przejścia niezdefiniowane)
-- Automat może mieć brakujące stany
-- Musimy uzupełnić automat, aby akceptował wszystkie słowa z S+ i odrzucał wszystkie słowa z S−
+- **brakujące krawędzie** - niezdefiniowane przejścia
+- **brakujące stany**
+- **nieznane wartościowanie stanów** - nie wiemy w którym zbiorze F jest stan
+- Musimy **uzupełnić automat**, aby **akceptował** wszystkie słowa z **S+** i **odrzucał** wszystkie słowa z **S−**
 
 
 ### Dlaczego to jest ciekawe/ważne?
 
-> Praktyczne zastosowania:
-> - Odtwarzanie stanu systemu z logów
-> - Znamy część jakiegoś oprogramowania i chcemy je uzupełnić
-> - Klasyczne uczenie pasywne, ale z automatem wejściowym - np gdy mamy częściową wiedzę o rozwiązaniu
+Praktyczne zastosowania:
+- Klasyczne uczenie pasywne, ale z automatem wejściowym - np gdy mamy częściową wiedzę o rozwiązaniu
+- Odtwarzanie stanu systemu z logów
+- Znamy część jakiegoś oprogramowania i chcemy je uzupełnić
 
 
 ### NP-zupełność
-dopowiedzieć że redukcja do NP-trudności jest z problemu najmniejszego zgodnego automatu
+- redukcja do **NP-trudności** jest z problemu **najmniejszego zgodnego automatu**  
+- wykazaliśmy też **przynależność** do **NP**  
+- więc problem jest **NP-zupełny**
 
 ### Złożoność parametryczna
 
 Obserwacja:  
-Jeśli automat ma tylko **1 brakującą krawędź**, to wystarczy sprawdzić |Q| opcji.   
-Jeśli ma **k brakujących krawędzi**, to wystarczy sprawdzić |Q|^k opcji.  
-Pytanie: Czy możemy **rozdzielić** trudność problemu od rozmiaru automatu?  
+- Jeśli automat ma tylko **1 brakującą krawędź**, to wystarczy sprawdzić |liczba stanów| opcji.   
+- Jeśli ma **k brakujących krawędzi**, to wystarczy sprawdzić |liczba stanów|^|liczba brakujących krawędzi| opcji.  
+- Pytanie: Czy możemy **rozdzielić** zależność brakujących krawędzi od rozmiaru automatu?  
 
-**omówić klasy**
+**omówić klasy** + od razu widać że **jest w XP**
 
 
 ### W[2]-trudność
-k-set cover:
-<!-- - uniwersum U, rodzina zbiorów F, liczba k
-- czy istnieje podzbiór F' który pokrywa U i jest mniejszy od k
-- W[2]-zupełny względem parametru k -->
+> k-set cover:
+> - uniwersum U, rodzina zbiorów F, liczba k
+> - czy istnieje podzbiór F' który pokrywa U i jest mniejszy od k
+> - W[2]-zupełny względem parametru k
 
+omówić redukcję
 
-Alfabet ma rozmiar zależny od |U| — to słaby punkt redukcji.
+**Alfabet** ma rozmiar **zależny** od |**liczba stanów**| - to słaby punkt redukcji.
 
-**Idea**: zamiast jednej litery ej dla każdego elementu, używamy bin. reprezentacji indeksu
+**Idea binarnego**: zamiast jednej litery ej dla każdego elementu, używamy bin. reprezentacji indeksu
 
 ### W[P] przynależność
+
+jak wykazaliśmy
+
+### Rezultat
+- problem jest między **W[2]** a **W[P]**
+- nie jest **FPT** chyba że **FPT = W[2]**
+- jest też prostszy niż **XP-trudne**
+
+-----------
+
 
 ### Podejście praktyczne
 Dlaczego sie tym zajmujemy?
